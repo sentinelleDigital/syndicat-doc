@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Rapport d'analyse — [DOCUMENT] — [ENTREPRISE]</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#555; --line:#d9d9d9;
+    --accent:#1f4e79;            /* bleu syndical sobre */
+    --vert:#2e7d32; --orange:#e08600; --rouge:#c62828;
+    --bg-soft:#f5f7fa;
+  }
+  *{box-sizing:border-box}
+  html{font-size:14px}
+  body{
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); line-height:1.5; margin:0;
+    padding:0; background:#fff;
+  }
+  .page{max-width:820px;margin:0 auto;padding:32px 40px}
+
+  /* En-tête */
+  header{border-bottom:3px solid var(--accent);padding-bottom:16px;margin-bottom:24px}
+  header .kicker{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  header h1{font-size:1.55rem;margin:.3rem 0 .2rem;color:var(--ink)}
+  header .meta{font-size:.82rem;color:var(--muted)}
+  .disclaimer{margin-top:10px;font-size:.75rem;color:var(--muted);font-style:italic;
+    background:var(--bg-soft);border-left:3px solid var(--accent);padding:6px 10px}
+
+  h2{font-size:1.05rem;color:var(--accent);border-bottom:1px solid var(--line);
+     padding-bottom:4px;margin:28px 0 12px}
+  h3{font-size:.95rem;margin:16px 0 6px}
+
+  /* Synthèse */
+  .synthese{background:var(--bg-soft);border-radius:6px;padding:14px 18px;font-size:.9rem}
+
+  /* Tableaux */
+  table{width:100%;border-collapse:collapse;font-size:.82rem;margin:8px 0 4px}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:var(--accent);color:#fff;font-weight:600}
+  tbody tr:nth-child(even){background:#fafbfc}
+
+  /* Badges risque */
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;color:#fff}
+  .ok{background:var(--vert)} .moy{background:var(--orange)} .haut{background:var(--rouge)}
+  .dot{font-weight:700}
+  .dot.ok{color:var(--vert)} .dot.moy{color:var(--orange)} .dot.haut{color:var(--rouge)}
+
+  /* Références */
+  .ref{font-family:"Consolas",monospace;font-size:.78rem;background:#eef2f7;
+       color:var(--accent);padding:1px 5px;border-radius:3px}
+
+  /* Bloc analyse */
+  .analyse{border:1px solid var(--line);border-radius:6px;padding:12px 16px;margin:12px 0}
+  .analyse .ligne{margin:4px 0;font-size:.88rem}
+  .analyse .label{font-weight:600;color:var(--muted)}
+
+  ul.reco{padding-left:18px}
+  ul.reco li{margin:6px 0;font-size:.9rem}
+
+  footer{margin-top:32px;padding-top:12px;border-top:1px solid var(--line);
+    font-size:.72rem;color:var(--muted)}
+
+  @media print{
+    @page{margin:16mm}
+    body{font-size:12px}
+    .page{padding:0}
+    h2{break-after:avoid}
+    table,.analyse{break-inside:avoid}
+    header{break-after:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="kicker">Document de travail syndical</div>
+    <h1>Rapport d'analyse — [SUJET DU DOCUMENT]</h1>
+    <div class="meta">
+      Document(s) analysé(s) : <strong>[fichier(s)]</strong> · Statut : <strong>[projet / en vigueur]</strong><br>
+      Corpus de référence : CCN 3029 (IDCC 493) · Établi le <strong>[AAAA-MM-JJ]</strong>
+    </div>
+    <div class="disclaimer">
+      Ce rapport est un document de travail à usage syndical interne. Il ne constitue pas un conseil
+      juridique et ne qualifie aucun cas individuel. Vérifier toute référence sur Légifrance avant usage contentieux.
+    </div>
+  </header>
+
+  <h2>1. Synthèse</h2>
+  <div class="synthese">
+    [5 lignes max : ce qui est conforme, ce qui pose problème, le degré d'urgence.]
+  </div>
+
+  <h2>2. Tableau des risques</h2>
+  <table>
+    <thead>
+      <tr><th>Point analysé</th><th>Norme de référence</th><th>Niveau de risque</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>[Ex. Suivi de la charge de travail]</td>
+        <td><span class="ref">[C. trav., L.3121-64]</span></td>
+        <td><span class="badge haut">Risque élevé</span></td>
+      </tr>
+      <tr>
+        <td>[Ex. Durée du repos quotidien]</td>
+        <td><span class="ref">[CCN 3029, art. X]</span></td>
+        <td><span class="badge moy">Risque moyen</span></td>
+      </tr>
+      <tr>
+        <td>[Ex. Base légale]</td>
+        <td><span class="ref">[C. trav., L.3151-1]</span></td>
+        <td><span class="badge ok">Conforme</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Analyse détaillée</h2>
+
+  <div class="analyse">
+    <h3>[Point n°1 — intitulé]</h3>
+    <div class="ligne"><span class="label">Ce que dit le document :</span> [texte] <span class="ref">[fichier, art. X]</span></div>
+    <div class="ligne"><span class="label">Exigence Code du travail :</span> [texte] <span class="ref">[C. trav., L.xxxx]</span></div>
+    <div class="ligne"><span class="label">Exigence CCN :</span> [texte] <span class="ref">[CCN 3029, art. X]</span></div>
+    <div class="ligne"><span class="label">Écart / risque :</span> <span class="dot haut">●</span> [nullité, prud'hommes, etc.]</div>
+  </div>
+
+  <div class="analyse">
+    <h3>[Point n°2 — intitulé]</h3>
+    <div class="ligne"><span class="label">Ce que dit le document :</span> [texte]</div>
+    <div class="ligne"><span class="label">Écart / risque :</span> <span class="dot moy">●</span> [texte]</div>
+  </div>
+
+  <h2>4. Hiérarchie des normes</h2>
+  <p style="font-size:.88rem">
+    Rappel : Code du travail &gt; Convention collective &gt; Accord d'entreprise, <strong>sauf disposition
+    plus favorable au salarié</strong> à un niveau inférieur.
+  </p>
+  <table>
+    <thead><tr><th>Sujet</th><th>Code du travail</th><th>CCN 3029</th><th>Document analysé</th><th>Règle applicable</th></tr></thead>
+    <tbody>
+      <tr><td>[sujet]</td><td>[règle]</td><td>[règle]</td><td>[règle]</td><td><strong>[la plus favorable]</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Recommandations</h2>
+  <ul class="reco">
+    <li><strong>[Priorité haute]</strong> — [action concrète pour la négociation / défense]</li>
+    <li><strong>[Priorité moyenne]</strong> — [action]</li>
+    <li>[action]</li>
+  </ul>
+
+  <h2>6. Sources citées</h2>
+  <ul style="font-size:.85rem">
+    <li><span class="ref">[fichier, art. X]</span> — [intitulé]</li>
+    <li><span class="ref">[C. trav., L.xxxx]</span> — [intitulé]</li>
+  </ul>
+
+  <footer>
+    Établi le [AAAA-MM-JJ] · Corpus : CCN 3029 (IDCC 493) · Généré par assistant documentaire syndical.
+    Vérifier toute référence sur Légifrance avant usage contentieux. Ne constitue pas un conseil juridique.
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Secrets — ne JAMAIS versionner
+.env
+
+# Sorties temporaires
+_sources/*.pdf
+_sources/*.html
