@@ -301,11 +301,17 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(200, "text/html; charset=utf-8", html.encode("utf-8"))
             else:
                 self._send(404, "application/json", b'{"error":"route inconnue"}')
-        except SystemExit as e:  # call_gemini fait sys.exit en cas d'erreur API
-            self._send(200, "application/json", json.dumps({"error": str(e)}).encode("utf-8"))
+        except (SystemExit, Exception) as e:  # ne JAMAIS laisser le thread planter
+            import traceback
+            traceback.print_exc()  # visible dans le terminal pour diagnostic
+            msg = str(e) or f"{type(e).__name__}"
+            try:
+                self._send(200, "application/json", json.dumps({"error": msg}).encode("utf-8"))
+            except Exception:
+                pass  # client déjà parti
 
-    def log_message(self, *a):  # serveur silencieux
-        pass
+    def log_message(self, fmt, *args):  # une ligne discrète par requête
+        sys.stderr.write("· %s\n" % (fmt % args))
 
 
 def main():
