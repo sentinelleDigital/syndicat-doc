@@ -19,6 +19,7 @@
 | Négociation obligatoire | L.2242-1 | L2242-1_negociation-obligatoire.md | 2026-07-15 | ✅ |
 | Licenciement motif personnel | L.1232-1, -6, L.1235-3 | L1232_licenciement-personnel.md | 2026-07-15 | ✅ barème L.1235-3 saisi manuellement (figé depuis 2017) |
 | Licenciement économique | L.1233-3 | L1233-3_licenciement-economique.md | 2026-07-15 | ✅ |
+| Retraite progressive | C. séc. soc. L.161-22-1-5 à -9 | L161-22-1-5_retraite-progressive.md | 2026-07-17 | ⚠️ cadre légal OK ; conditions chiffrées = réglementaires (décret), modifiées 2025 → à confirmer. Ex-L.351-15/16 ABROGÉS |
 
 ## Lacunes connues / à compléter au besoin
 - Contingent heures sup (L.3121-30 s.), équivalences, jours fériés : ajouter si une question le touche.
