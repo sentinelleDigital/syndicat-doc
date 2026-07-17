@@ -7,3 +7,7 @@
 # Sorties temporaires
 _sources/*.pdf
 _sources/*.html
+
+# Python
+__pycache__/
+*.pyc
