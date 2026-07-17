@@ -47,10 +47,12 @@ CORPUS_EXCLUDED = ["05-pv-cse", "_ABROGES", "_sources", "_templates"]  # 05-pv-c
 FILTERED_BUDGET = 16000  # caractères max pour l'ensemble des passages filtrés
 SMALL_FILE_MAX = 6000    # un fichier <= ceci et pertinent est inclus ENTIER (accords, RI)
 
-MODEL_QUESTION = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
-# NB: Gemini Pro n'est PAS sur le free tier (quota 0). On reste sur Flash (gratuit).
+# gemini-flash-lite-latest : le Flash au free tier le plus généreux et disponible.
+# (gemini-3.5-flash = 20 req/jour ; gemini-2.0-flash = 0 gratuit sur ce compte.)
+MODEL_QUESTION = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
+# Gemini Pro n'est PAS gratuit (quota 0). L'audit reste sur Flash-lite.
 # Passe GEMINI_MODEL_AUDIT=gemini-pro-latest si tu actives un plan payant.
-MODEL_AUDIT = os.environ.get("GEMINI_MODEL_AUDIT", "gemini-flash-latest")
+MODEL_AUDIT = os.environ.get("GEMINI_MODEL_AUDIT", "gemini-flash-lite-latest")
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 FR_STOP = {
