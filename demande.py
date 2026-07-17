@@ -31,18 +31,27 @@ import urllib.request
 import urllib.error
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-LEGAL_DIR = os.path.join(BASE, "04-legal")
 INDEX_FILE = os.path.join(BASE, "INDEX.md")
-CCN_GLOB = os.path.join(BASE, "03-convention-collective", "*.md")
 STYLE_FILE = os.path.join(BASE, "_templates", "rapport-style.html")
+
+# --- Corpus piloté par DOSSIER (jamais de document en dur) ---
+# Ajouter un document = le déposer dans le bon dossier. Le scan est automatique.
+#
+#  WHOLE    : petits, stables, référence -> envoyés ENTIERS.
+#  FILTERED : volumineux / qui grandissent -> seuls les passages pertinents
+#             (mots-clés de la question), bornés par FILTERED_BUDGET.
+#  EXCLUDED : jamais envoyés (sensible, abrogé, originaux, gabarits).
+CORPUS_WHOLE = ["04-legal"]
+CORPUS_FILTERED = ["01-accords", "02-reglement-interieur", "03-convention-collective"]
+CORPUS_EXCLUDED = ["05-pv-cse", "_ABROGES", "_sources", "_templates"]  # 05-pv-cse : nominatif -> pseudonymiser avant
+FILTERED_BUDGET = 16000  # caractères max pour l'ensemble des passages filtrés
+SMALL_FILE_MAX = 6000    # un fichier <= ceci et pertinent est inclus ENTIER (accords, RI)
 
 MODEL_QUESTION = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
 # NB: Gemini Pro n'est PAS sur le free tier (quota 0). On reste sur Flash (gratuit).
 # Passe GEMINI_MODEL_AUDIT=gemini-pro-latest si tu actives un plan payant.
 MODEL_AUDIT = os.environ.get("GEMINI_MODEL_AUDIT", "gemini-flash-latest")
 API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-
-CCN_MAX_CHARS = 14000
 
 FR_STOP = {
     "le", "la", "les", "un", "une", "des", "de", "du", "et", "ou", "a", "à",
@@ -74,9 +83,18 @@ def read_file(path):
         return ""
 
 
-def load_legal():
+def md_files(dirs):
+    """Tous les .md sous les dossiers donnés (récursif). Découverte automatique."""
+    files = []
+    for d in dirs:
+        files += glob.glob(os.path.join(BASE, d, "**", "*.md"), recursive=True)
+    return sorted(files)
+
+
+def load_whole():
+    """Dossiers WHOLE envoyés entiers (référence)."""
     parts = []
-    for path in sorted(glob.glob(os.path.join(LEGAL_DIR, "*.md"))):
+    for path in md_files(CORPUS_WHOLE):
         rel = os.path.relpath(path, BASE)
         parts.append(f"===== FICHIER: {rel} =====\n{read_file(path)}")
     return "\n\n".join(parts)
@@ -99,32 +117,48 @@ def keywords(question):
     return [w for w in words if w not in FR_STOP]
 
 
-def load_ccn_passages(question, budget=CCN_MAX_CHARS):
-    files = glob.glob(CCN_GLOB)
-    if not files:
-        return ""
+def load_filtered(question, budget=FILTERED_BUDGET):
+    """
+    Dossiers FILTERED (accords, RI, CCN) : volumineux / croissants.
+
+    Règle : un fichier PETIT et pertinent (accord, RI) est inclus ENTIER et en
+    PREMIER -> il ne peut pas être noyé par un gros fichier. Seuls les gros
+    fichiers (CCN) sont filtrés par paragraphe pour remplir le budget restant.
+    Chaque passage est étiqueté par son fichier -> le modèle peut le citer.
+    """
     kws = keywords(question)
     if not kws:
         return ""
-    text = read_file(files[0])
-    rel = os.path.relpath(files[0], BASE)
-    paras = re.split(r"\n\s*\n", text)
-    hits = []
-    for p in paras:
-        low = p.lower()
-        score = sum(low.count(k) for k in kws)
-        if score > 0:
-            hits.append((score, p.strip()))
-    hits.sort(key=lambda x: x[0], reverse=True)
+    small_parts, big_scored = [], []
+    for path in md_files(CORPUS_FILTERED):
+        rel = os.path.relpath(path, BASE)
+        text = read_file(path)
+        if sum(text.lower().count(k) for k in kws) == 0:
+            continue  # fichier non pertinent -> ignoré
+        if len(text) <= SMALL_FILE_MAX:
+            small_parts.append(f"[{rel}]\n{text.strip()}")          # petit -> entier
+        else:
+            for para in re.split(r"\n\s*\n", text):                 # gros -> par paragraphe
+                score = sum(para.lower().count(k) for k in kws)
+                if score > 0:
+                    big_scored.append((score, rel, para.strip()))
     out, total = [], 0
-    for _, p in hits:
-        if total + len(p) > budget:
+    for chunk in small_parts:                                       # petits d'abord (garantis)
+        if total + len(chunk) > budget:
             break
-        out.append(p)
-        total += len(p)
+        out.append(chunk)
+        total += len(chunk)
+    big_scored.sort(key=lambda x: x[0], reverse=True)
+    for _, rel, para in big_scored:                                 # puis remplir avec les gros
+        chunk = f"[{rel}]\n{para}"
+        if total + len(chunk) > budget:
+            break
+        out.append(chunk)
+        total += len(chunk)
     if not out:
         return ""
-    return f"===== EXTRAITS CCN ({rel}) — passages contenant les mots-clés =====\n" + "\n\n".join(out)
+    return ("===== PASSAGES PERTINENTS (accords / règlement intérieur / "
+            "convention collective) =====\n" + "\n\n".join(out))
 
 
 SYSTEM_QUESTION = """Tu es l'assistant documentaire d'un syndicat (branche IDCC 493).
@@ -246,8 +280,8 @@ def main():
     question = " ".join(args.question).strip()
 
     index = read_file(INDEX_FILE)
-    legal = load_legal()
-    ccn = load_ccn_passages(question)
+    whole = load_whole()
+    filtered = load_filtered(question)
 
     audit = args.audit or args.pdf or args.doc
     if audit:
@@ -259,9 +293,9 @@ DOCUMENT(S) À AUDITER :
 {docs}
 
 CODE DU TRAVAIL (extraits vérifiés) :
-{legal}
+{whole}
 
-{ccn}
+{filtered}
 
 CONSIGNE D'AUDIT :
 {question}
@@ -280,9 +314,9 @@ CONSIGNE D'AUDIT :
 {index}
 
 DOCUMENTS — CODE DU TRAVAIL (extraits vérifiés) :
-{legal}
+{whole}
 
-{ccn}
+{filtered}
 
 QUESTION DU SALARIÉ / DE L'ÉLU :
 {question}
