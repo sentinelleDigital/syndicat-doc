@@ -79,7 +79,10 @@ demande.py                l'outil
    [code.travail.gouv.fr](https://code.travail.gouv.fr) avec en-tête daté, puis
    mettre à jour `04-legal/_INDEX-legal.md`.
 
-L'outil découvre automatiquement les nouveaux fichiers de `04-legal` (aucun code à toucher).
+L'outil **scanne automatiquement tous les dossiers du corpus** (`01-accords`, `02-reglement-interieur`,
+`03-convention-collective`, `04-legal`) — aucun code à toucher, jamais de document en dur. Un accord
+ou RI court est envoyé entier ; la CCN (volumineuse) est lue par passages ciblés. `05-pv-cse`,
+`_ABROGES` et `_sources` sont exclus (nominatif / abrogé / originaux).
 
 ## Validation
 
