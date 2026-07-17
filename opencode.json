@@ -1,18 +1,26 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["AGENTS.md", "INDEX.md"],
+  "instructions": [
+    "AGENTS.md",
+    "INDEX.md"
+  ],
   "provider": {
-    "groq-proxy": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Groq via LiteLLM (failover 2 clés)",
+    "groq": {
       "options": {
-        "baseURL": "http://localhost:4000/v1",
-        "apiKey": "{env:LITELLM_MASTER_KEY}"
-      },
-      "models": {
-        "groq-llama-70b": { "name": "Llama 3.3 70B — Groq failover" }
+        "apiKey": "{env:GROQ_API_KEY}"
       }
     }
   },
-  "model": "groq-proxy/groq-llama-70b"
+  "model": "groq/llama-3.3-70b-versatile",
+  "tools": {
+    "write": false,
+    "edit": false,
+    "bash": false,
+    "patch": false,
+    "webfetch": false,
+    "task": false,
+    "todowrite": false,
+    "todoread": false,
+    "list": false
+  }
 }

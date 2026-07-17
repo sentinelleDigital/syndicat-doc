@@ -1,6 +1,9 @@
 # Secrets — ne JAMAIS versionner
 .env
 
+# Environnement Python local (litellm) — jamais versionné
+.venv/
+
 # Sorties temporaires
 _sources/*.pdf
 _sources/*.html
