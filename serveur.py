@@ -107,8 +107,10 @@ PAGE = r"""<!DOCTYPE html>
   .answer th{background:var(--ref-bg)}
   .ref{background:var(--ref-bg); color:var(--ref-ink); border-radius:6px; padding:1px 7px;
     font-size:.82em; font-weight:600; white-space:nowrap}
-  .pdfbtn{margin-top:16px; background:transparent; color:var(--accent); border:1px solid var(--accent);
+  .actions{display:flex; gap:12px; margin-top:16px; flex-wrap:wrap}
+  .pdfbtn,.newbtn{background:transparent; color:var(--accent); border:1px solid var(--accent);
     font:inherit; font-weight:600; padding:9px 18px; border-radius:980px; cursor:pointer}
+  .newbtn{border-color:var(--line); color:var(--muted)}
   .muted{color:var(--muted); font-size:.85rem; text-align:center; margin-top:28px}
   .spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--accent);
     border-radius:50%;animation:spin .8s linear infinite;margin:8px auto}
@@ -142,7 +144,10 @@ PAGE = r"""<!DOCTYPE html>
 
   <div id="answer" class="answer hidden">
     <div class="box" id="answerBox"></div>
-    <button class="pdfbtn hidden" id="pdfbtn" onclick="makePdf()">Générer le rapport PDF</button>
+    <div class="actions">
+      <button class="pdfbtn hidden" id="pdfbtn" onclick="makePdf()">Générer le rapport PDF</button>
+      <button class="newbtn hidden" id="newbtn" onclick="reset()">↺ Nouvelle question</button>
+    </div>
   </div>
 
   <p class="muted">Local et privé · le corpus reste sur cette machine.<br>
@@ -218,9 +223,10 @@ async function ask(){
   const ans = document.getElementById("answer"); ans.classList.remove("hidden");
   const box = document.getElementById("answerBox");
   document.getElementById("pdfbtn").classList.add("hidden");
+  document.getElementById("newbtn").classList.add("hidden");
   box.innerHTML = '<div class="spinner"></div>';
-  lastQuestion=q; lastDoc = MODE==="audit" ? await readDoc() : null;
   try{
+    lastQuestion=q; lastDoc = MODE==="audit" ? await readDoc() : null;
     const r = await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({question:q, mode:MODE,
         docText:lastDoc?lastDoc.text:null, docName:lastDoc?lastDoc.name:null})});
@@ -231,7 +237,18 @@ async function ask(){
       if(MODE==="audit") document.getElementById("pdfbtn").classList.remove("hidden");
     }
   }catch(e){ box.innerHTML='<p class="err">Erreur : '+esc(""+e)+'</p>'; }
-  go.disabled=false;
+  finally{
+    go.disabled=false;                                   // le bouton se réactive TOUJOURS
+    document.getElementById("newbtn").classList.remove("hidden");
+    const t=document.getElementById("q"); t.focus(); t.select();  // prêt à retaper
+  }
+}
+
+function reset(){
+  document.getElementById("q").value="";
+  document.getElementById("answer").classList.add("hidden");
+  const d=document.getElementById("doc"); if(d) d.value="";
+  document.getElementById("q").focus();
 }
 
 async function makePdf(){
@@ -249,7 +266,7 @@ async function makePdf(){
 }
 
 document.getElementById("q").addEventListener("keydown",e=>{
-  if((e.metaKey||e.ctrlKey)&&e.key==="Enter") ask();
+  if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); ask(); }  // Entrée = envoyer, Maj+Entrée = saut de ligne
 });
 </script>
 </body>
