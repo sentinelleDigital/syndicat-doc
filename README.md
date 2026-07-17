@@ -25,7 +25,19 @@ Rien à compiler. Il faut seulement **python3** (déjà présent) et une **clé 
 
 ---
 
-## Utilisation
+## Interface graphique (recommandé — sans ligne de commande)
+
+Pour un usage sans terminal :
+
+- **Double-clic sur l'icône « Assistant Syndical »** (sur le Bureau) — ou lancer `lancer.sh`.
+- Le navigateur s'ouvre sur une page épurée : on tape la question, on choisit
+  **Question** ou **Audit**, on peut joindre un document et **générer un PDF**.
+- Tout reste **local** (serveur sur `127.0.0.1`, rien n'est exposé sur le réseau).
+- Laisser la fenêtre ouverte pendant l'usage ; la fermer arrête l'assistant.
+
+En coulisse, l'interface utilise le même moteur que la ligne de commande ci-dessous.
+
+## Utilisation en ligne de commande
 
 ### Mode question (défaut) — question d'un salarié / élu
 ```bash

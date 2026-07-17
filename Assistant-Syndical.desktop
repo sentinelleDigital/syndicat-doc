@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Assistant Syndical
+Comment=Assistant documentaire syndical — CCN 3029 + Code du travail
+Exec=/home/petje-linux/syndicat/lancer.sh
+Path=/home/petje-linux/syndicat
+Icon=text-x-generic
+Terminal=true
+Categories=Office;Utility;
