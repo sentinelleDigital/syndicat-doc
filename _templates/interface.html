@@ -276,6 +276,15 @@
   <!-- ============================ RÉGLAGES ============================ -->
   <section id="p-reglages" class="hidden" role="tabpanel" aria-labelledby="t-reglages">
     <div class="card">
+      <h2>Clés d'accès</h2>
+      <p class="muted">Une clé enregistrée n'est jamais réaffichée : seuls les quatre derniers
+        caractères apparaissent. Elle est écrite dans le fichier <code>.env</code>, en lecture
+        pour toi seul (permissions 0600), et ce fichier n'est jamais versionné.</p>
+      <div id="listeCles"></div>
+      <div id="msgCles" class="muted"></div>
+    </div>
+
+    <div class="card">
       <h2>Vérifier l'assistant</h2>
       <p class="muted">Rejoue les 19 questions de référence et compare aux réponses attendues,
         vérifiées à la main. À relancer après tout changement de modèle ou de corpus.</p>
@@ -369,7 +378,7 @@ function md(t){
 }
 
 async function fluxSSE(url, corps, surEvenement){
-  const r = await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
                             body:JSON.stringify(corps)});
   if(!r.ok || !r.body){
     let msg = "Le serveur n'a pas répondu (code "+r.status+").";
@@ -392,15 +401,19 @@ async function fluxSSE(url, corps, surEvenement){
 }
 
 /* ---------- navigation ---------- */
+const ONGLETS = ["question","audit","corpus","historique","reglages"];
 function onglet(nom){
-  ["question","audit","corpus","historique","reglages"].forEach(n=>{
+  if(!ONGLETS.includes(nom)) nom = "question";
+  ONGLETS.forEach(n=>{
     $("p-"+n).classList.toggle("hidden", n!==nom);
     $("t-"+n).setAttribute("aria-selected", n===nom ? "true":"false");
   });
-  location.hash = nom;
+  if(location.hash.slice(1) !== nom) location.hash = nom;
   if(nom==="corpus"){ chargerCorpus(); chargerJournal(); }
   if(nom==="historique") chargerHistorique();
 }
+// bouton « Précédent » du navigateur : sans ceci, l'URL change mais pas la page.
+window.addEventListener("hashchange", ()=>onglet(location.hash.slice(1)));
 
 /* ---------- question / audit ---------- */
 function blocAlertes(alertes){
@@ -515,11 +528,11 @@ async function ouvrirHtml(promesse, bouton){
 function rapportPdf(question, bouton){
   const corps = {question};
   if(DOC_AUDIT){ corps.docTexte = DOC_AUDIT.texte; corps.docNom = DOC_AUDIT.nom; }
-  ouvrirHtml(fetch("/api/pdf",{method:"POST",headers:{"Content-Type":"application/json"},
+  ouvrirHtml(fetch("/api/pdf",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
     body:JSON.stringify(corps)}), bouton);
 }
 function exportReponse(question, reponse, alertes, passages, bouton){
-  ouvrirHtml(fetch("/api/pdf-reponse",{method:"POST",headers:{"Content-Type":"application/json"},
+  ouvrirHtml(fetch("/api/pdf-reponse",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
     body:JSON.stringify({question, reponse, alertes,
       sources:(passages||[]).map(p=>p.fichier+" § "+p.titre)})}), bouton);
 }
@@ -539,7 +552,7 @@ async function chargerDocAudit(reMasquer){
   const brut = await lireFichier($("docA"));
   if(!brut){ DOC_AUDIT=null; $("avertEnvoi").classList.add("hidden");
              $("masquageA").classList.add("hidden"); return; }
-  const r = await fetch("/api/conversion",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/conversion",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({nom:brut.nom, contenu:brut.b64})});
   const j = await r.json();
   if(j.erreur){ $("avertEnvoi").className="bandeau alerte"; $("avertEnvoi").textContent=j.erreur; return; }
@@ -547,7 +560,7 @@ async function chargerDocAudit(reMasquer){
   $("masquageA").classList.remove("hidden");
   let note = "";
   if($("masquer").checked && texte){
-    const rm = await fetch("/api/masquage",{method:"POST",headers:{"Content-Type":"application/json"},
+    const rm = await fetch("/api/masquage",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
         body:JSON.stringify({texte})});
     const jm = await rm.json();
     texte = jm.texte;
@@ -614,7 +627,7 @@ async function convertirAjout(){
   $("avertConversion").className = "bandeau avert";
   $("avertConversion").classList.remove("hidden");
   $("avertConversion").textContent = "Conversion en cours…";
-  const r = await fetch("/api/conversion",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/conversion",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({nom:brut.nom, contenu:brut.b64})});
   const j = await r.json();
   $("aCorps").value = j.texte || "";
@@ -637,7 +650,7 @@ async function enregistrerAjout(){
           date_signature:$("aSignature").value, date_effet:$("aEffet").value,
           source:$("aSource").value}};
   const r = await fetch("/api/document/ajouter",{method:"POST",
-      headers:{"Content-Type":"application/json"}, body:JSON.stringify(corps)});
+      headers:{"Content-Type":"application/json","X-Assistant":"1"}, body:JSON.stringify(corps)});
   const j = await r.json();
   $("msgAjout").innerHTML = j.ok
     ? `<div class="bandeau ok">Ajouté : <code>${esc(j.message)}</code>. INDEX.md a été régénéré.</div>`
@@ -668,7 +681,7 @@ function metaEdition(){
           verifie_le:$("eVerifie").value, source:$("eSource").value};
 }
 async function apercuDiff(){
-  const r = await fetch("/api/document/apercu",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/document/apercu",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({chemin:EDITION.chemin, meta:metaEdition(), corps:$("eCorps").value})});
   const j = await r.json();
   if(j.erreur){ $("msgEdition").innerHTML=`<div class="bandeau alerte">${esc(j.erreur)}</div>`; return; }
@@ -683,7 +696,7 @@ async function apercuDiff(){
   $("btnEnregistrer").disabled = !j.diff;
 }
 async function enregistrerEdition(){
-  const r = await fetch("/api/document/enregistrer",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/document/enregistrer",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({chemin:EDITION.chemin, meta:metaEdition(), corps:$("eCorps").value})});
   const j = await r.json();
   $("msgEdition").innerHTML = j.ok
@@ -703,7 +716,7 @@ function ouvrirArchive(chemin){
 }
 function verifArchive(){ $("btnArchive").disabled = $("confArchive").value.trim().toUpperCase() !== "ARCHIVER"; }
 async function archiver(){
-  const r = await fetch("/api/document/archiver",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/document/archiver",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({chemin:ARCHIVE_CIBLE, remplacePar:$("remplacePar").value, confirmation:true})});
   const j = await r.json();
   $("msgArchive").innerHTML = j.ok
@@ -727,7 +740,7 @@ async function chargerJournal(){
 async function restaurer(id){
   const zone = $("msgJournal");
   zone.innerHTML = "<p class='muted'>Restauration en cours…</p>";
-  const r = await fetch("/api/journal/restaurer",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/journal/restaurer",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({id})});
   const j = await r.json();
   zone.innerHTML = j.ok
@@ -779,13 +792,91 @@ function notesModeles(){
 }
 async function majReglages(){
   notesModeles();
-  const r = await fetch("/api/reglages",{method:"POST",headers:{"Content-Type":"application/json"},
+  const r = await fetch("/api/reglages",{method:"POST",headers:{"Content-Type":"application/json","X-Assistant":"1"},
       body:JSON.stringify({modele_question:$("modQ").value, modele_audit:$("modA").value})});
   const j = await r.json();
   $("msgReglages").innerHTML = j.ok
     ? `<div class="bandeau avert">Modèle changé. Relancer « Vérifier l'assistant » : un modèle
         non mesuré est un modèle dont on ignore le taux d'erreur.</div>`
     : `<div class="bandeau alerte">Échec de l'enregistrement.</div>`;
+}
+
+
+// --- Clés d'accès ------------------------------------------------------------
+// Aucune valeur enregistrée ne transite vers l'interface : le serveur renvoie
+// un état et un aperçu, jamais la clé. Les champs de saisie sont vidés dès que
+// la valeur est partie.
+
+let CLES = [];
+
+async function chargerCles(){
+  const r = await fetch("/api/cles");
+  const j = await r.json();
+  CLES = j.emplacements || [];
+  rendreCles();
+}
+
+function rendreCles(){
+  $("listeCles").innerHTML = CLES.map(c => {
+    const etat = c.configuree
+      ? `<span class="pastille">enregistrée ${esc(c.apercu)}</span>
+         <span class="muted">${esc(c.origine)}</span>`
+      : (c.obligatoire
+          ? `<span class="pastille alerte">absente — obligatoire</span>`
+          : `<span class="muted">absente — facultative</span>`);
+    const fige = !c.modifiable
+      ? `<div class="muted">Posée par une variable d'environnement du système :
+           elle a priorité sur le fichier .env et ne se modifie pas ici.</div>`
+      : `<div class="row">
+           <input type="password" id="cle-${c.id}" autocomplete="off"
+                  spellcheck="false" placeholder="coller la clé ici"
+                  aria-label="${esc(c.nom)}">
+           <button class="go" onclick="poserCle('${c.id}')">Enregistrer</button>
+           <button onclick="testerCle('${c.id}')">Tester</button>
+           ${c.configuree ? `<button onclick="retirerCle('${c.id}')">Retirer</button>` : ``}
+         </div>`;
+    return `<div class="analyse">
+      <h3>${esc(c.nom)} ${etat}</h3>
+      <div class="muted">${esc(c.role)}</div>
+      ${fige}
+      <div class="muted">${esc(c.aide)}
+        <a href="${esc(c.obtenir)}" target="_blank" rel="noopener noreferrer">obtenir une clé</a></div>
+    </div>`;
+  }).join("");
+}
+
+async function appelCles(corps){
+  const r = await fetch("/api/cles",{method:"POST",
+      headers:{"Content-Type":"application/json","X-Assistant":"1"},
+      body:JSON.stringify(corps)});
+  const j = await r.json();
+  if(j.emplacements){ CLES = j.emplacements; rendreCles(); }
+  $("msgCles").innerHTML = j.message
+    ? `<div class="bandeau ${j.ok ? "ok" : "alerte"}">${esc(j.message)}</div>` : "";
+  return j;
+}
+
+async function poserCle(id){
+  const champ = $("cle-"+id);
+  const valeur = champ.value;
+  champ.value = "";                       // la valeur ne reste pas dans le DOM
+  if(!valeur.trim()){
+    $("msgCles").innerHTML = `<div class="bandeau alerte">Aucune valeur saisie.</div>`;
+    return;
+  }
+  const j = await appelCles({action:"enregistrer", cle:id, valeur:valeur});
+  if(j.ok){ await chargerEtat(); }
+}
+
+async function testerCle(id){
+  $("msgCles").innerHTML = `<div class="bandeau">Test en cours…</div>`;
+  await appelCles({action:"tester", cle:id});
+}
+
+async function retirerCle(id){
+  const c = CLES.find(x => x.id === id) || {nom:"cette clé"};
+  if(!confirm(`Retirer ${c.nom} du fichier .env ?`)) return;
+  await appelCles({action:"supprimer", cle:id});
 }
 
 async function lancerBanc(){
@@ -828,6 +919,7 @@ $("qa").addEventListener("keydown", e=>{
   if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); poser("audit"); }
 });
 chargerEtat();
+chargerCles();
 onglet((location.hash||"#question").slice(1) || "question");
 $("q").focus();
 </script>

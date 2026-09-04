@@ -25,6 +25,7 @@ import traceback
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+import cles
 import corpus
 import ingestion
 import demande as D
@@ -140,8 +141,50 @@ class Handler(BaseHTTPRequestHandler):
             raise ValueError("requête invalide")
 
     # -- GET --
+    # -- Garde d'origine ------------------------------------------------------
+    # Le serveur n'écoute que sur 127.0.0.1, mais « local » ne veut pas dire
+    # « protégé » : n'importe quelle page ouverte dans le navigateur peut
+    # adresser une requête à localhost. Sans ce contrôle, un site malveillant
+    # pourrait écrire dans le corpus ou poser une clé API à l'insu de
+    # l'utilisateur. Trois verrous :
+    #   1. Host      — parade au DNS rebinding (un nom qui résout vers 127.0.0.1)
+    #   2. Origin    — refus de toute origine autre que l'interface elle-même
+    #   3. En-tête maison sur les POST — un formulaire HTML d'un autre site ne
+    #      peut pas en poser un, et un fetch qui le pose déclenche un préflight
+    #      que l'on ne satisfait jamais.
+
+    HOTES_AUTORISES = {"127.0.0.1", "localhost", "[::1]"}
+
+    def _origine_sure(self, exige_entete=False):
+        hote = (self.headers.get("Host") or "").split(":")[0]
+        if hote not in self.HOTES_AUTORISES:
+            return False, f"Hôte refusé : {hote or '(absent)'}."
+
+        origine = self.headers.get("Origin") or ""
+        if origine:
+            from urllib.parse import urlparse
+            u = urlparse(origine)
+            if u.scheme != "http" or u.hostname not in self.HOTES_AUTORISES:
+                return False, "Requête refusée : origine externe."
+
+        if exige_entete and self.headers.get("X-Assistant") != "1":
+            return False, ("Requête refusée : en-tête d'application absent. "
+                           "Recharger la page de l'assistant.")
+        return True, ""
+
+    def _garde(self, chemin, exige_entete=False):
+        """True si la requête peut continuer ; sinon elle est déjà refusée."""
+        if not chemin.startswith("/api/"):
+            return True
+        ok, motif = self._origine_sure(exige_entete)
+        if not ok:
+            self._json({"erreur": motif}, 403)
+        return ok
+
     def do_GET(self):
         chemin = self.path.split("?")[0]
+        if not self._garde(chemin):
+            return
         parametres = {}
         if "?" in self.path:
             from urllib.parse import parse_qs, unquote
@@ -163,6 +206,8 @@ class Handler(BaseHTTPRequestHandler):
                     self._json({"erreur": "document introuvable"}, 404)
                 else:
                     self._json(doc)
+            elif chemin == "/api/cles":
+                self._json({"emplacements": cles.etat()})
             elif chemin == "/api/journal":
                 self._json({"entrees": corpus.journal_lire(200)})
             elif chemin == "/api/historique":
@@ -184,6 +229,8 @@ class Handler(BaseHTTPRequestHandler):
     # -- POST --
     def do_POST(self):
         chemin = self.path.split("?")[0]
+        if not self._garde(chemin, exige_entete=True):
+            return
         try:
             if chemin == "/api/ask":
                 self._flux_reponse()
@@ -202,6 +249,7 @@ class Handler(BaseHTTPRequestHandler):
                     "/api/document/archiver": self._doc_archiver,
                     "/api/journal/restaurer": self._journal_restaurer,
                     "/api/reglages": self._reglages,
+                    "/api/cles": self._cles,
                 }
                 if chemin not in routes:
                     self._json({"erreur": "route inconnue"}, 404)
@@ -468,6 +516,37 @@ class Handler(BaseHTTPRequestHandler):
         ok, message = corpus.restaurer(donnees.get("id") or "", "interface")
         self._json({"ok": ok, "message": message})
 
+    def _cles(self, donnees):
+        """
+        Pose, retire ou teste une clé. Ne renvoie JAMAIS une valeur enregistrée.
+        Les exceptions sont attrapées ici : une trace remontant au gestionnaire
+        générique pourrait faire apparaître la valeur soumise dans le terminal.
+        """
+        action = (donnees.get("action") or "enregistrer").strip()
+        identifiant = (donnees.get("cle") or "").strip()
+        try:
+            if action == "enregistrer":
+                message = cles.enregistrer(identifiant, donnees.get("valeur"))
+                self._json({"ok": True, "message": message,
+                            "emplacements": cles.etat()})
+            elif action == "supprimer":
+                message = cles.supprimer(identifiant)
+                self._json({"ok": True, "message": message,
+                            "emplacements": cles.etat()})
+            elif action == "tester":
+                ok, message = cles.tester(identifiant)
+                self._json({"ok": ok, "message": message,
+                            "emplacements": cles.etat()})
+            else:
+                self._json({"ok": False, "message": "Action inconnue."}, 400)
+        except cles.CleRefusee as e:
+            self._json({"ok": False, "message": str(e)}, 200)
+        except Exception as e:                       # jamais la valeur soumise
+            self._json({"ok": False,
+                        "message": f"Échec de l'enregistrement "
+                                   f"({type(e).__name__}). Vérifier les droits "
+                                   f"d'écriture sur le fichier .env."}, 200)
+
     def _reglages(self, donnees):
         self._json({"ok": True, "reglages": D.ecrire_reglages(donnees)})
 
@@ -498,9 +577,11 @@ def _markdown_html(texte):
             html.append("</table>")
             continue
         if re.match(r"^\s*#{2,}\s+", ligne):
-            html.append(f"<h3>{_inline(re.sub(r'^\\s*#+\\s+', '', ligne))}</h3>")
+            html.append("<h3>" + _inline(re.sub(r"^\s*#+\s+", "", ligne))
+                        + "</h3>")
         elif re.match(r"^\s*#\s+", ligne):
-            html.append(f"<h2>{_inline(re.sub(r'^\\s*#\\s+', '', ligne))}</h2>")
+            html.append("<h2>" + _inline(re.sub(r"^\s*#\s+", "", ligne))
+                        + "</h2>")
         elif re.match(r"^\s*[-*]\s+", ligne):
             html.append("<ul>")
             while i < len(lignes) and re.match(r"^\s*[-*]\s+", lignes[i]):
