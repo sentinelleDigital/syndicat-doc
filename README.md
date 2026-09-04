@@ -6,13 +6,16 @@ collective × Code du travail), en **citant systématiquement la source** et en
 **refusant d'inventer**.
 
 Corpus figé et local, cerveau distant (Gemini). Le corpus ne quitte pas la machine :
-seul le passage pertinent + la question sont envoyés au modèle.
+seuls les passages retenus et la question sont envoyés au modèle.
+
+> **Une réponse fausse est pire qu'une absence de réponse.** L'outil préfère dire
+> « non couvert » plutôt que produire une affirmation plausible non sourcée.
 
 ---
 
 ## Installation
 
-Rien à compiler. Il faut seulement **python3** (déjà présent) et une **clé Gemini gratuite**.
+Rien à compiler, aucune dépendance : **python3** et une **clé Gemini gratuite**.
 
 1. Clé API Gemini (gratuit, sans carte) : https://aistudio.google.com/apikey
 2. La déposer dans `.env` :
@@ -21,109 +24,141 @@ Rien à compiler. Il faut seulement **python3** (déjà présent) et une **clé 
    # éditer .env :  GEMINI_API_KEY=ta_cle
    ```
 
-`.env` n'est jamais versionné (voir `.gitignore`).
+`.env` n'est jamais versionné. Sans clé, l'interface démarre quand même et affiche
+la marche à suivre — elle ne plante pas.
 
----
+## Lancement
 
-## Interface graphique (recommandé — sans ligne de commande)
+**Double-clic sur l'icône « Assistant Syndical »** (ou `./lancer.sh`). Le navigateur
+s'ouvre sur `http://127.0.0.1:8765` (port suivant si celui-ci est occupé). Tout reste
+local : rien n'est exposé sur le réseau. Fermer la fenêtre du terminal arrête l'outil.
 
-Pour un usage sans terminal :
+L'interface a cinq pages :
 
-- **Double-clic sur l'icône « Assistant Syndical »** (sur le Bureau) — ou lancer `lancer.sh`.
-- Le navigateur s'ouvre sur une page épurée : on tape la question, on choisit
-  **Question** ou **Audit**, on peut joindre un document et **générer un PDF**.
-- Tout reste **local** (serveur sur `127.0.0.1`, rien n'est exposé sur le réseau).
-- Laisser la fenêtre ouverte pendant l'usage ; la fermer arrête l'assistant.
+| Page | À quoi elle sert |
+|---|---|
+| **Question** | Question courte, réponse sourcée en flux, contrôles automatiques affichés |
+| **Audit** | Croisement d'un document avec la CCN et le Code du travail, export PDF |
+| **Corpus** | Ajouter / modifier / archiver un document, journal et restauration |
+| **Historique** | Les questions déjà posées, consultables et exportables |
+| **Réglages** | Choix du modèle et bouton **Vérifier l'assistant** (banc de 19 questions) |
 
-En coulisse, l'interface utilise le même moteur que la ligne de commande ci-dessous.
+## Ce que l'outil vérifie tout seul
 
-## Utilisation en ligne de commande
+Ces contrôles sont **en code**, pas seulement dans le prompt — une consigne se
+contourne, un contrôle non :
 
-### Mode question (défaut) — question d'un salarié / élu
+- **Citations** : chaque référence produite (`L.3121-27`, `art. 24`, nom de fichier)
+  est recherchée littéralement dans ce qui a été envoyé au modèle. Introuvable →
+  badge « référence non vérifiée » dans la réponse, jamais masqué.
+- **Code du travail hors `04-legal/`** : un article cité qui n'est pas dans les
+  extraits vérifiés porte la mention « à vérifier sur Légifrance ».
+- **Question individuelle** (« mon licenciement est-il valable ? ») : détectée
+  **avant** l'appel au modèle → renvoi vers un juriste de la fédération.
+- **Fraîcheur** : un extrait légal vérifié il y a plus de 6 mois affiche un bandeau
+  « à re-vérifier ».
+- **Statut `projet`** : un document non signé n'est jamais présenté comme applicable.
+- **Sources consultées** : la liste des passages réellement envoyés au modèle est
+  dépliable sous chaque réponse. On ne peut pas vérifier une réponse sans être
+  juriste, mais on voit si l'outil a ouvert le bon article.
+
+## Gestion du corpus — sans terminal
+
+Tout se fait depuis la page **Corpus** :
+
+- **Ajouter** : déposer un `.md`, `.txt` ou `.pdf`. Un PDF est converti en texte et
+  **affiché pour relecture avant enregistrement** (une extraction ratée ferait un
+  corpus faux sans que personne ne le voie). L'original est conservé dans `_sources/`.
+  Métadonnées obligatoires : titre, statut, date de signature, date d'effet, source —
+  sans elles, le document n'entre pas.
+- **Modifier** : métadonnées et texte, avec **aperçu du diff** avant enregistrement.
+- **Archiver** : jamais de suppression. Le document part dans `_ABROGES/` sous le nom
+  `_REMPLACE-PAR-<fichier>`, après confirmation en deux temps.
+- **Journal** (`_journal/`) : chaque écriture est enregistrée avec l'état antérieur.
+  Un bouton restaure cet état.
+
+**`INDEX.md` est généré**, jamais écrit à la main : c'est une sortie calculée à partir
+des métadonnées de chaque document. Un index tenu à la main dérive du corpus réel —
+c'était la première source d'erreur silencieuse.
+
+## Validation
+
+```bash
+python3 valider.py                       # modèle courant
+python3 valider.py --modele gemini-flash-latest
+python3 valider.py --compare gemini-flash-lite-latest gemini-flash-latest
+```
+
+Ou, sans terminal : bouton **Vérifier l'assistant** (page Réglages).
+
+Le banc exécutable est `tests/banc.json` (19 questions, version lisible dans
+`QUESTIONS-TEST.md`). L'évaluation est mécanique — expressions régulières sur la
+réponse et vérification des articles cités. **Aucun modèle ne juge un autre modèle.**
+Résultats mesurés : `VALIDATION.md`.
+
+## Ligne de commande
+
 ```bash
 python3 demande.py "quelle est la durée légale hebdomadaire ?"
-python3 demande.py "combien de repos entre deux journées de travail ?"
+python3 demande.py --audit --doc 06-cet/cet.md "cet accord est-il conforme ?"
+python3 demande.py --audit --pdf rapport.html --doc 06-cet/cet.md "conforme ?"
 ```
-Réponse courte, chaque affirmation citée `[C. trav., L.xxxx]` ou `[CCN 3029, art. X]`.
-Modèle : `gemini-flash-latest` (gratuit).
-
-### Mode audit — croisement de documents
-```bash
-# audit sur le corpus général
-python3 demande.py --audit "conformité du forfait jours entre Code du travail et CCN ?"
-
-# audit d'un document précis
-python3 demande.py --audit --doc 01-accords/forfait/accord.md "cet accord est-il conforme ?"
-```
-Produit une analyse structurée : synthèse, tableau des risques, analyse détaillée,
-hiérarchie des normes, recommandations, sources.
-
-### Mode audit → PDF
-```bash
-python3 demande.py --audit --pdf rapport.html --doc 01-accords/forfait/accord.md "conforme ?"
-```
-Écrit `rapport.html` (stylé). L'ouvrir dans un navigateur → **Ctrl+P → Enregistrer en PDF**.
-
----
 
 ## Organisation du corpus
 
 ```
-01-accords/               accords d'entreprise EN VIGUEUR (un dossier par sujet)
+01-accords/               accords d'entreprise (un dossier par sujet)
 02-reglement-interieur/   règlement intérieur
-03-convention-collective/ CCN 3029 (volumineuse — lue par extraits ciblés)
+03-convention-collective/ CCN 3029 (volumineuse — lue par sections titrées)
 04-legal/                 extraits Code du travail, texte verbatim + daté
-05-pv-cse/                PV de CSE (À PSEUDONYMISER avant d'ajouter — voir Confidentialité)
+05-pv-cse/                PV de CSE — EXCLU en code de tout envoi au modèle
+06-cet/                   accord d'entreprise compte épargne-temps
 _ABROGES/                 documents remplacés (jamais cités)
-_sources/                 originaux (PDF, .txt) — non lus par l'outil
-_templates/               gabarit du rapport PDF
-INDEX.md                  état du corpus (source de vérité)
-AGENTS.md                 règles de l'assistant
-QUESTIONS-TEST.md         banc de 19 questions de validation
-demande.py                l'outil
+_sources/                 originaux déposés (PDF) — non lus par l'assistant
+_journal/                 journal des écritures + états antérieurs
+_historique/              questions posées (local, non versionné)
+_templates/               interface web + gabarit du rapport PDF
+INDEX.md                  état du corpus — GÉNÉRÉ, ne pas éditer
+tests/banc.json           banc de validation exécutable
 ```
 
-## Ajouter un document
+Tout dossier nommé `NN-sujet` est découvert automatiquement : ajouter une catégorie
+ne demande aucune modification du code.
 
-1. Poser le fichier dans le bon dossier (le convertir en `.md` s'il est en PDF).
-2. Mettre à jour `INDEX.md` (une ligne : quoi, statut, date).
-3. Pour un extrait de Code du travail : copier le **texte verbatim** depuis
-   [code.travail.gouv.fr](https://code.travail.gouv.fr) avec en-tête daté, puis
-   mettre à jour `04-legal/_INDEX-legal.md`.
+## Choix du modèle
 
-L'outil **scanne automatiquement tous les dossiers du corpus** (`01-accords`, `02-reglement-interieur`,
-`03-convention-collective`, `04-legal`) — aucun code à toucher, jamais de document en dur. Un accord
-ou RI court est envoyé entier ; la CCN (volumineuse) est lue par passages ciblés. `05-pv-cse`,
-`_ABROGES` et `_sources` sont exclus (nominatif / abrogé / originaux).
-
-## Validation
-
-Rejouer le banc après tout changement (modèle, corpus, règles) :
-```bash
-python3 demande.py "durée légale hebdomadaire ?"
-```
-Voir `QUESTIONS-TEST.md` pour les 19 questions et leurs réponses attendues.
-Une réponse divergente = dérive à corriger avant tout usage réel.
-
----
+Le modèle se change dans **Réglages**, avec l'arbitrage écrit en clair : gratuit et
+plus faible, ou payant et plus fiable. Après tout changement, relancer
+« Vérifier l'assistant » — un modèle non mesuré est un modèle dont on ignore le taux
+d'erreur. Les mesures comparées sont dans `VALIDATION.md`.
 
 ## Confidentialité
 
 - **Accords, RI, CCN, Code du travail = publics** → envoi au modèle sans souci.
-- **PV de CSE / cas individuels = données personnelles** → **pseudonymiser avant**
-  (noms, matricules) ou ne pas ingérer. Ne jamais envoyer de nominatif au modèle en clair.
+- **`05-pv-cse/` est exclu en code** de tout envoi au modèle (`corpus.DOSSIERS_NOMINATIFS`).
+- Avant l'envoi d'un document joint, l'interface avertit explicitement que
+  **le document part chez Google** et propose de masquer les données personnelles
+  détectées (noms, matricules, adresses, téléphones, courriels, n° de sécurité
+  sociale), en **affichant ce qu'elle a masqué**.
+- Cette détection est **heuristique et non exhaustive** : ce qu'elle ne voit pas part
+  en clair. Aucune bibliothèque de pseudonymisation n'est installée. Pour une pièce
+  nominative, relire soi-même avant de la joindre.
 
 ## Limites connues
 
-- **Sans mémoire** : chaque question doit être auto-portante (« et pour 8 ans ? » seul
-  est ambigu). Reformuler complètement.
-- **CCN par mots-clés** : l'extraction de la convention collective est par mots-clés.
-  Fiable sur les tests, non garantie à 100 % ; le banc de test reste le garde-fou.
-- **Gemini Pro** n'est pas sur le tier gratuit (quota 0) : tout tourne sur Flash. Pour
-  passer à Pro (meilleur raisonnement, payant) : `export GEMINI_MODEL_AUDIT=gemini-pro-latest`.
+- **Sans mémoire** : chaque question doit être auto-portante. « Et pour 8 ans ? »
+  seul est ambigu — reformuler complètement. (L'historique est consultable, mais il
+  n'est pas envoyé au modèle.)
+- **Recherche par mots-clés et sections** : améliorée (accents, pluriels, synonymes,
+  reconnaissance des numéros d'article, découpage par article), mais non garantie à
+  100 %. Le banc de test et la liste « Sources consultées » sont les garde-fous.
+- **Extraction PDF** : couvre les PDF texte, pas les PDF scannés (aucun OCR). Une
+  extraction quasi vide est signalée comme telle.
+- **Le modèle par défaut est le plus faible de la gamme** (quota gratuit le plus
+  large). Voir `VALIDATION.md` pour ce que cela coûte en exactitude.
 
 ## Ce que l'outil ne fait pas
 
-Il n'est pas juriste. Il ne qualifie **jamais** un cas individuel (« mon licenciement
-est-il valable ? ») et renvoie vers un juriste de la fédération. Toute référence
-destinée à un contentieux doit être revérifiée sur Légifrance.
+Il n'est pas juriste. Il ne qualifie **jamais** un cas individuel et renvoie vers un
+juriste de la fédération. Toute référence destinée à un contentieux doit être
+revérifiée sur Légifrance.

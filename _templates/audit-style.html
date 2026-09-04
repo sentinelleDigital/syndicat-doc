@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Système de design — rapports d'audit syndical</title>
+<style>
+/* =============================================================================
+   SYSTÈME DE DESIGN — RAPPORTS D'AUDIT
+   Reproduit à l'identique la maquette « Audit forfait jours — SAS Frère ».
+   Couleurs extraites du PDF de référence (opérateurs `rg` des flux PDF).
+   Cible : impression A4 via Chrome headless --print-to-pdf.
+   ========================================================================== */
+
+:root{
+  /* --- Neutres (gris Apple) --- */
+  --ink:        #1d1d1f;   /* texte principal            */
+  --muted:      #6e6e73;   /* labels, légendes, méthodo  */
+  --line:       #d2d2d7;   /* filets, séparateurs        */
+  --surface:    #f5f5f7;   /* cartes, encarts neutres    */
+  --surface-2:  #fbfbfd;   /* alternance de lignes       */
+  --white:      #ffffff;
+
+  /* --- Accent unique : bleu Apple. Un seul. Jamais un deuxième. --- */
+  --accent:      #0066cc;
+  --accent-soft: #eef6ff;  /* fond d'encart bleu         */
+  --accent-tint: #cfe3ff;  /* fond de pastille bleue     */
+
+  /* --- Sémantique : uniquement pour le RISQUE, jamais pour décorer --- */
+  --green:      #1a7f37;  --green-soft: #e8f5ec;
+  --red:        #b3261e;  --red-soft:   #fdeceb;
+  --amber:      #9a6700;  --amber-soft: #fff7e6;
+
+  --radius:     12px;
+  --radius-lg:  14px;
+}
+
+/* --- Typographie ----------------------------------------------------------
+   Pile Apple d'abord, Inter en repli réel (SF Pro n'existe pas sous Linux).
+   Sans Inter installé, Chrome retombe sur DejaVu Sans : lisible, mais
+   l'interlettrage serré des grands titres est perdu. `fc-list | grep -i inter`
+   ------------------------------------------------------------------------- */
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",
+              "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:13.5px; line-height:1.55;
+  color:var(--ink); background:var(--white);
+  margin:0; padding:0;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:700px; margin:0 auto; padding:24px 0 40px}
+
+/* Filet horizontal — le seul séparateur autorisé hors tableaux */
+.rule{border:0; border-top:1px solid var(--line); margin:22px 0}
+
+/* =============================================================================
+   1 · KICKER — surtitre de section
+   Bleu, gras, majuscules, très interlettré. Toujours au-dessus d'un titre.
+   ========================================================================== */
+.kicker{
+  font-size:10.5px; font-weight:700; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--accent);
+  margin:0 0 8px;
+}
+
+/* =============================================================================
+   2 · COUVERTURE
+   Titre géant terminé par un POINT. Deck court. Note globale. Grille méta 2×2.
+   ========================================================================== */
+.cover{padding-top:210px}
+.cover h1{
+  font-size:46px; line-height:1.04; font-weight:700;
+  letter-spacing:-.022em; margin:0 0 18px; color:var(--ink);
+}
+.cover .deck{
+  font-size:15px; line-height:1.5; color:var(--ink);
+  max-width:52ch; margin:0 0 44px;
+}
+.cover .score{display:flex; align-items:baseline; gap:8px; margin-bottom:44px}
+.cover .score .val{font-size:52px; font-weight:700; letter-spacing:-.03em; line-height:1}
+.cover .score .sur{font-size:19px; font-weight:400; color:var(--muted)}
+.cover .score .lib{font-size:12px; color:var(--muted); line-height:1.35; margin-left:10px}
+
+.meta-grid{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:26px 40px; border-top:1px solid var(--line); padding-top:18px;
+}
+.meta-grid .lab{font-size:10.5px; color:var(--muted); margin-bottom:3px}
+.meta-grid .val{font-size:13px; font-weight:700}
+
+/* =============================================================================
+   3 · OUVERTURE DE SECTION
+   Une section = une page. Kicker · titre 2 lignes terminé par un point · deck.
+   ========================================================================== */
+.section{break-before:page; page-break-before:always}
+.section:first-of-type{break-before:auto; page-break-before:auto}
+.section > h1{
+  font-size:34px; line-height:1.1; font-weight:700;
+  letter-spacing:-.02em; margin:0 0 12px;
+}
+.section > .deck{
+  font-size:12.5px; color:var(--muted); max-width:70ch;
+  margin:0 0 4px; line-height:1.5;
+}
+.section > .deck + .rule{margin-top:14px}
+
+/* Titre de bloc à l'intérieur d'une section */
+h2{
+  font-size:16.5px; font-weight:700; letter-spacing:-.01em;
+  margin:26px 0 10px; padding-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+h3{font-size:13.5px; font-weight:700; margin:18px 0 6px}
+p{margin:0 0 10px}
+.micro{font-size:11px; color:var(--muted); line-height:1.5}
+
+/* =============================================================================
+   4 · TABLEAUX
+   Aucune bordure verticale. En-tête = labels gris. Lignes séparées par filet.
+   1re colonne en gras. Dernière colonne = pastille de risque.
+   ========================================================================== */
+table{width:100%; border-collapse:collapse; margin:6px 0 4px; font-size:12px}
+thead th{
+  font-size:11px; font-weight:700; color:var(--muted); text-align:left;
+  padding:0 12px 8px 12px; border-bottom:1px solid var(--line);
+  vertical-align:bottom;
+}
+tbody td{
+  padding:10px 12px; border-bottom:1px solid var(--line);
+  vertical-align:top; line-height:1.45;
+}
+tbody tr:nth-child(even){background:var(--surface-2)}
+tbody td:first-child{font-weight:700}
+table + .micro{margin-top:8px}          /* note de méthodologie sous tableau */
+
+/* =============================================================================
+   5 · PASTILLES DE RISQUE
+   Fond teinté + texte de la même teinte foncée. Jamais blanc sur aplat.
+   Échelle imposée : Aucun · Faible · Moyen · Élevé · Très élevé.
+   ========================================================================== */
+.pill{
+  display:inline-block; font-size:10.5px; font-weight:700;
+  padding:3px 9px; border-radius:999px; white-space:nowrap; line-height:1.3;
+}
+.pill.aucun,.pill.ok      {background:var(--green-soft); color:var(--green)}
+.pill.faible,.pill.info   {background:var(--accent-tint); color:var(--accent)}
+.pill.moyen               {background:var(--amber-soft); color:var(--amber)}
+.pill.eleve               {background:var(--red-soft);   color:var(--red)}
+.pill.tres-eleve          {background:var(--red);        color:var(--white)}
+
+/* =============================================================================
+   6 · ENCARTS TEINTÉS (callouts)
+   Ferment chaque section sur la conclusion à retenir. Pas de bordure, pas
+   d'icône : la couleur du titre porte le sens.
+   rouge = limite ou danger · bleu = clé de lecture · vert = à préserver
+   ========================================================================== */
+.note{border-radius:var(--radius); padding:14px 18px; margin:16px 0; font-size:12px}
+.note .t{font-weight:700; font-size:12.5px; margin-bottom:5px; display:block}
+.note p{margin:0}
+.note.rouge{background:var(--red-soft)}    .note.rouge .t{color:var(--red)}
+.note.bleu {background:var(--accent-soft)} .note.bleu  .t{color:var(--accent)}
+.note.vert {background:var(--green-soft)}  .note.vert  .t{color:var(--green)}
+.note.gris {background:var(--surface)}     .note.gris  .t{color:var(--ink)}
+
+/* =============================================================================
+   7 · RANGÉE DE CARTES (3 colonnes)
+   Label micro en majuscules · affirmation en gras · explication grise.
+   ========================================================================== */
+.cartes{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0}
+.cartes.deux{grid-template-columns:repeat(2,1fr)}
+.carte{background:var(--surface); border-radius:var(--radius); padding:14px 16px}
+.carte .lab{
+  font-size:10px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:8px;
+}
+.carte .aff{font-size:15px; font-weight:700; line-height:1.25; margin-bottom:7px}
+.carte .exp{font-size:11px; color:var(--muted); line-height:1.45}
+.carte.large{grid-column:1 / -1}
+.carte.vert{background:var(--green-soft)}
+.carte.rouge{background:var(--red-soft)}
+.carte.ambre{background:var(--amber-soft)}
+
+/* =============================================================================
+   8 · TUILES DE NOTE (/10)
+   Rangée de 5 en fin de rapport. La dernière (note globale) est mise en avant.
+   ========================================================================== */
+.notes{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:14px 0 4px}
+.tuile{
+  border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px 10px; text-align:center;
+}
+.tuile .n{font-size:26px; font-weight:700; letter-spacing:-.02em; line-height:1}
+.tuile .n span{font-size:13px; font-weight:400; color:var(--muted)}
+.tuile .lib{font-size:10.5px; color:var(--muted); margin-top:8px; line-height:1.3}
+.tuile.globale{background:var(--accent-soft); border-color:var(--accent-tint)}
+.tuile.globale .n{color:var(--accent)}
+.tuile.globale .lib{color:var(--ink); font-weight:700}
+
+/* Bandeau de note isolé (fin de section 3) */
+.note-bloc{background:var(--accent-soft); border-radius:var(--radius); padding:16px 20px; margin:18px 0}
+.note-bloc .lab{font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted)}
+.note-bloc .n{font-size:30px; font-weight:700; color:var(--accent); letter-spacing:-.02em; margin:6px 0 8px}
+.note-bloc .exp{font-size:11px; color:var(--muted); line-height:1.5}
+
+/* =============================================================================
+   9 · CLAUSE DE REMPLACEMENT (section B)
+   Carte encadrée · en-tête numéro + priorité · labels micro · citation encadrée.
+   ========================================================================== */
+.clause{
+  border:1px solid var(--line); border-radius:var(--radius-lg);
+  margin:16px 0; overflow:hidden; break-inside:avoid; page-break-inside:avoid;
+}
+.clause > .tete{
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  background:var(--surface); padding:12px 18px;
+}
+.clause > .tete .titre{font-size:15px; font-weight:700}
+.clause > .corps{padding:14px 18px 16px}
+.clause .lab{
+  font-size:10px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted); margin:12px 0 4px;
+}
+.clause .lab:first-child{margin-top:0}
+.clause .txt{font-size:11.5px; color:var(--muted); line-height:1.5}
+.clause .redaction{
+  background:var(--surface); border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0; padding:12px 16px; margin:2px 0 4px;
+  font-size:11.5px; line-height:1.6; color:var(--ink);
+}
+.prio{
+  font-size:10.5px; font-weight:700; padding:4px 11px; border-radius:999px;
+  white-space:nowrap;
+}
+.prio.absolue{background:var(--red);       color:var(--white)}
+.prio.haute  {background:var(--red-soft);  color:var(--red)}
+.prio.moyenne{background:var(--amber-soft);color:var(--amber)}
+.prio.secu   {background:var(--surface);   color:var(--muted)}
+
+/* =============================================================================
+   10 · SOMMAIRE — libellé à gauche, numéro romain à droite, filet entre lignes
+   ========================================================================== */
+.sommaire{list-style:none; margin:8px 0 0; padding:0}
+.sommaire li{
+  display:flex; justify-content:space-between; align-items:baseline; gap:20px;
+  padding:10px 0; border-bottom:1px solid var(--line); font-size:12.5px;
+}
+.sommaire .num{color:var(--muted); font-size:11px}
+
+/* =============================================================================
+   11 · LISTES
+   ========================================================================== */
+ul,ol{margin:8px 0 12px; padding-left:20px}
+li{margin:6px 0; line-height:1.5}
+ol.trois li{margin:10px 0}
+
+/* Références d'articles : en gras, dans le fil du texte. Pas de bloc code —
+   la maquette ne l'utilise pas, elle garde une seule police. */
+.ref{font-weight:700; white-space:nowrap}
+
+/* En-tête simple (export d'une réponse, sans page de couverture) */
+header{border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:22px}
+header h1{font-size:30px; font-weight:700; letter-spacing:-.02em; margin:0}
+
+footer{
+  margin-top:34px; padding-top:12px; border-top:1px solid var(--line);
+  font-size:10.5px; color:var(--muted); line-height:1.5;
+}
+
+/* Contrôles automatiques injectés par demande.py */
+ul.alertes{
+  background:var(--amber-soft); border-radius:var(--radius);
+  padding:14px 18px 14px 34px; font-size:12px; margin:12px 0;
+}
+
+/* =============================================================================
+   IMPRESSION
+   Marge 18 mm. Rien ne se coupe : cartes, tableaux, encarts, clauses.
+   ========================================================================== */
+@media print{
+  @page{size:A4; margin:18mm}
+  body{font-size:12.5px}
+  .page{max-width:none; padding:0}
+  h2,h3{break-after:avoid; page-break-after:avoid}
+  tr,.note,.carte,.cartes,.clause,.tuile,.note-bloc{
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  thead{display:table-header-group}   /* en-tête répété si le tableau déborde */
+}
+</style>
+</head>
+
+<!-- =========================================================================
+     CI-DESSOUS : le squelette de référence. Ouvrir ce fichier dans un
+     navigateur montre chaque composant. Le générateur ne réutilise que le
+     bloc <style> (demande.py → extract_style()).
+     ====================================================================== -->
+<body>
+<div class="page">
+
+  <!-- ---------- COUVERTURE ---------- -->
+  <section class="cover">
+    <div class="kicker">Audit juridique · Droit du travail</div>
+    <h1>Forfait annuel<br>en jours.</h1>
+    <p class="deck">Analyse de conformité de l'accord d'entreprise [ENTREPRISE] au regard
+      du Code du travail, de la jurisprudence sociale et de la convention collective IDCC 493.</p>
+    <div class="score">
+      <span class="val">6,5</span><span class="sur">/10</span>
+      <span class="lib">Note globale<br>de l'accord</span>
+    </div>
+    <div class="meta-grid">
+      <div><div class="lab">Convention collective</div><div class="val">Vins, cidres, jus de fruits — IDCC 493 (br. 3029)</div></div>
+      <div><div class="lab">Entrée en vigueur prévue</div><div class="val">[date]</div></div>
+      <div><div class="lab">Destinataire</div><div class="val">Organisation syndicale — négociation</div></div>
+      <div><div class="lab">Date du rapport</div><div class="val">[date]</div></div>
+    </div>
+  </section>
+
+  <!-- ---------- PRÉAMBULE + SOMMAIRE ---------- -->
+  <section class="section">
+    <div class="kicker">Préambule</div>
+    <h1>Périmètre et limites.</h1>
+    <p>Ce que le rapport confronte, à quelles normes, sur quelle base documentaire.</p>
+    <div class="note rouge">
+      <span class="t">Pièces manquantes — portée des conclusions</span>
+      <p>[Documents non communiqués et conséquence exacte sur ce qui reste théorique.]</p>
+    </div>
+    <h2>Sommaire</h2>
+    <ul class="sommaire">
+      <li><span>Cadre juridique préalable — qui prime, branche ou entreprise ?</span><span class="num">I</span></li>
+      <li><span>1 · Conformité légale, article par article</span><span class="num">II</span></li>
+      <li><span>9 · Rapport final, notes &amp; résumé exécutif</span><span class="num">X</span></li>
+      <li><span>SECTION B · Contre-propositions de rédaction</span><span class="num">XI</span></li>
+    </ul>
+  </section>
+
+  <!-- ---------- SECTION À TABLEAU ---------- -->
+  <section class="section">
+    <div class="kicker">Section 1</div>
+    <h1>Conformité<br>légale.</h1>
+    <p class="deck">Chaque article confronté au Code du travail, avec niveau de risque juridique.</p>
+    <hr class="rule">
+    <h2>Tableau de conformité — article par article</h2>
+    <table>
+      <thead><tr><th>Article</th><th>Fondement &amp; appréciation</th><th>Pourquoi</th><th>Risque</th></tr></thead>
+      <tbody>
+        <tr><td>Art. 3.1 — Plafond</td><td>L. 3121-64 I·3°</td><td>[raison]</td><td><span class="pill aucun">Aucun</span></td></tr>
+        <tr><td>Art. 3.2 — Repos</td><td>L. 3121-64 ; L. 3121-60</td><td>[raison]</td><td><span class="pill eleve">Élevé</span></td></tr>
+        <tr><td>Art. 4 — Rémunération</td><td>L. 3121-64 I · L. 2253-1</td><td>[raison]</td><td><span class="pill tres-eleve">Très élevé</span></td></tr>
+      </tbody>
+    </table>
+    <p class="micro">Méthodologie : [hypothèses et limites du tableau].</p>
+    <div class="note rouge"><span class="t">Réserve transversale</span><p>[ce qui relativise tout le tableau]</p></div>
+  </section>
+
+  <!-- ---------- SECTION À CARTES ---------- -->
+  <section class="section">
+    <div class="kicker">Cadre préalable · déterminant</div>
+    <h1>Qui l'emporte : branche ou entreprise ?</h1>
+    <div class="cartes">
+      <div class="carte"><div class="lab">Bloc 1 — la branche s'impose</div>
+        <div class="aff">Salaires minima, classifications…</div>
+        <div class="exp">L'entreprise ne peut pas faire moins.</div></div>
+      <div class="carte"><div class="lab">Bloc 3 — l'entreprise prime</div>
+        <div class="aff">Durée du travail, forfait jours…</div>
+        <div class="exp">L'accord d'entreprise écarte l'accord de branche.</div></div>
+      <div class="carte"><div class="lab">Validité intrinsèque</div>
+        <div class="aff">Garanties santé &amp; charge</div>
+        <div class="exp">Condition de fond contrôlée par le juge.</div></div>
+    </div>
+    <div class="note bleu"><span class="t">Conséquence pour la lecture du rapport</span><p>[clé de lecture]</p></div>
+  </section>
+
+  <!-- ---------- NOTES DE SYNTHÈSE ---------- -->
+  <section class="section">
+    <div class="kicker">Section 9</div>
+    <h1>Rapport final.</h1>
+    <h2>Notes de synthèse</h2>
+    <div class="notes">
+      <div class="tuile"><div class="n">7,5<span>/10</span></div><div class="lib">Conformité juridique</div></div>
+      <div class="tuile"><div class="n">4,5<span>/10</span></div><div class="lib">Équilibre salarié / employeur</div></div>
+      <div class="tuile"><div class="n">8<span>/10</span></div><div class="lib">Protection de la santé</div></div>
+      <div class="tuile"><div class="n">6,5<span>/10</span></div><div class="lib">Sécurité juridique</div></div>
+      <div class="tuile globale"><div class="n">6,5<span>/10</span></div><div class="lib">Note globale</div></div>
+    </div>
+    <h2>Bilan réel</h2>
+    <div class="cartes">
+      <div class="carte vert"><div class="lab">Ce que le salarié gagne</div><div class="exp">[…]</div></div>
+      <div class="carte rouge"><div class="lab">Ce que le salarié perd</div><div class="exp">[…]</div></div>
+      <div class="carte ambre"><div class="lab">Ce que l'employeur gagne</div><div class="exp">[…]</div></div>
+    </div>
+    <div class="note vert"><span class="t">À conserver absolument</span><p>[…]</p></div>
+  </section>
+
+  <!-- ---------- CONTRE-PROPOSITIONS ---------- -->
+  <section class="section">
+    <div class="kicker">Section B</div>
+    <h1>Contre-<br>propositions.</h1>
+    <p class="deck">Clauses de remplacement prêtes à déposer, par ordre de priorité, avec fondement juridique.</p>
+    <hr class="rule">
+    <div class="clause">
+      <div class="tete"><span class="titre">1 · Garantie de rémunération minimale</span>
+        <span class="prio absolue">Priorité absolue</span></div>
+      <div class="corps">
+        <div class="lab">Problème (art. 4 actuel)</div>
+        <div class="txt">[ce que dit la clause actuelle et pourquoi c'est un problème]</div>
+        <div class="lab">Clause proposée — à insérer à l'article 4</div>
+        <div class="redaction">« [texte de la clause, déposable tel quel] »</div>
+        <div class="lab">Fondement</div>
+        <div class="txt">[article + accord de branche]</div>
+      </div>
+    </div>
+    <div class="note gris"><span class="t">Ordre de bataille en négociation</span><p>[où concentrer l'effort et pourquoi]</p></div>
+  </section>
+
+  <footer>
+    Document d'aide à la négociation — ne constitue pas une consultation juridique engageant une
+    responsabilité professionnelle. Vérifier toute référence sur Légifrance avant usage contentieux.
+  </footer>
+
+</div>
+</body>
+</html>

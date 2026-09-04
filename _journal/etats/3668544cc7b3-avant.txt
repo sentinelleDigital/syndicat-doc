@@ -1,0 +1,16 @@
+---
+titre: Projet d'accord d'entreprise — télétravail
+statut: projet
+date_signature: 2026-08-15
+date_effet: 2026-10-01
+source: projet d'accord remis par la direction le 15/08/2026
+verifie_le: 2026-09-04
+---
+ACCORD D'ENTREPRISE - TELETRAVAIL
+ARTICLE 1 : CHAMP D'APPLICATION
+Le present accord s'applique a l'ensemble des salaries
+de la Societe SAS FRERES comptant six mois d'anciennete.
+ARTICLE 2 : NOMBRE DE JOURS
+Le teletravail est limite a trois jours par semaine.
+ARTICLE 3 : INDEMNITE
+Une indemnite forfaitaire de 2,50 euros par jour teletravaille est versee.

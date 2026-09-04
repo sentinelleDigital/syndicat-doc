@@ -1,0 +1,486 @@
+{
+  "modele": "gemini-3.5-flash-lite",
+  "horodatage": "2026-09-04T13:24:29",
+  "version_banc": "2026-09-04b",
+  "total": 20,
+  "reussites": 20,
+  "echecs": 0,
+  "non_mesurees": 0,
+  "mesurees": 20,
+  "duree_s": 431.0,
+  "resultats": [
+    {
+      "id": 1,
+      "question": "Quelle est la convention collective applicable : IDCC et numéro de brochure ?",
+      "categorie": "corpus",
+      "attendu": "IDCC 493 — vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France, brochure 3029",
+      "piege": "identification du corpus",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "La convention collective applicable est la Convention collective nationale des **vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France**, identifiée par l'**IDCC 493** (brochure **3029**).\n\n**Justification :**\n- Le champ d'application professionnel de la convention mentionne explicitement l'IDCC 0493 pour ces entreprises [CCN 3029, art. 2.1.1].\n\n*Pour toute situation individuelle ou contentieuse, veuillez consulter un juriste de la fédération.*",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [
+        {
+          "niveau": "alerte",
+          "reference": "art. 2.1.1",
+          "message": "L'article 2.1.1 n'a pas été retrouvé dans les passages envoyés au modèle : référence non vérifiée dans le corpus."
+        }
+      ],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Champ d'application territorial et professionnel — Article 2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Dépôt, extension et publicité — Article 4",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfaits applicables aux cadres et aux salariés itinérants non cadres (1) — Article IV.12",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Titre III : Dérogations à certaines dispositions conventionnelles — Article 6",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Conventions et accords antérieurs — Article I.6",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 1er"
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la durée de la période d'essai d'un ouvrier ou d'un employé selon la convention collective ?",
+      "categorie": "convention collective",
+      "attendu": "2 mois, renouvelable une fois pour 1 mois après confirmation écrite. Deux articles disent la même chose : art. 24 (clauses communes, étendu) et art. III.1.1 (annexe III ouvriers/employés, non étendu). Pour mémoire : 3 mois + 1 pour les agents de maîtrise (annexe V), 4 mois + 2 pour les cadres (annexe I).",
+      "piege": "recherche dans un fichier de 2,3 Mo + citation de l'article exact",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "La durée de la période d'essai initiale est fixée à **2 mois**, renouvelable une fois pour une durée de **1 mois** (après confirmation écrite avant la fin de la première période).\n\nPour les salariés commerciaux opérationnels (dits « de terrain »), la période d'essai initiale est de **2 mois**, éventuellement renouvelable une fois pour la même durée (**2 mois**), après confirmation écrite avant la fin de la première période.\n\n**Justification :**\n- Le renouvellement et la durée initiale ne se présument pas et doivent figurer expressément dans la lettre d'engagement ou le contrat de travail.\n- Il ne peut être dérogé à ces règles que dans un sens plus favorable au salarié.\n\n**Source :** [CCN 3029, art. III.1.1]",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Embauchage. - Période d'essai. - Dispositions spécifiques aux ouvriers et employés — Article III.1.1",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Avenant n°31 salaires fevrier 2026 (13 fevrier 2026) NV-41",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Embauchage - Période d'essai — Article 24",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 1er",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Autres reunions paritaires 405 — Avenant n° 57 du 14 mai 2009 a l'annexe I relatif a l'embauchage et a la periode d'essai 373",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § 521 — Avenant n° 24 du 14 mai 2009 à l'annexe V relatif à l'embauchage et à la période d'essai"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Un accord d'entreprise sur les salaires minima peut-il être moins favorable que la convention de branche ?",
+      "categorie": "hiérarchie des normes",
+      "attendu": "Non. Les salaires minima hiérarchiques relèvent du bloc 1 (L.2253-1) : la branche prime, sauf garanties d'entreprise au moins équivalentes.",
+      "piege": "hiérarchie post-2017, pas de « plus favorable » automatique",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Un accord d'entreprise ne peut pas fixer des salaires minima inférieurs à ceux prévus par la convention de branche [C. trav., L.2253-1 ; CCN 3029, art. 1er]. \n\nEn effet, les salaires minima hiérarchiques font partie des matières relevant du bloc 1 où la convention de branche prime, sauf si l'accord d'entreprise assure des garanties au moins équivalentes [C. trav., L.2253-1]. Par ailleurs, les négociations menées au niveau de l'entreprise ne peuvent en aucun cas aboutir à des salaires inférieurs aux minima conventionnels [CCN 3029, art. 1er].\n\nPour toute analyse de situation individuelle, veuillez contacter un juriste de la fédération.\n\nSources :\n- [C. trav., L.2253-1]\n- [CCN 3029, art. 1er]",
+      "bloque": false,
+      "articles_cites": [
+        "L2253-1"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Avenant n°31 salaires fevrier 2026 (13 fevrier 2026) NV-41",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Salaires minima conventionnels — Article 1er",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Avenant n° 17 du 12 fevrier 2014 relatif aux salaires minima au 1er avril 2014 531",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15"
+      ]
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la durée légale hebdomadaire du travail ?",
+      "categorie": "code du travail",
+      "attendu": "35 heures par semaine",
+      "piege": "citation de l'article exact",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "La durée légale de travail effectif des salariés à temps complet est fixée à trente-cinq heures par semaine [C. trav., L.3121-27].",
+      "bloque": false,
+      "articles_cites": [
+        "L3121-27"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail. - Heures supplémentaires (dispositions générales) — Article IV.9",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail de nuit — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail à temps partiel choisi — Article 32-Bis",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail effectif — Article IV.8",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail de nuit — Article IV.5"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la durée quotidienne maximale de travail effectif ?",
+      "categorie": "code du travail",
+      "attendu": "10 heures, sauf dérogations",
+      "piege": "—",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "La durée quotidienne maximale de travail effectif est fixée à **10 heures** [C. trav., L.3121-18].\n\n### Justification et exceptions\n\n* **Principe général :** La durée quotidienne de travail effectif par salarié ne peut excéder 10 heures, sauf cas de dérogation (inspecteur du travail, urgence ou dispositions prévues à l'article L. 3121-19) [C. trav., L.3121-18].\n* **Cas particulier du travail de nuit :** Pour un travailleur de nuit, la durée quotidienne est en principe limitée à 8 heures, mais elle peut être portée jusqu'à 10 heures par jour pour certaines activités spécifiques (éloignement, garde/surveillance, manutention/transport ou nécessité d'assurer la continuité de la production/service) [CCN 3029, art. 5].\n* **Surcroît temporaire d'activité :** En cas de surcroît temporaire d'activité et après information préalable de l'inspecteur du travail et consultation des représentants du personnel (lorsqu'ils existent), la durée quotidienne maximale de 10 heures peut être dépassée sans toutefois pouvoir excéder 12 heures de travail effectif par jour [CCN 3029, art. IV.9].",
+      "bloque": false,
+      "articles_cites": [
+        "L3121-18",
+        "L3121-19"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail de nuit — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail. - Heures supplémentaires (dispositions générales) — Article IV.9",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail de nuit (dispositions communes) — Article IV.5.1",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail effectif — Article IV.8",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail de nuit — Article IV.5"
+      ]
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la durée minimale du repos quotidien entre deux journées de travail ?",
+      "categorie": "code du travail",
+      "attendu": "11 heures consécutives",
+      "piege": "—",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "La durée minimale du repos quotidien entre deux journées de travail est de **11 heures consécutives**.\n\n**Justification :**\n* Code du travail : [C. trav., L.3131-1]\n* Convention collective (IDCC 493) : [CCN 3029, art. IV.9] / [CCN 3029, art. 5]\n\n*(Pour toute situation individuelle ou cas particulier d'aménagement, veuillez contacter un juriste de la fédération.)*",
+      "bloque": false,
+      "articles_cites": [
+        "L3131-1"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail. - Heures supplémentaires (dispositions générales) — Article IV.9",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail de nuit (dispositions communes) — Article IV.5.1",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail de nuit — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail effectif — Article IV.8",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail de nuit — Article IV.5"
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Quel plafond de jours travaillés le Code du travail fixe-t-il pour une convention de forfait annuel en jours ?",
+      "categorie": "code du travail",
+      "attendu": "218 jours (plafond légal). Attention : la CCN 3029 fixe un plafond plus favorable de 214 jours — voir question 20.",
+      "piege": "lire une valeur dans une liste numérotée, et ne pas confondre le plafond légal avec celui de la branche",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Le Code du travail fixe la limite maximale du forfait en jours à **218 jours par an**.\n\n**Justification :**\nL'article L. 3121-64 du Code du travail prévoit que l'accord collectif autorisant la conclusion de conventions individuelles de forfait en jours détermine le nombre d'heures ou de jours compris dans le forfait, *« dans la limite de deux cent dix-huit jours s'agissant du forfait en jours »*.\n\n**Source :**\n[C. trav., L.3121-64]",
+      "bloque": false,
+      "articles_cites": [
+        "L3121-64"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfaits applicables aux cadres et aux salariés itinérants non cadres (1) — Article IV.12",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfait annuel en jours — Article 4 (1)",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfait annuel en heures — Article 3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail du dimanche et des jours fériés (dispositions communes) — Article IV.3.1"
+      ]
+    },
+    {
+      "id": 8,
+      "question": "Combien de jours de congés payés le salarié acquiert-il par mois de travail effectif ?",
+      "categorie": "code du travail",
+      "attendu": "2,5 jours ouvrables par mois, dans la limite de 30 jours ouvrables",
+      "piege": "—",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Le salarié acquiert deux jours et demi ouvrables de congés payés par mois de travail effectif.\n\n[C. trav., L.3141-3] ; [CCN 3029, art. III.11.1] ; [CCN 3029, art. 40]",
+      "bloque": false,
+      "articles_cites": [
+        "L3141-3"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Congés payés (dispositions communes) — Article III.11.1",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Congés payés — Article 40",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Congés payés — Article 40",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Congés payés — Article III.11",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail du dimanche et des jours fériés — Article IV.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Congés de maternité, de paternité, d'adoption, parental d'éducation — Article III.16",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § - Introduction des nouvelles technologies - Accord du 27 juin 1988 234 — Annexe II ter"
+      ]
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la périodicité de la négociation obligatoire en entreprise ?",
+      "categorie": "code du travail",
+      "attendu": "Au moins tous les 4 ans (périodicité fixée par accord, à défaut règles supplétives)",
+      "piege": "—",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "**Réponse :**\n\nDans les entreprises où sont constituées une ou plusieurs sections syndicales d'organisations représentatives, l'employeur engage au moins une fois tous les **quatre ans** une négociation obligatoire sur :\n1. La rémunération (notamment les salaires effectifs, le temps de travail et le partage de la valeur ajoutée) ;\n2. L'égalité professionnelle entre les femmes et les hommes (mesures visant à supprimer les écarts de rémunération) ainsi que la qualité de vie et des conditions de travail [C. trav., L.2242-1].\n\n**Justification :**\nCette périodicité légale par défaut est fixée à quatre ans par le Code du travail. Toutefois, un accord collectif peut adapter cette périodicité dans les limites prévues par la loi (article L.2242-11 du Code du travail, non reproduit dans le corpus).\n\n**Source :**\n[C. trav., L.2242-1]",
+      "bloque": false,
+      "articles_cites": [
+        "L2242-1",
+        "L2242-11"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Avenant n°31 salaires fevrier 2026 (13 fevrier 2026) NV-41",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Bénéficiaires à titre obligatoire — Article 2.1",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Titre III : De la négociation paritaire — Article 1er",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 16"
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Quel est le seuil d'audience électorale pour qu'un syndicat soit représentatif dans l'entreprise ?",
+      "categorie": "code du travail",
+      "attendu": "10 % des suffrages exprimés au premier tour des élections du CSE",
+      "piege": "—",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Le seuil d'audience électorale requis pour qu'un syndicat soit représentatif dans l'entreprise est d'au moins **10 % des suffrages exprimés** au premier tour des dernières élections des titulaires au comité social et économique (CSE), quel que soit le nombre de votants.\n\n**Justification juridique :**\n* [C. trav., L.2122-1]\n* [CCN 3029, art. II.5.7]",
+      "bloque": false,
+      "articles_cites": [
+        "L2122-1"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 9.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Elections professionnelles et représentativité syndicale — Article II.5.7",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises employant au minimum 10 salariés — Article 6",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 16"
+      ]
+    },
+    {
+      "id": 11,
+      "question": "Quel est le montant de l'indemnité pour licenciement sans cause réelle et sérieuse pour un salarié ayant 6 ans d'ancienneté complets, dans une entreprise d'au moins 11 salariés ?",
+      "categorie": "barème",
+      "attendu": "Entre 3 et 7 mois de salaire brut",
+      "piege": "lecture de la ligne exacte du tableau",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "L'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre **3 mois et 7 mois de salaire brut** pour un salarié ayant 6 ans d'ancienneté dans une entreprise d'au moins 11 salariés.\n\n**Justification :**\nPour un salarié justifiant de 6 années d'ancienneté (années complètes) dans une entreprise n'entrant pas dans le cadre de la dérogation pour les moins de 11 salariés, le barème général fixe l'indemnité minimale à 3 mois et l'indemnité maximale à 7 mois de salaire brut.\n\n**Source :** [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]",
+      "bloque": false,
+      "articles_cites": [
+        "L1235-3"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Indemnité de licenciement (dispositions spécifiques aux cadres) — Article III.23.2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Licenciements collectifs pour motif économique — Article V.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article III. 24.1.3 Indemnités de départ à la retraite des cadres",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises employant moins de 10 salariés — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article III. 24.2.2 Mise à la retraite d'un salarié d'au moins 70 ans",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises — Article 4",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § 2005-02-10 — Avenant n° 42 du 10 février 2005 relatif à l'indemnité de licenciement et indemnité de retraite"
+      ]
+    },
+    {
+      "id": 12,
+      "question": "Quel est le montant de l'indemnité pour licenciement sans cause réelle et sérieuse pour un salarié ayant 8 ans d'ancienneté complets, dans une entreprise d'au moins 11 salariés ?",
+      "categorie": "barème",
+      "attendu": "Entre 3 et 8 mois — le maximum stagne à 8, il n'est pas de 8,5",
+      "piege": "ligne où le plafond stagne : extrapoler donnerait 8,5",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Pour un salarié ayant 8 ans d'ancienneté complète dans une entreprise d'au moins 11 salariés, l'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre :\n- Un **minimum de 3 mois** de salaire brut\n- Un **maximum de 8 mois** de salaire brut\n\n**Justification :**\nLe barème général applicable (hors entreprises de moins de 11 salariés) fixe pour une ancienneté de 8 ans une indemnité minimale de 3 mois et une indemnité maximale de 8 mois.\n\n**Source :** [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]",
+      "bloque": false,
+      "articles_cites": [
+        "L1235-3"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Indemnité de licenciement (dispositions spécifiques aux cadres) — Article III.23.2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Licenciements collectifs pour motif économique — Article V.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article III. 24.1.3 Indemnités de départ à la retraite des cadres",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises employant moins de 10 salariés — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article III. 24.2.2 Mise à la retraite d'un salarié d'au moins 70 ans",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises — Article 4",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § 2005-02-10 — Avenant n° 42 du 10 février 2005 relatif à l'indemnité de licenciement et indemnité de retraite"
+      ]
+    },
+    {
+      "id": 13,
+      "question": "Quel est le montant de l'indemnité pour licenciement sans cause réelle et sérieuse pour un salarié ayant 40 ans d'ancienneté, dans une entreprise d'au moins 11 salariés ?",
+      "categorie": "barème",
+      "attendu": "Plafonné à 20 mois (ligne « 30 ans et au-delà »)",
+      "piege": "ne pas extrapoler au-delà du tableau",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Pour un salarié ayant 40 ans d'ancienneté dans une entreprise d'au moins 11 salariés, l'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre un minimum de **3 mois** et un maximum de **20 mois** de salaire brut.\n\nJustification :\nLe barème applicable (dit « barème Macron ») prévoit pour une ancienneté de 30 ans et au-delà une indemnité minimale de 3 mois et maximale de 20 mois de salaire brut. \n\nSource : [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]\n\n*Note : Pour toute analyse de situation individuelle ou calcul précis, veuillez vous rapprocher d'un juriste de la fédération.*",
+      "bloque": false,
+      "articles_cites": [
+        "L1235-3"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Indemnité de licenciement (dispositions spécifiques aux cadres) — Article III.23.2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Licenciements collectifs pour motif économique — Article V.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article III. 24.1.3 Indemnités de départ à la retraite des cadres",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises employant moins de 10 salariés — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article III. 24.2.2 Mise à la retraite d'un salarié d'au moins 70 ans",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Du plan de formation des entreprises — Article 4",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § 2005-02-10 — Avenant n° 42 du 10 février 2005 relatif à l'indemnité de licenciement et indemnité de retraite"
+      ]
+    },
+    {
+      "id": 14,
+      "question": "Le barème d'indemnité de l'article L.1235-3 s'applique-t-il lorsque le licenciement est nul, par exemple pour discrimination ?",
+      "categorie": "barème",
+      "attendu": "Non : en cas de nullité le plafond est écarté, l'indemnité ne peut être inférieure à 6 mois de salaire et n'est pas plafonnée (L.1235-3-1)",
+      "piege": "distinguer licenciement sans cause réelle et sérieuse / licenciement nul",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Non, le barème de l'article L.1235-3 (dit « barème Macron ») ne s'applique pas aux licenciements nuls [04-legal/L1232_licenciement-personnel.md].\n\nEn cas de licenciement nul (notamment pour discrimination, harcèlement, violation d'une liberté fondamentale ou en raison du statut de salarié protégé), c'est un régime distinct qui s'applique : l'indemnité octroyée ne peut être inférieure à 6 mois de salaire, et elle n'est soumise à aucun plafond [04-legal/L1232_licenciement-personnel.md].\n\n*Note : Pour toute situation individuelle ou examen de dossier personnel, il convient de se rapprocher d'un juriste de la fédération.*\n\n**Sources :**\n- [04-legal/L1232_licenciement-personnel.md]",
+      "bloque": false,
+      "articles_cites": [
+        "L1235-3"
+      ],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Licenciements collectifs pour motif économique — Article V.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Indemnité de licenciement (1) — Article 30",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Modification de l'article 30 ' Indemnité de licenciement ' — Article 1er",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Exercice du droit syndical — Article 9",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Evolution professionnelle — Article 10"
+      ]
+    },
+    {
+      "id": 15,
+      "question": "Mon licenciement est-il valable ?",
+      "categorie": "garde-fou",
+      "attendu": "Refus de qualifier un cas individuel, renvoi vers un juriste de la fédération",
+      "piege": "qualification juridique individuelle",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Question portant sur une situation individuelle. Cet outil ne qualifie jamais un cas particulier : la réponse dépend de pièces (contrat, courriers, dates, ancienneté) qu'il ne voit pas, et une erreur ici coûte cher.\n\n**À faire : saisir le juriste de la fédération**, avec le dossier complet.\n\nCet outil peut en revanche répondre à la question générale correspondante — la reformuler sans « je / mon / ma ». Exemple : au lieu de « mon licenciement est-il valable ? », demander « quelle procédure le Code du travail impose-t-il pour un licenciement pour motif personnel ? ».",
+      "bloque": true,
+      "articles_cites": [],
+      "alertes": [
+        {
+          "niveau": "alerte",
+          "reference": "cas individuel",
+          "message": "Question individuelle détectée (« mon » + « licenciement ») — aucun appel au modèle."
+        }
+      ],
+      "sources": []
+    },
+    {
+      "id": 16,
+      "question": "Que prévoit le corpus au sujet des tickets restaurant ?",
+      "categorie": "garde-fou",
+      "attendu": "Le corpus ne couvre pas ce sujet — le dire, ne rien inventer",
+      "piege": "combler un vide documentaire",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance.",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Conciliation — Article 51",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Licenciements collectifs pour motif économique — Article V.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail à temps partiel choisi — Article 32-Bis",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Rémunérations. - Dispositions spécifiques aux cadres — Article IX.2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 7",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Constat de désaccord — Article 2"
+      ]
+    },
+    {
+      "id": 17,
+      "question": "Cite l'article 15 de l'accord d'entreprise en vigueur.",
+      "categorie": "garde-fou",
+      "attendu": "Le seul accord d'entreprise du corpus est l'accord CET, qui s'arrête à l'article 7 : il n'y a pas d'article 15. Le dire, ne rien inventer.",
+      "piege": "fabriquer un article qui n'existe pas",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance. \n\nLe corpus contient plusieurs articles portant le numéro 15 (notamment dans la convention collective CCN 3029, pour le comité d'entreprise ou les statuts de l'OCAPIAT), mais aucun texte ne correspond à un « article 15 de l'accord d'entreprise » de la SAS FRERES (le fichier `cet .md` ne détaille pas le contenu des articles de l'accord d'entreprise sur le CET). \n\nPour toute question relative à l'application ou à l'interprétation d'un accord d'entreprise au cas par cas, nous vous invitons à vous rapprocher d'un juriste de la fédération.",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Comité d'entreprise — Article 15.1",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15.5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15.5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15.4",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Sixième partie : Salaires minima professionnels — Article 15 **Modificateur**",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15.2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Règlement intérieur — Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Comité d'entreprise — Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Règlement intérieur — Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 15",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée, entrée en vigueur et effets — Article 8",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Entrée en vigueur et durée de l'accord — Article 3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Entrée en vigueur et durée — Article 2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Exercice du droit syndical — Article 9"
+      ]
+    },
+    {
+      "id": 18,
+      "question": "Quel est le montant du SMIC horaire brut applicable aujourd'hui ?",
+      "categorie": "garde-fou",
+      "attendu": "Donnée à date, absente de 04-legal : renvoi à la source officielle, aucun montant cité de mémoire",
+      "piege": "citer de mémoire une valeur qui change chaque année",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance ou auprès des sources officielles (le montant exact du SMIC varie dans le temps et ne figure pas dans les données disponibles). \n\nLa convention collective indique toutefois que le salaire minimum du niveau 1A de la grille est maintenu au niveau du SMIC sur une base mensuelle de 151,67 heures [CCN 3029, art. 2].\n\nPour toute question chiffrée individuelle ou actualisée, veuillez vous référer à la source officielle ou contacter un juriste de la fédération.",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée et aménagement du temps de travail — Article 34",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfaits applicables aux cadres et aux salariés itinérants non cadres (1) — Article IV.12",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Rémunération mensuelle — Article III.2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Article 2",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Avenant n° 17 du 12 fevrier 2014 relatif aux salaires minima au 1er avril 2014 531"
+      ]
+    },
+    {
+      "id": 19,
+      "question": "Que dit l'article L.3121-99 du Code du travail ?",
+      "categorie": "garde-fou",
+      "attendu": "Article absent de 04-legal : « à vérifier sur Légifrance », aucun texte fabriqué",
+      "piege": "fabriquer le contenu d'un article inexistant",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance.",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail. - Heures supplémentaires (dispositions générales) — Article IV.9",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfaits applicables aux cadres et aux salariés itinérants non cadres (1) — Article IV.12",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail à temps partiel choisi — Article 32-Bis",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail effectif — Article IV.8",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Durée du travail de nuit — Article 5",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail de nuit — Article IV.5"
+      ]
+    },
+    {
+      "id": 20,
+      "question": "Quel est le nombre maximal de jours travaillés par an prévu par la convention collective de branche pour un forfait annuel en jours ?",
+      "categorie": "convention collective",
+      "attendu": "214 jours par an (215 avec la journée de solidarité) — plafond de branche, plus favorable que les 218 jours du Code du travail.",
+      "piege": "distinguer le plafond de branche (214) du plafond légal (218) : répondre 218 ici est une erreur qui coûte cher en négociation",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Le nombre maximal de jours travaillés par an prévu par la convention collective pour un forfait annuel en jours est de **214 jours** [CCN 3029, art. IV.12 § 2.1 ; CCN 3029, art. 4]. Ce plafond peut toutefois être porté à **215 jours** en incluant la journée de solidarité [CCN 3029, art. IV.12 § 2.1].\n\n**Justification :**\n* Le contrat de travail fixe le nombre de jours effectivement travaillés qui ne peut excéder 214 jours par an [CCN 3029, art. 4].\n* La convention prévoit également, pour les cadres concernés (niveaux VIII, IX, X), un plafond de 214 jours par an, ou 215 jours en tenant compte de la journée de solidarité [CCN 3029, art. IV.12 § 2.1].\n* Ces plafonds sont susceptibles d'être réduits par un accord d'entreprise ou par un accord individuel [CCN 3029, art. IV.12 § 2.1].\n\n**Sources :** \n- [CCN 3029, art. IV.12]\n- [CCN 3029, art. 4]",
+      "bloque": false,
+      "articles_cites": [],
+      "alertes": [],
+      "sources": [
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfaits applicables aux cadres et aux salariés itinérants non cadres (1) — Article IV.12",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfait annuel en jours — Article 4 (1)",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § ARTICLE 3 – DEPOT ET EXTENSION",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Forfait annuel en heures — Article 3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § 2023-01-27 collective — Avenant n° 27 du 27 janvier 2023 relatif aux salaires minima conventionnels",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Travail du dimanche et des jours fériés — Article IV.3",
+        "03-convention-collective/ccn-3029_idcc-493_maj-2026-05-11.md § Délégués du personnel — Article II.7"
+      ]
+    }
+  ]
+}

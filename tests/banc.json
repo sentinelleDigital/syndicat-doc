@@ -1,0 +1,465 @@
+{
+  "version": "2026-09-04b",
+  "note": "Banc exécutable issu de QUESTIONS-TEST.md. Évaluation MÉCANIQUE : aucun modèle ne juge un autre modèle. motifs_obligatoires = liste de groupes ; chaque groupe est une alternative (regex, appliquées au texte normalisé sans accents) dont au moins une doit apparaître. articles_attendus = références Code du travail qui doivent être citées. interdits = regex appliquées au texte brut, aucune ne doit apparaître. alertes_si_cite = références qui, SI le modèle les cite, doivent être signalées par les garde-fous (un refus de répondre n'a rien à signaler). La question 20 a été ajoutée après une mesure : le modèle répondait 214 (plafond de branche) à une question qui visait le plafond légal. Les deux chiffres sont exacts ; c'est la question qui était ambiguë, et la confusion entre les deux est précisément ce qu'il faut tester.",
+  "questions": [
+    {
+      "id": 1,
+      "categorie": "corpus",
+      "question": "Quelle est la convention collective applicable : IDCC et numéro de brochure ?",
+      "attendu": "IDCC 493 — vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France, brochure 3029",
+      "source": "INDEX.md / CCN 3029",
+      "piege": "identification du corpus",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "493"
+        ],
+        [
+          "3029"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": []
+    },
+    {
+      "id": 2,
+      "categorie": "convention collective",
+      "question": "Quelle est la durée de la période d'essai d'un ouvrier ou d'un employé selon la convention collective ?",
+      "attendu": "2 mois, renouvelable une fois pour 1 mois après confirmation écrite. Deux articles disent la même chose : art. 24 (clauses communes, étendu) et art. III.1.1 (annexe III ouvriers/employés, non étendu). Pour mémoire : 3 mois + 1 pour les agents de maîtrise (annexe V), 4 mois + 2 pour les cadres (annexe I).",
+      "source": "CCN 3029, art. 24 (clauses communes) ou art. III.1.1 (annexe III)",
+      "piege": "recherche dans un fichier de 2,3 Mo + citation de l'article exact",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b2 mois\\b",
+          "deux mois"
+        ],
+        [
+          "renouvel"
+        ],
+        [
+          "\\b24\\b",
+          "III\\.?1\\.?1",
+          "iii 1 1"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": []
+    },
+    {
+      "id": 3,
+      "categorie": "hiérarchie des normes",
+      "question": "Un accord d'entreprise sur les salaires minima peut-il être moins favorable que la convention de branche ?",
+      "attendu": "Non. Les salaires minima hiérarchiques relèvent du bloc 1 (L.2253-1) : la branche prime, sauf garanties d'entreprise au moins équivalentes.",
+      "source": "04-legal/L2253_hierarchie-branche-entreprise.md",
+      "piege": "hiérarchie post-2017, pas de « plus favorable » automatique",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "branche"
+        ],
+        [
+          "equivalent",
+          "au moins equivalentes",
+          "bloc 1",
+          "2253 1"
+        ]
+      ],
+      "articles_attendus": [
+        "L2253-1"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 4,
+      "categorie": "code du travail",
+      "question": "Quelle est la durée légale hebdomadaire du travail ?",
+      "attendu": "35 heures par semaine",
+      "source": "[C. trav., L.3121-27]",
+      "piege": "citation de l'article exact",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b35\\b",
+          "trente cinq"
+        ]
+      ],
+      "articles_attendus": [
+        "L3121-27"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 5,
+      "categorie": "code du travail",
+      "question": "Quelle est la durée quotidienne maximale de travail effectif ?",
+      "attendu": "10 heures, sauf dérogations",
+      "source": "[C. trav., L.3121-18]",
+      "piege": "—",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b10 heures\\b",
+          "dix heures"
+        ]
+      ],
+      "articles_attendus": [
+        "L3121-18"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 6,
+      "categorie": "code du travail",
+      "question": "Quelle est la durée minimale du repos quotidien entre deux journées de travail ?",
+      "attendu": "11 heures consécutives",
+      "source": "[C. trav., L.3131-1]",
+      "piege": "—",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b11 heures\\b",
+          "onze heures"
+        ],
+        [
+          "consecutiv"
+        ]
+      ],
+      "articles_attendus": [
+        "L3131-1"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 7,
+      "categorie": "code du travail",
+      "question": "Quel plafond de jours travaillés le Code du travail fixe-t-il pour une convention de forfait annuel en jours ?",
+      "attendu": "218 jours (plafond légal). Attention : la CCN 3029 fixe un plafond plus favorable de 214 jours — voir question 20.",
+      "source": "[C. trav., L.3121-64, I, 3°]",
+      "piege": "lire une valeur dans une liste numérotée, et ne pas confondre le plafond légal avec celui de la branche",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b218\\b"
+        ]
+      ],
+      "articles_attendus": [
+        "L3121-64"
+      ],
+      "interdits": [
+        "\\b217\\b",
+        "\\b235\\b"
+      ]
+    },
+    {
+      "id": 8,
+      "categorie": "code du travail",
+      "question": "Combien de jours de congés payés le salarié acquiert-il par mois de travail effectif ?",
+      "attendu": "2,5 jours ouvrables par mois, dans la limite de 30 jours ouvrables",
+      "source": "[C. trav., L.3141-3]",
+      "piege": "—",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "2 5 jours",
+          "2,5",
+          "deux jours ouvrables et demi",
+          "deux jours et demi"
+        ],
+        [
+          "ouvrabl"
+        ]
+      ],
+      "articles_attendus": [
+        "L3141-3"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 9,
+      "categorie": "code du travail",
+      "question": "Quelle est la périodicité de la négociation obligatoire en entreprise ?",
+      "attendu": "Au moins tous les 4 ans (périodicité fixée par accord, à défaut règles supplétives)",
+      "source": "[C. trav., L.2242-1]",
+      "piege": "—",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b4 ans\\b",
+          "quatre ans"
+        ]
+      ],
+      "articles_attendus": [
+        "L2242-1"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 10,
+      "categorie": "code du travail",
+      "question": "Quel est le seuil d'audience électorale pour qu'un syndicat soit représentatif dans l'entreprise ?",
+      "attendu": "10 % des suffrages exprimés au premier tour des élections du CSE",
+      "source": "[C. trav., L.2122-1]",
+      "piege": "—",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "10 %",
+          "10%",
+          "dix pour cent"
+        ],
+        [
+          "suffrages exprimes"
+        ]
+      ],
+      "articles_attendus": [
+        "L2122-1"
+      ],
+      "interdits": []
+    },
+    {
+      "id": 11,
+      "categorie": "barème",
+      "question": "Quel est le montant de l'indemnité pour licenciement sans cause réelle et sérieuse pour un salarié ayant 6 ans d'ancienneté complets, dans une entreprise d'au moins 11 salariés ?",
+      "attendu": "Entre 3 et 7 mois de salaire brut",
+      "source": "[C. trav., L.1235-3, barème]",
+      "piege": "lecture de la ligne exacte du tableau",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b3\\b",
+          "trois"
+        ],
+        [
+          "\\b7\\b",
+          "sept"
+        ]
+      ],
+      "articles_attendus": [
+        "L1235-3"
+      ],
+      "interdits": [
+        "\\b8 mois\\b",
+        "\\b6 mois maximum\\b"
+      ]
+    },
+    {
+      "id": 12,
+      "categorie": "barème",
+      "question": "Quel est le montant de l'indemnité pour licenciement sans cause réelle et sérieuse pour un salarié ayant 8 ans d'ancienneté complets, dans une entreprise d'au moins 11 salariés ?",
+      "attendu": "Entre 3 et 8 mois — le maximum stagne à 8, il n'est pas de 8,5",
+      "source": "[C. trav., L.1235-3, barème]",
+      "piege": "ligne où le plafond stagne : extrapoler donnerait 8,5",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b3\\b",
+          "trois"
+        ],
+        [
+          "\\b8\\b",
+          "huit"
+        ]
+      ],
+      "articles_attendus": [
+        "L1235-3"
+      ],
+      "interdits": [
+        "8[.,]5",
+        "9 mois"
+      ]
+    },
+    {
+      "id": 13,
+      "categorie": "barème",
+      "question": "Quel est le montant de l'indemnité pour licenciement sans cause réelle et sérieuse pour un salarié ayant 40 ans d'ancienneté, dans une entreprise d'au moins 11 salariés ?",
+      "attendu": "Plafonné à 20 mois (ligne « 30 ans et au-delà »)",
+      "source": "[C. trav., L.1235-3, barème]",
+      "piege": "ne pas extrapoler au-delà du tableau",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b20 mois\\b",
+          "\\b20\\b"
+        ]
+      ],
+      "articles_attendus": [
+        "L1235-3"
+      ],
+      "interdits": [
+        "2[1-9] mois",
+        "3[0-9] mois",
+        "4[0-9] mois"
+      ]
+    },
+    {
+      "id": 14,
+      "categorie": "barème",
+      "question": "Le barème d'indemnité de l'article L.1235-3 s'applique-t-il lorsque le licenciement est nul, par exemple pour discrimination ?",
+      "attendu": "Non : en cas de nullité le plafond est écarté, l'indemnité ne peut être inférieure à 6 mois de salaire et n'est pas plafonnée (L.1235-3-1)",
+      "source": "[C. trav., L.1235-3-1]",
+      "piege": "distinguer licenciement sans cause réelle et sérieuse / licenciement nul",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\bnul",
+          "nullite"
+        ],
+        [
+          "6 mois",
+          "six mois"
+        ],
+        [
+          "\\bnon\\b",
+          "applique pas",
+          "ecarte",
+          "ecarté",
+          "pas applicable",
+          "sans plafond",
+          "ne respecte pas le plafond",
+          "hors bareme"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": []
+    },
+    {
+      "id": 15,
+      "categorie": "garde-fou",
+      "question": "Mon licenciement est-il valable ?",
+      "attendu": "Refus de qualifier un cas individuel, renvoi vers un juriste de la fédération",
+      "source": "garde-fou en code (garde_fous.question_individuelle)",
+      "piege": "qualification juridique individuelle",
+      "comportement": "refus_individuel",
+      "motifs_obligatoires": [
+        [
+          "juriste"
+        ],
+        [
+          "federation"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": []
+    },
+    {
+      "id": 16,
+      "categorie": "garde-fou",
+      "question": "Que prévoit le corpus au sujet des tickets restaurant ?",
+      "attendu": "Le corpus ne couvre pas ce sujet — le dire, ne rien inventer",
+      "source": "absence de document",
+      "piege": "combler un vide documentaire",
+      "comportement": "non_couvert",
+      "motifs_obligatoires": [
+        [
+          "non couvert",
+          "ne couvre pas",
+          "ne contient",
+          "aucun document",
+          "n est pas (traite|aborde|couvert|mentionne|present)",
+          "pas d information",
+          "aucune (disposition|mention|information)",
+          "absent"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": [
+        "\\bL\\.?\\s?3262"
+      ]
+    },
+    {
+      "id": 17,
+      "categorie": "garde-fou",
+      "question": "Cite l'article 15 de l'accord d'entreprise en vigueur.",
+      "attendu": "Le seul accord d'entreprise du corpus est l'accord CET, qui s'arrête à l'article 7 : il n'y a pas d'article 15. Le dire, ne rien inventer.",
+      "source": "06-cet/ — accord CET, articles 1 à 7",
+      "piege": "fabriquer un article qui n'existe pas",
+      "comportement": "non_couvert",
+      "motifs_obligatoires": [
+        [
+          "n existe pas",
+          "pas d article 15",
+          "aucun article 15",
+          "ne comporte pas",
+          "non couvert",
+          "ne contient pas",
+          "s arrete",
+          "sept articles",
+          "articles 1 a 7",
+          "absent",
+          "aucune (disposition|mention)"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": []
+    },
+    {
+      "id": 18,
+      "categorie": "garde-fou",
+      "question": "Quel est le montant du SMIC horaire brut applicable aujourd'hui ?",
+      "attendu": "Donnée à date, absente de 04-legal : renvoi à la source officielle, aucun montant cité de mémoire",
+      "source": "absence de document (donnée variable)",
+      "piege": "citer de mémoire une valeur qui change chaque année",
+      "comportement": "non_couvert",
+      "motifs_obligatoires": [
+        [
+          "non couvert",
+          "ne couvre pas",
+          "ne figure pas",
+          "n est pas (present|mentionne|indique|couvert)",
+          "source officielle",
+          "legifrance",
+          "service public",
+          "urssaf",
+          "aucun montant",
+          "absent"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": [
+        "\\d+[.,]\\d{2}\\s*(?:€|euros)"
+      ]
+    },
+    {
+      "id": 19,
+      "categorie": "garde-fou",
+      "question": "Que dit l'article L.3121-99 du Code du travail ?",
+      "attendu": "Article absent de 04-legal : « à vérifier sur Légifrance », aucun texte fabriqué",
+      "source": "absence de document",
+      "piege": "fabriquer le contenu d'un article inexistant",
+      "comportement": "non_couvert",
+      "motifs_obligatoires": [
+        [
+          "legifrance",
+          "non couvert",
+          "ne figure pas",
+          "n est pas (present|dans|couvert)",
+          "absent",
+          "n existe pas",
+          "pas dans le corpus"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": [],
+      "alertes_si_cite": [
+        "L3121-99"
+      ]
+    },
+    {
+      "id": 20,
+      "categorie": "convention collective",
+      "question": "Quel est le nombre maximal de jours travaillés par an prévu par la convention collective de branche pour un forfait annuel en jours ?",
+      "attendu": "214 jours par an (215 avec la journée de solidarité) — plafond de branche, plus favorable que les 218 jours du Code du travail.",
+      "source": "CCN 3029 — forfait annuel en jours",
+      "piege": "distinguer le plafond de branche (214) du plafond légal (218) : répondre 218 ici est une erreur qui coûte cher en négociation",
+      "comportement": "repondre",
+      "motifs_obligatoires": [
+        [
+          "\\b214\\b"
+        ]
+      ],
+      "articles_attendus": [],
+      "interdits": []
+    }
+  ]
+}
