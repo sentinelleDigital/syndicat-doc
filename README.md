@@ -16,20 +16,42 @@ seuls les passages retenus et la question sont envoyés au modèle.
 ## Installation
 
 Rien à compiler, aucune dépendance Python : **python3** et une **clé Gemini
-gratuite**. La clé se pose depuis l'interface — plus besoin d'éditer un fichier.
+gratuite**. La clé se pose depuis l'interface — aucun fichier à éditer.
 
-### Windows
+| Système | Double-clic sur |
+|---|---|
+| Windows | `Assistant-Syndical.bat` |
+| Linux / macOS | `lancer.sh` |
 
-1. Double-clic sur **`Creer-le-raccourci-Bureau.bat`** — une seule fois. Une
-   icône « Assistant Syndical » apparaît sur le Bureau.
-2. Double-clic sur l'icône. Si Python manque, la fenêtre explique quoi faire
-   (penser à cocher **« Add python.exe to PATH »** dans l'installateur).
-3. Dans l'assistant : **Réglages → Clés d'accès**, coller la clé Gemini
-   (https://aistudio.google.com/apikey), puis **Tester**.
+Au premier lancement, une icône « Assistant Syndical » est posée sur le bureau
+(et dans le menu des applications sous Linux). Ensuite on ne se sert plus que
+d'elle. Si une icône vers ce dossier existe déjà, rien n'est ajouté : pas de
+doublon.
 
-`LISEZ-MOI.txt` reprend ces étapes pour quelqu'un qui découvre l'outil.
+Si Python manque, la fenêtre explique quoi installer. Sous Windows, penser à
+cocher **« Add python.exe to PATH »** dans l'installateur — c'est la seule
+cause d'échec courante.
 
-Deux limites sous Windows :
+Puis, dans l'assistant : **Réglages → Clés d'accès**, coller la clé Gemini
+(https://aistudio.google.com/apikey), et **Tester**.
+
+`LISEZ-MOI.txt` reprend tout ça en texte simple pour quelqu'un qui découvre
+l'outil.
+
+### Un seul lanceur, trois systèmes
+
+`demarrer.py` contient toute la logique : vérifications, pose de l'icône,
+lancement. `lancer.sh` et `Assistant-Syndical.bat` ne font que l'atteindre —
+sous Windows on ne peut pas double-cliquer un `.py` de façon fiable, et si
+Python manque, un `.py` ne peut rien expliquer.
+
+```bash
+./lancer.sh --diagnostic      # état du système, ce qui manque
+./lancer.sh --sans-icone      # lancer sans rien poser sur le bureau
+./lancer.sh --icone           # poser l'icône et s'arrêter
+```
+
+### Deux limites sous Windows
 
 - **PDF** — l'outil de lecture fiable (`pdftotext`) n'y est pas fourni. Les PDF
   sont refusés à l'ingestion plutôt que d'entrer corrompus dans le corpus.
@@ -41,17 +63,8 @@ Deux limites sous Windows :
   administrateur de la machine peut le lire. L'interface le dit à
   l'enregistrement.
 
-### Linux / macOS
-
-```bash
-./installer-linux.sh     # icône dans le menu et sur le bureau, une seule fois
-```
-
-Puis double-clic sur l'icône, ou `./lancer.sh`. La clé se pose dans
-**Réglages → Clés d'accès**.
-
-Pour l'ingestion des PDF : `sudo apt install poppler-utils` (ou `brew install
-poppler`).
+Sous Linux et macOS, pour l'ingestion des PDF : `sudo apt install poppler-utils`
+ou `brew install poppler`.
 
 ## Lancement
 
