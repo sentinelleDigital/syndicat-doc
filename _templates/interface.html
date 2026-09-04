@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assistant Syndical</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --panel:#ffffff; --ink:#1d1d1f; --muted:#55555c;
+    --line:#c7c7cc; --accent:#0060c8; --accent-ink:#fff;
+    --ref-bg:#e8f0fb; --ref-ink:#00458f; --shadow:0 4px 24px rgba(0,0,0,.07);
+    --alerte-bg:#fdeceb; --alerte-ink:#9b1c14; --alerte-line:#e0a49f;
+    --avert-bg:#fdf4e3; --avert-ink:#7a5200; --avert-line:#dcbc72;
+    --ok-bg:#e6f4ea; --ok-ink:#125c2b; --ok-line:#9ccfae;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--bg:#000; --panel:#1c1c1e; --ink:#f5f5f7; --muted:#a8a8ad;
+      --line:#48484a; --accent:#4aa3ff; --accent-ink:#04121f;
+      --ref-bg:#0d2a4a; --ref-ink:#9ecbff; --shadow:0 4px 24px rgba(0,0,0,.6);
+      --alerte-bg:#3a1512; --alerte-ink:#ffb3ac; --alerte-line:#7d2b23;
+      --avert-bg:#3a2d0d; --avert-ink:#ffd98a; --avert-line:#7d6320;
+      --ok-bg:#0f2e1b; --ok-ink:#a5e0ba; --ok-line:#2c5f3e;}
+  }
+  *{box-sizing:border-box}
+  html{font-size:16px}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.55; font-size:1rem}
+  .wrap{max-width:900px; margin:0 auto; padding:32px 20px 96px}
+  a{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  header.top{text-align:center; margin-bottom:20px}
+  header.top h1{font-size:1.9rem; font-weight:600; letter-spacing:-.02em; margin:0}
+  header.top p{color:var(--muted); margin:.35rem 0 0; font-size:.95rem}
+
+  nav.tabs{display:flex; justify-content:center; margin:0 0 20px}
+  nav.tabs .seg{display:inline-flex; background:var(--line); border-radius:11px; padding:3px; gap:2px; flex-wrap:wrap}
+  nav.tabs button{border:0; background:transparent; color:var(--ink); font:inherit; font-size:.92rem;
+    padding:8px 18px; border-radius:9px; cursor:pointer}
+  nav.tabs button[aria-selected="true"]{background:var(--panel); box-shadow:0 1px 3px rgba(0,0,0,.18); font-weight:600}
+
+  .card{background:var(--panel); border-radius:16px; box-shadow:var(--shadow);
+    padding:20px; border:1px solid var(--line); margin-bottom:18px}
+  .card h2{font-size:1.12rem; margin:0 0 12px}
+  .card h3{font-size:1rem; margin:18px 0 8px}
+  textarea,input[type=text],input[type=date],select{width:100%; background:var(--panel);
+    color:var(--ink); font:inherit; border:1px solid var(--line); border-radius:10px; padding:10px 12px}
+  textarea{resize:vertical; min-height:88px}
+  textarea.plein{min-height:320px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.86rem}
+  label{display:block; font-size:.85rem; color:var(--muted); margin:10px 0 4px; font-weight:600}
+  .grille{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:0 14px}
+  .row{display:flex; align-items:center; gap:12px; margin-top:14px; flex-wrap:wrap}
+  button.go{background:var(--accent); color:var(--accent-ink); border:0; font:inherit; font-weight:600;
+    font-size:.95rem; padding:11px 22px; border-radius:980px; cursor:pointer}
+  button.go:hover{filter:brightness(1.08)}
+  button.go:disabled{opacity:.45; cursor:default}
+  button.plat{background:transparent; color:var(--accent); border:1px solid var(--accent);
+    font:inherit; font-weight:600; padding:9px 16px; border-radius:980px; cursor:pointer; font-size:.88rem}
+  button.plat.gris{border-color:var(--line); color:var(--muted)}
+  button.plat.danger{border-color:var(--alerte-line); color:var(--alerte-ink)}
+  .pousse{margin-left:auto}
+  .muted{color:var(--muted); font-size:.85rem}
+  .hidden{display:none !important}
+
+  .bandeau{border-radius:12px; padding:12px 14px; margin:0 0 14px; font-size:.9rem; border:1px solid}
+  .bandeau.alerte{background:var(--alerte-bg); color:var(--alerte-ink); border-color:var(--alerte-line)}
+  .bandeau.avert{background:var(--avert-bg); color:var(--avert-ink); border-color:var(--avert-line)}
+  .bandeau.ok{background:var(--ok-bg); color:var(--ok-ink); border-color:var(--ok-line)}
+  .bandeau ul{margin:.4em 0 0; padding-left:1.2em}
+  .bandeau li{margin:.25em 0}
+
+  .badge{display:inline-block; border-radius:6px; padding:1px 8px; font-size:.78rem; font-weight:600; border:1px solid}
+  .badge.envigueur{background:var(--ok-bg); color:var(--ok-ink); border-color:var(--ok-line)}
+  .badge.projet{background:var(--avert-bg); color:var(--avert-ink); border-color:var(--avert-line)}
+  .badge.abroge{background:var(--alerte-bg); color:var(--alerte-ink); border-color:var(--alerte-line)}
+  .badge.inconnu{background:var(--line); color:var(--ink); border-color:var(--line)}
+
+  .reponse h2{font-size:1.05rem; margin:1.1em 0 .45em}
+  .reponse h3{font-size:.98rem; margin:.9em 0 .35em}
+  .reponse p{margin:.5em 0}
+  .reponse ul{padding-left:1.2em; margin:.5em 0}
+  .reponse table{width:100%; border-collapse:collapse; font-size:.86rem; margin:.6em 0; display:block; overflow-x:auto}
+  .reponse th,.reponse td{border:1px solid var(--line); padding:6px 9px; text-align:left; vertical-align:top}
+  .reponse th{background:var(--ref-bg)}
+  .ref{background:var(--ref-bg); color:var(--ref-ink); border-radius:6px; padding:1px 7px;
+    font-size:.85em; font-weight:600; white-space:nowrap}
+  .curseur::after{content:"▋"; animation:clign 1s steps(2) infinite; color:var(--muted)}
+  @keyframes clign{50%{opacity:0}}
+
+  details.sources{margin-top:14px; border:1px solid var(--line); border-radius:12px; padding:10px 14px; background:var(--panel)}
+  details.sources summary{cursor:pointer; font-weight:600; font-size:.9rem}
+  details.sources ol{margin:.6em 0 0; padding-left:1.4em; font-size:.86rem}
+  details.sources li{margin:.35em 0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85em;
+    background:var(--ref-bg); color:var(--ref-ink); padding:1px 5px; border-radius:5px}
+  pre.diff{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px;
+    overflow-x:auto; font-size:.8rem; line-height:1.45; max-height:380px}
+  pre.diff .plus{color:var(--ok-ink)} pre.diff .moins{color:var(--alerte-ink)}
+
+  table.liste{width:100%; border-collapse:collapse; font-size:.88rem}
+  table.liste th,table.liste td{border-bottom:1px solid var(--line); padding:8px 6px; text-align:left; vertical-align:top}
+  table.liste th{font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted)}
+  table.liste tr:last-child td{border-bottom:0}
+
+  .barre{height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin:10px 0}
+  .barre i{display:block; height:100%; background:var(--accent); width:0; transition:width .3s}
+  .etape{font-size:.86rem; margin:.2em 0; font-family:ui-monospace,Menlo,monospace}
+  .etape.ko{color:var(--alerte-ink)} .etape.ok{color:var(--ok-ink)}
+  .pastilles{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:18px}
+  .pastille{font-size:.8rem; border:1px solid var(--line); border-radius:980px; padding:3px 12px; color:var(--muted); background:var(--panel)}
+  .saut{position:absolute; left:-9999px}
+  .saut:focus{left:12px; top:12px; background:var(--panel); padding:10px; z-index:9; border-radius:8px}
+</style>
+</head>
+<body>
+<a href="#principal" class="saut">Aller au contenu</a>
+<div class="wrap">
+  <header class="top">
+    <h1>Assistant Syndical</h1>
+    <p>CCN 3029 (IDCC 493) · Code du travail — réponses citées, jamais inventées</p>
+  </header>
+
+  <div class="pastilles" id="pastilles"></div>
+  <div id="bandeauCle" class="bandeau alerte hidden" role="alert"></div>
+
+  <nav class="tabs">
+    <div class="seg" role="tablist" aria-label="Sections de l'assistant">
+      <button role="tab" id="t-question" aria-selected="true" onclick="onglet('question')">Question</button>
+      <button role="tab" id="t-audit" aria-selected="false" onclick="onglet('audit')">Audit</button>
+      <button role="tab" id="t-corpus" aria-selected="false" onclick="onglet('corpus')">Corpus</button>
+      <button role="tab" id="t-historique" aria-selected="false" onclick="onglet('historique')">Historique</button>
+      <button role="tab" id="t-reglages" aria-selected="false" onclick="onglet('reglages')">Réglages</button>
+    </div>
+  </nav>
+
+  <main id="principal">
+
+  <!-- ============================ QUESTION ============================ -->
+  <section id="p-question" role="tabpanel" aria-labelledby="t-question">
+    <div class="card">
+      <label for="q">Votre question</label>
+      <textarea id="q" placeholder="ex : combien d'heures de repos entre deux journées de travail ?"></textarea>
+      <div class="row">
+        <span class="muted">Entrée pour envoyer · Maj+Entrée pour un saut de ligne</span>
+        <button class="go pousse" id="goQ" onclick="poser('question')">Demander</button>
+      </div>
+    </div>
+    <div id="sortieQuestion"></div>
+  </section>
+
+  <!-- ============================= AUDIT ============================== -->
+  <section id="p-audit" class="hidden" role="tabpanel" aria-labelledby="t-audit">
+    <div class="card">
+      <label for="qa">Consigne d'audit</label>
+      <textarea id="qa" placeholder="ex : cet accord respecte-t-il les règles du forfait jours ?"></textarea>
+      <label for="docA">Document à auditer (facultatif — .md, .txt, .pdf)</label>
+      <input type="file" id="docA" accept=".md,.txt,.text,.pdf" onchange="chargerDocAudit()">
+      <div id="avertEnvoi" class="bandeau avert hidden" style="margin-top:12px" role="status"></div>
+      <div id="masquageA" class="hidden">
+        <label style="display:flex;gap:8px;align-items:center">
+          <input type="checkbox" id="masquer" checked onchange="chargerDocAudit(true)" style="width:auto">
+          Masquer les données personnelles détectées avant l'envoi
+        </label>
+        <div id="listeMasque" class="muted"></div>
+      </div>
+      <div class="row">
+        <button class="go pousse" id="goA" onclick="poser('audit')">Lancer l'audit</button>
+      </div>
+    </div>
+    <div id="sortieAudit"></div>
+  </section>
+
+  <!-- ============================= CORPUS ============================= -->
+  <section id="p-corpus" class="hidden" role="tabpanel" aria-labelledby="t-corpus">
+    <div class="card">
+      <h2>Documents du corpus</h2>
+      <div class="grille">
+        <div><label for="rech">Rechercher</label>
+          <input type="text" id="rech" placeholder="titre, fichier…" oninput="dessinerCorpus()"></div>
+        <div><label for="filtreStatut">Statut</label>
+          <select id="filtreStatut" onchange="dessinerCorpus()">
+            <option value="">tous</option><option value="en_vigueur">en vigueur</option>
+            <option value="projet">projet</option><option value="abroge">abrogé</option>
+          </select></div>
+        <div><label for="filtreDossier">Dossier</label>
+          <select id="filtreDossier" onchange="dessinerCorpus()"><option value="">tous</option></select></div>
+      </div>
+      <div class="row"><button class="plat" onclick="ouvrirAjout()">+ Ajouter un document</button>
+        <button class="plat gris" onclick="chargerCorpus()">Actualiser</button></div>
+      <div id="tableCorpus" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card hidden" id="panneauAjout">
+      <h2>Ajouter un document</h2>
+      <div class="bandeau avert">Un document sans métadonnées complètes n'entre pas dans le corpus :
+        sans statut ni date d'effet, l'assistant ne peut pas savoir si le texte s'applique.</div>
+      <label for="fichierAjout">Fichier (.md, .txt, .pdf)</label>
+      <input type="file" id="fichierAjout" accept=".md,.txt,.text,.pdf" onchange="convertirAjout()">
+      <div id="avertConversion" class="bandeau avert hidden" style="margin-top:10px" role="status"></div>
+      <div class="grille">
+        <div><label for="aDossier">Catégorie (dossier)</label><select id="aDossier"></select></div>
+        <div><label for="aNom">Nom du fichier</label><input type="text" id="aNom" placeholder="accord-forfait-jours.md"></div>
+        <div><label for="aTitre">Titre</label><input type="text" id="aTitre"></div>
+        <div><label for="aStatut">Statut</label><select id="aStatut">
+          <option value="en_vigueur">en vigueur</option><option value="projet">projet</option>
+          <option value="abroge">abrogé</option></select></div>
+        <div><label for="aSignature">Date de signature</label><input type="date" id="aSignature"></div>
+        <div><label for="aEffet">Date d'effet</label><input type="date" id="aEffet"></div>
+        <div style="grid-column:1/-1"><label for="aSource">Source (d'où vient ce document ?)</label>
+          <input type="text" id="aSource" placeholder="ex : accord signé remis par la direction le 12/03/2026"></div>
+      </div>
+      <label for="aCorps">Texte du document — à relire avant d'enregistrer</label>
+      <textarea id="aCorps" class="plein"></textarea>
+      <div class="row"><button class="plat gris" onclick="fermer('panneauAjout')">Annuler</button>
+        <button class="go pousse" onclick="enregistrerAjout()">Enregistrer dans le corpus</button></div>
+      <div id="msgAjout" class="muted"></div>
+    </div>
+
+    <div class="card hidden" id="panneauEdition">
+      <h2 id="titreEdition">Modifier</h2>
+      <div class="grille">
+        <div><label for="eTitre">Titre</label><input type="text" id="eTitre"></div>
+        <div><label for="eStatut">Statut</label><select id="eStatut">
+          <option value="en_vigueur">en vigueur</option><option value="projet">projet</option>
+          <option value="abroge">abrogé</option></select></div>
+        <div><label for="eSignature">Date de signature</label><input type="date" id="eSignature"></div>
+        <div><label for="eEffet">Date d'effet</label><input type="date" id="eEffet"></div>
+        <div><label for="eVerifie">Vérifié le</label><input type="date" id="eVerifie"></div>
+        <div style="grid-column:1/-1"><label for="eSource">Source</label><input type="text" id="eSource"></div>
+      </div>
+      <label for="eCorps">Texte du document</label>
+      <textarea id="eCorps" class="plein"></textarea>
+      <div class="row"><button class="plat gris" onclick="fermer('panneauEdition')">Annuler</button>
+        <button class="plat" onclick="apercuDiff()">Voir ce qui change</button>
+        <button class="go pousse" id="btnEnregistrer" onclick="enregistrerEdition()" disabled>Enregistrer</button></div>
+      <div id="zoneDiff"></div>
+      <div id="msgEdition" class="muted"></div>
+    </div>
+
+    <div class="card hidden" id="panneauArchive">
+      <h2>Sortir un document du corpus</h2>
+      <div class="bandeau alerte">Rien n'est supprimé. Le document part dans <code>_ABROGES/</code>
+        sous un nom <code>_REMPLACE-PAR-…</code> et reste lisible. Il ne sera plus jamais cité.</div>
+      <p id="cibleArchive" class="muted"></p>
+      <label for="remplacePar">Remplacé par quel fichier ? (facultatif)</label>
+      <input type="text" id="remplacePar" placeholder="ex : accord-forfait-2026.md">
+      <label for="confArchive">Pour confirmer, taper <code>ARCHIVER</code></label>
+      <input type="text" id="confArchive" oninput="verifArchive()" autocomplete="off">
+      <div class="row"><button class="plat gris" onclick="fermer('panneauArchive')">Annuler</button>
+        <button class="plat danger pousse" id="btnArchive" onclick="archiver()" disabled>Archiver définitivement</button></div>
+      <div id="msgArchive" class="muted"></div>
+    </div>
+
+    <div class="card">
+      <h2>Journal des modifications</h2>
+      <p class="muted">Chaque écriture est enregistrée avec l'état antérieur : une modification
+        malheureuse se rattrape ici, sans terminal.</p>
+      <div id="msgJournal"></div>
+      <div id="tableJournal"></div>
+    </div>
+  </section>
+
+  <!-- =========================== HISTORIQUE =========================== -->
+  <section id="p-historique" class="hidden" role="tabpanel" aria-labelledby="t-historique">
+    <div class="card">
+      <h2>Questions posées</h2>
+      <p class="muted">L'assistant est sans mémoire d'une question à l'autre ; cet historique
+        est local et n'est jamais envoyé au modèle.</p>
+      <div class="row"><a class="plat" href="/api/historique/export" style="text-decoration:none">Exporter en Markdown</a>
+        <button class="plat gris" onclick="chargerHistorique()">Actualiser</button></div>
+      <div id="listeHistorique" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <!-- ============================ RÉGLAGES ============================ -->
+  <section id="p-reglages" class="hidden" role="tabpanel" aria-labelledby="t-reglages">
+    <div class="card">
+      <h2>Vérifier l'assistant</h2>
+      <p class="muted">Rejoue les 19 questions de référence et compare aux réponses attendues,
+        vérifiées à la main. À relancer après tout changement de modèle ou de corpus.</p>
+      <div class="row"><button class="go" id="btnBanc" onclick="lancerBanc()">Vérifier l'assistant</button>
+        <span class="muted" id="etatBanc"></span></div>
+      <div class="barre hidden" id="barreBanc"><i></i></div>
+      <div id="etapesBanc"></div>
+      <div id="resumeBanc"></div>
+    </div>
+
+    <div class="card">
+      <h2>Modèle utilisé</h2>
+      <p class="muted">Un modèle plus faible coûte moins cher et se trompe plus souvent.
+        Choisir sur mesure, pas sur intuition : lancer « Vérifier l'assistant » après chaque changement.</p>
+      <label for="modQ">Modèle — mode Question</label><select id="modQ" onchange="majReglages()"></select>
+      <div class="muted" id="noteQ"></div>
+      <label for="modA">Modèle — mode Audit</label><select id="modA" onchange="majReglages()"></select>
+      <div class="muted" id="noteA"></div>
+      <div id="msgReglages" class="muted"></div>
+    </div>
+
+    <div class="card">
+      <h2>Confidentialité</h2>
+      <p class="muted">Les questions et les documents joints sont envoyés à Google (Gemini) pour
+        être traités. Le corpus, lui, reste sur cette machine : seuls les passages retenus partent.</p>
+      <p class="muted">Le masquage des données personnelles proposé avant l'envoi d'un document est
+        une détection <strong>heuristique et non exhaustive</strong> (noms, matricules, adresses,
+        téléphones, courriels, n° de sécurité sociale). Ce qu'elle a trouvé est toujours affiché ;
+        ce qu'elle n'a pas vu part en clair. Pour un PV de CSE nominatif, relire soi-même.</p>
+    </div>
+
+    <div class="card">
+      <h2>Clé API</h2>
+      <div id="etatCle" class="muted"></div>
+    </div>
+  </section>
+  </main>
+
+  <p class="muted" style="text-align:center;margin-top:32px">
+    Local et privé · le corpus reste sur cette machine.<br>
+    Ne remplace pas un juriste — ne qualifie jamais un cas individuel.</p>
+</div>
+
+<script>
+"use strict";
+let ETAT = {}, CORPUS = [], DOC_AUDIT = null, EN_COURS = false;
+
+/* ---------- utilitaires ---------- */
+const $ = (id) => document.getElementById(id);
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function fermer(id){ $(id).classList.add("hidden"); }
+
+function inline(s){
+  return esc(s).replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>")
+               .replace(/\*([^*\n]+)\*/g,"<em>$1</em>")
+               .replace(/\[([^\]]*?(?:L\.?\s?\d|R\.?\s?\d|art\.|article|CCN|C\. trav\.|\.md)[^\]]*?)\]/gi,
+                        '<span class="ref">[$1]</span>');
+}
+function md(t){
+  const lignes = String(t).split(/\r?\n/); let html="", i=0;
+  while(i<lignes.length){
+    const ln = lignes[i];
+    if(/^\s*\|.*\|\s*$/.test(ln)){
+      let rangs=[];
+      while(i<lignes.length && /^\s*\|.*\|\s*$/.test(lignes[i])){ rangs.push(lignes[i]); i++; }
+      rangs = rangs.filter(r=>!/^\s*\|[\s:|-]+\|\s*$/.test(r));
+      html+="<table>";
+      rangs.forEach((r,ri)=>{
+        const c=r.trim().replace(/^\||\|$/g,"").split("|").map(x=>x.trim());
+        const b=ri===0?"th":"td";
+        html+="<tr>"+c.map(x=>`<${b}>${inline(x)}</${b}>`).join("")+"</tr>";
+      });
+      html+="</table>"; continue;
+    }
+    if(/^\s*#{2,}\s+/.test(ln)){ html+=`<h3>${inline(ln.replace(/^\s*#+\s+/,""))}</h3>`; i++; continue; }
+    if(/^\s*#\s+/.test(ln)){ html+=`<h2>${inline(ln.replace(/^\s*#\s+/,""))}</h2>`; i++; continue; }
+    if(/^\s*\d+\.\s+/.test(ln)){
+      html+="<ol>";
+      while(i<lignes.length && /^\s*\d+\.\s+/.test(lignes[i])){ html+=`<li>${inline(lignes[i].replace(/^\s*\d+\.\s+/,""))}</li>`; i++; }
+      html+="</ol>"; continue;
+    }
+    if(/^\s*[-*]\s+/.test(ln)){
+      html+="<ul>";
+      while(i<lignes.length && /^\s*[-*]\s+/.test(lignes[i])){ html+=`<li>${inline(lignes[i].replace(/^\s*[-*]\s+/,""))}</li>`; i++; }
+      html+="</ul>"; continue;
+    }
+    if(ln.trim()===""){ i++; continue; }
+    html+=`<p>${inline(ln)}</p>`; i++;
+  }
+  return html;
+}
+
+async function fluxSSE(url, corps, surEvenement){
+  const r = await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
+                            body:JSON.stringify(corps)});
+  if(!r.ok || !r.body){
+    let msg = "Le serveur n'a pas répondu (code "+r.status+").";
+    try{ const j = await r.json(); if(j.erreur) msg = j.erreur; }catch(e){}
+    surEvenement("erreur",{message:msg}); return;
+  }
+  const lecteur = r.body.getReader(), dec = new TextDecoder();
+  let tampon = "";
+  while(true){
+    const {done, value} = await lecteur.read();
+    if(done) break;
+    tampon += dec.decode(value,{stream:true});
+    let coupe;
+    while((coupe = tampon.indexOf("\n\n")) >= 0){
+      const bloc = tampon.slice(0,coupe); tampon = tampon.slice(coupe+2);
+      const m = /^event: (.+)\ndata: ([\s\S]*)$/.exec(bloc);
+      if(m){ try{ surEvenement(m[1], JSON.parse(m[2])); }catch(e){} }
+    }
+  }
+}
+
+/* ---------- navigation ---------- */
+function onglet(nom){
+  ["question","audit","corpus","historique","reglages"].forEach(n=>{
+    $("p-"+n).classList.toggle("hidden", n!==nom);
+    $("t-"+n).setAttribute("aria-selected", n===nom ? "true":"false");
+  });
+  location.hash = nom;
+  if(nom==="corpus"){ chargerCorpus(); chargerJournal(); }
+  if(nom==="historique") chargerHistorique();
+}
+
+/* ---------- question / audit ---------- */
+function blocAlertes(alertes){
+  if(!alertes || !alertes.length) return "";
+  const graves = alertes.filter(a=>a.niveau==="alerte");
+  const cls = graves.length ? "alerte" : "avert";
+  const titre = graves.length
+    ? "Contrôles automatiques — références non vérifiées"
+    : "Contrôles automatiques — points de vigilance";
+  return `<div class="bandeau ${cls}" role="alert"><strong>${titre}</strong><ul>` +
+    alertes.map(a=>`<li><strong>${esc(a.reference)}</strong> — ${esc(a.message)}</li>`).join("") +
+    `</ul></div>`;
+}
+function blocSources(passages, modele, octets){
+  if(!passages) return "";
+  const items = passages.length
+    ? passages.map(p=>`<li><code>${esc(p.fichier)}</code> § ${esc(p.titre)}` +
+        (p.motif?` <span class="muted">(${esc(p.motif)})</span>`:"") +
+        (p.tronque?` <span class="muted">— passage tronqué</span>`:"") + `</li>`).join("")
+    : "<li class='muted'>Aucun passage d'accord ou de convention retenu : la réponse ne peut " +
+      "s'appuyer que sur les extraits du Code du travail.</li>";
+  return `<details class="sources"><summary>Sources consultées — ce qui a réellement été
+    envoyé au modèle (${passages.length})</summary>
+    <p class="muted">Les extraits du Code du travail de <code>04-legal/</code> sont toujours
+    envoyés en entier. Ci-dessous, les passages sélectionnés dans les accords et la convention.</p>
+    <ol>${items}</ol>
+    <p class="muted">Modèle : <code>${esc(modele||"—")}</code> · contexte envoyé :
+    ${Math.round((octets||0)/1000)} k caractères</p></details>`;
+}
+
+async function poser(mode){
+  if(EN_COURS) return;
+  const zoneQ = mode==="audit" ? $("qa") : $("q");
+  const question = zoneQ.value.trim();
+  if(!question){ zoneQ.focus(); return; }
+  const sortie = mode==="audit" ? $("sortieAudit") : $("sortieQuestion");
+  const bouton = mode==="audit" ? $("goA") : $("goQ");
+  EN_COURS = true; bouton.disabled = true;
+  const libelle = bouton.textContent; bouton.textContent = "En cours…";
+
+  sortie.innerHTML = `<div class="card"><div id="etatFlux" class="muted" role="status">
+      Recherche des passages pertinents dans le corpus…</div>
+      <div id="zoneSources"></div>
+      <div id="zoneAlertes"></div>
+      <div class="reponse curseur" id="zoneTexte"></div>
+      <div class="row" id="zoneActions"></div></div>`;
+  let texte = "", dernierRendu = 0, alertes = [], passages = [], modele = null;
+
+  const corps = {question, mode, modele:null};
+  if(mode==="audit" && DOC_AUDIT){ corps.docTexte = DOC_AUDIT.texte; corps.docNom = DOC_AUDIT.nom; }
+
+  try{
+    await fluxSSE("/api/ask", corps, (nom, d)=>{
+      if(nom==="sources"){
+        passages = d.passages; modele = d.modele;
+        $("zoneSources").innerHTML = blocSources(d.passages, d.modele, d.octets_envoyes);
+        $("etatFlux").textContent = "Le modèle rédige la réponse…";
+      } else if(nom==="texte"){
+        texte += d.t;
+        const t = Date.now();
+        if(t - dernierRendu > 120){ $("zoneTexte").innerHTML = md(texte); dernierRendu = t; }
+      } else if(nom==="bloque"){
+        texte = d.reponse; alertes = d.alertes;
+        $("zoneTexte").innerHTML = md(texte);
+      } else if(nom==="alertes"){
+        alertes = d.alertes;
+      } else if(nom==="erreur"){
+        $("etatFlux").innerHTML = `<div class="bandeau alerte" role="alert">${esc(d.message)}</div>`;
+      }
+    });
+  }catch(e){
+    $("etatFlux").innerHTML = `<div class="bandeau alerte" role="alert">Erreur de communication
+      avec l'assistant : ${esc(e.message||e)}. La fenêtre du terminal est-elle toujours ouverte ?</div>`;
+  }
+
+  $("zoneTexte").classList.remove("curseur");
+  $("zoneTexte").innerHTML = md(texte);
+  $("zoneAlertes").innerHTML = blocAlertes(alertes);
+  if(texte) $("etatFlux").textContent = "";
+  const actions = $("zoneActions");
+  actions.innerHTML = "";
+  if(texte){
+    const bPdf = document.createElement("button");
+    bPdf.className = "plat";
+    bPdf.textContent = mode==="audit" ? "Générer le rapport PDF" : "Exporter cette réponse en PDF";
+    bPdf.onclick = () => mode==="audit"
+        ? rapportPdf(question, bPdf)
+        : exportReponse(question, texte, alertes, passages, bPdf);
+    actions.appendChild(bPdf);
+  }
+  const bNouv = document.createElement("button");
+  bNouv.className = "plat gris"; bNouv.textContent = "↺ Nouvelle question";
+  bNouv.onclick = ()=>{ zoneQ.value=""; sortie.innerHTML=""; zoneQ.focus(); };
+  actions.appendChild(bNouv);
+
+  EN_COURS = false; bouton.disabled = false; bouton.textContent = libelle;
+  zoneQ.focus(); zoneQ.select();
+}
+
+async function ouvrirHtml(promesse, bouton){
+  bouton.disabled = true; const avant = bouton.textContent; bouton.textContent = "Génération…";
+  try{
+    const r = await promesse;
+    const html = await r.text();
+    const f = window.open("","_blank");
+    if(!f){ bouton.textContent = "Fenêtre bloquée par le navigateur"; return; }
+    f.document.write(html); f.document.close();
+    setTimeout(()=>f.print(), 700);
+  }catch(e){ bouton.textContent = "Échec : " + (e.message||e); return; }
+  bouton.disabled = false; bouton.textContent = avant;
+}
+function rapportPdf(question, bouton){
+  const corps = {question};
+  if(DOC_AUDIT){ corps.docTexte = DOC_AUDIT.texte; corps.docNom = DOC_AUDIT.nom; }
+  ouvrirHtml(fetch("/api/pdf",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(corps)}), bouton);
+}
+function exportReponse(question, reponse, alertes, passages, bouton){
+  ouvrirHtml(fetch("/api/pdf-reponse",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({question, reponse, alertes,
+      sources:(passages||[]).map(p=>p.fichier+" § "+p.titre)})}), bouton);
+}
+
+/* ---------- document joint (audit) ---------- */
+function lireFichier(input){
+  return new Promise((res,rej)=>{
+    const f = input.files[0];
+    if(!f){ res(null); return; }
+    const fr = new FileReader();
+    fr.onerror = ()=>rej(new Error("lecture impossible"));
+    fr.onload = ()=>res({nom:f.name, b64:fr.result.split(",")[1]});
+    fr.readAsDataURL(f);
+  });
+}
+async function chargerDocAudit(reMasquer){
+  const brut = await lireFichier($("docA"));
+  if(!brut){ DOC_AUDIT=null; $("avertEnvoi").classList.add("hidden");
+             $("masquageA").classList.add("hidden"); return; }
+  const r = await fetch("/api/conversion",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({nom:brut.nom, contenu:brut.b64})});
+  const j = await r.json();
+  if(j.erreur){ $("avertEnvoi").className="bandeau alerte"; $("avertEnvoi").textContent=j.erreur; return; }
+  let texte = j.texte;
+  $("masquageA").classList.remove("hidden");
+  let note = "";
+  if($("masquer").checked && texte){
+    const rm = await fetch("/api/masquage",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({texte})});
+    const jm = await rm.json();
+    texte = jm.texte;
+    note = jm.trouvailles.length
+      ? "Masqué avant envoi : " + jm.trouvailles.map(t=>t.type+" « "+t.extrait+" »").join(" · ")
+      : "Aucune donnée personnelle détectée — la détection est heuristique, elle ne garantit rien.";
+  }
+  $("listeMasque").textContent = note;
+  DOC_AUDIT = {nom:brut.nom, texte};
+  $("avertEnvoi").className = "bandeau avert";
+  $("avertEnvoi").innerHTML = "<strong>Ce document part chez Google</strong> (service Gemini) pour "
+    + "être analysé : " + Math.round(texte.length/1000) + " k caractères. Ne pas joindre de pièce "
+    + "nominative non masquée." + (j.avertissement ? "<br>" + esc(j.avertissement) : "");
+}
+
+/* ---------- corpus ---------- */
+async function chargerCorpus(){
+  const r = await fetch("/api/corpus"); const j = await r.json();
+  CORPUS = j.documents;
+  const sel = $("filtreDossier");
+  if(sel.options.length <= 1)
+    j.dossiers.concat(["_ABROGES"]).forEach(d=>sel.add(new Option(d,d)));
+  const selA = $("aDossier");
+  if(selA && !selA.options.length) j.dossiers.forEach(d=>selA.add(new Option(d,d)));
+  dessinerCorpus();
+}
+function dessinerCorpus(){
+  const q = ($("rech").value||"").toLowerCase();
+  const st = $("filtreStatut").value, ds = $("filtreDossier").value;
+  const docs = CORPUS.filter(d =>
+    (!q || (d.titre+" "+d.chemin).toLowerCase().includes(q)) &&
+    (!st || d.statut===st) && (!ds || d.dossier===ds));
+  if(!docs.length){ $("tableCorpus").innerHTML = "<p class='muted'>Aucun document ne correspond.</p>"; return; }
+  $("tableCorpus").innerHTML = `<table class="liste"><thead><tr>
+      <th>Dossier</th><th>Titre</th><th>Statut</th><th>Effet</th><th>Vérifié</th><th>Alerte</th><th></th>
+    </tr></thead><tbody>` + docs.map(d=>{
+      const alertes = [];
+      if(d.champs_manquants.length) alertes.push("métadonnées : "+d.champs_manquants.join(", "));
+      if(d.perime) alertes.push("vérifié il y a "+d.mois_depuis_verif+" mois");
+      if(d.statut==="projet") alertes.push("projet — pas applicable");
+      const cls = {en_vigueur:"envigueur",projet:"projet",abroge:"abroge"}[d.statut]||"inconnu";
+      const modif = d.dossier==="_ABROGES" ? "" :
+        `<button class="plat" onclick="ouvrirEdition('${esc(d.chemin)}')">Modifier</button>
+         <button class="plat danger" onclick="ouvrirArchive('${esc(d.chemin)}')">Archiver</button>`;
+      return `<tr><td><code>${esc(d.dossier)}</code></td>
+        <td>${esc(d.titre)}<br><span class="muted">${esc(d.chemin.split("/").pop())}
+          · ${Math.round(d.octets/1024)} ko</span></td>
+        <td><span class="badge ${cls}">${esc(ETAT.libelles_statut&&ETAT.libelles_statut[d.statut]||d.statut)}</span></td>
+        <td>${esc(d.date_effet||"—")}</td><td>${esc(d.verifie_le||"—")}</td>
+        <td class="muted">${esc(alertes.join(" ; ")||"—")}</td>
+        <td style="white-space:nowrap">${modif}</td></tr>`;
+    }).join("") + "</tbody></table>";
+}
+
+function ouvrirAjout(){
+  ["aNom","aTitre","aSignature","aEffet","aSource","aCorps"].forEach(i=>$(i).value="");
+  $("msgAjout").textContent=""; $("avertConversion").classList.add("hidden");
+  $("panneauAjout").classList.remove("hidden");
+  $("panneauAjout").scrollIntoView({behavior:"smooth"});
+}
+async function convertirAjout(){
+  const brut = await lireFichier($("fichierAjout"));
+  if(!brut) return;
+  $("avertConversion").className = "bandeau avert";
+  $("avertConversion").classList.remove("hidden");
+  $("avertConversion").textContent = "Conversion en cours…";
+  const r = await fetch("/api/conversion",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({nom:brut.nom, contenu:brut.b64})});
+  const j = await r.json();
+  $("aCorps").value = j.texte || "";
+  if(!$("aNom").value) $("aNom").value = brut.nom.replace(/\.[^.]+$/,"") + ".md";
+  if(!$("aTitre").value) $("aTitre").value = brut.nom.replace(/\.[^.]+$/,"").replace(/[-_]/g," ");
+  const base = `${j.caracteres} caractères extraits.` + (j.original ? ` Original conservé dans ${j.original}.` : "");
+  if(j.avertissement){
+    $("avertConversion").className = "bandeau alerte";
+    $("avertConversion").innerHTML = "<strong>À relire avant d'enregistrer.</strong> "
+      + esc(j.avertissement) + " " + esc(base);
+  } else {
+    $("avertConversion").className = "bandeau ok";
+    $("avertConversion").textContent = base + " Relire le texte ci-dessous avant d'enregistrer.";
+  }
+}
+async function enregistrerAjout(){
+  const corps = {dossier:$("aDossier").value, nom:$("aNom").value,
+    corps:$("aCorps").value,
+    meta:{titre:$("aTitre").value, statut:$("aStatut").value,
+          date_signature:$("aSignature").value, date_effet:$("aEffet").value,
+          source:$("aSource").value}};
+  const r = await fetch("/api/document/ajouter",{method:"POST",
+      headers:{"Content-Type":"application/json"}, body:JSON.stringify(corps)});
+  const j = await r.json();
+  $("msgAjout").innerHTML = j.ok
+    ? `<div class="bandeau ok">Ajouté : <code>${esc(j.message)}</code>. INDEX.md a été régénéré.</div>`
+    : `<div class="bandeau alerte">${esc(j.message||j.erreur)}</div>`;
+  if(j.ok){ fermer("panneauAjout"); chargerCorpus(); chargerJournal(); }
+}
+
+let EDITION = null;
+async function ouvrirEdition(chemin){
+  const r = await fetch("/api/document?chemin="+encodeURIComponent(chemin));
+  const d = await r.json();
+  if(d.erreur){ $("msgJournal").innerHTML =
+      `<div class="bandeau alerte">${esc(d.erreur)}</div>`; return; }
+  EDITION = d;
+  $("titreEdition").textContent = "Modifier — " + chemin;
+  $("eTitre").value = d.titre||""; $("eStatut").value = d.statut==="inconnu"?"en_vigueur":d.statut;
+  $("eSignature").value = d.date_signature||""; $("eEffet").value = d.date_effet||"";
+  $("eVerifie").value = d.verifie_le||""; $("eSource").value = d.source||"";
+  $("eCorps").value = d.corps||"";
+  $("zoneDiff").innerHTML=""; $("msgEdition").textContent="";
+  $("btnEnregistrer").disabled = true;
+  $("panneauEdition").classList.remove("hidden");
+  $("panneauEdition").scrollIntoView({behavior:"smooth"});
+}
+function metaEdition(){
+  return {titre:$("eTitre").value, statut:$("eStatut").value,
+          date_signature:$("eSignature").value, date_effet:$("eEffet").value,
+          verifie_le:$("eVerifie").value, source:$("eSource").value};
+}
+async function apercuDiff(){
+  const r = await fetch("/api/document/apercu",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chemin:EDITION.chemin, meta:metaEdition(), corps:$("eCorps").value})});
+  const j = await r.json();
+  if(j.erreur){ $("msgEdition").innerHTML=`<div class="bandeau alerte">${esc(j.erreur)}</div>`; return; }
+  const lignes = (j.diff||"").split("\n").map(l=>{
+    const c = l.startsWith("+")&&!l.startsWith("+++") ? "plus"
+            : l.startsWith("-")&&!l.startsWith("---") ? "moins" : "";
+    return `<span class="${c}">${esc(l)}</span>`;
+  }).join("\n");
+  $("zoneDiff").innerHTML = j.diff
+    ? `<h3>Ce qui va changer (${esc(j.resume)})</h3><pre class="diff">${lignes}</pre>`
+    : `<div class="bandeau ok">Aucun changement.</div>`;
+  $("btnEnregistrer").disabled = !j.diff;
+}
+async function enregistrerEdition(){
+  const r = await fetch("/api/document/enregistrer",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chemin:EDITION.chemin, meta:metaEdition(), corps:$("eCorps").value})});
+  const j = await r.json();
+  $("msgEdition").innerHTML = j.ok
+    ? `<div class="bandeau ok">Enregistré. INDEX.md régénéré, état antérieur conservé au journal.</div>`
+    : `<div class="bandeau alerte">${esc(j.message||j.erreur)}</div>`;
+  if(j.ok){ fermer("panneauEdition"); chargerCorpus(); chargerJournal(); }
+}
+
+let ARCHIVE_CIBLE = null;
+function ouvrirArchive(chemin){
+  ARCHIVE_CIBLE = chemin;
+  $("cibleArchive").textContent = "Document concerné : " + chemin;
+  $("confArchive").value=""; $("remplacePar").value=""; $("msgArchive").textContent="";
+  $("btnArchive").disabled = true;
+  $("panneauArchive").classList.remove("hidden");
+  $("panneauArchive").scrollIntoView({behavior:"smooth"});
+}
+function verifArchive(){ $("btnArchive").disabled = $("confArchive").value.trim().toUpperCase() !== "ARCHIVER"; }
+async function archiver(){
+  const r = await fetch("/api/document/archiver",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chemin:ARCHIVE_CIBLE, remplacePar:$("remplacePar").value, confirmation:true})});
+  const j = await r.json();
+  $("msgArchive").innerHTML = j.ok
+    ? `<div class="bandeau ok">Archivé dans <code>${esc(j.message)}</code>.</div>`
+    : `<div class="bandeau alerte">${esc(j.message||j.erreur)}</div>`;
+  if(j.ok){ fermer("panneauArchive"); chargerCorpus(); chargerJournal(); }
+}
+
+async function chargerJournal(){
+  const r = await fetch("/api/journal"); const j = await r.json();
+  if(!j.entrees.length){ $("tableJournal").innerHTML="<p class='muted'>Journal vide.</p>"; return; }
+  $("tableJournal").innerHTML = `<table class="liste"><thead><tr>
+      <th>Quand</th><th>Quoi</th><th>Document</th><th>Changement</th><th></th></tr></thead><tbody>`
+    + j.entrees.map(e=>`<tr><td class="muted">${esc(e.horodatage.replace("T"," "))}</td>
+        <td>${esc(e.action)}</td><td><code>${esc(e.cible)}</code>
+        ${e.detail?`<br><span class="muted">${esc(e.detail)}</span>`:""}</td>
+        <td class="muted">${esc(e.resume_diff||"—")}</td>
+        <td>${e.etat_avant?`<button class="plat gris" onclick="restaurer('${esc(e.id)}')">Restaurer l'état d'avant</button>`:""}</td>
+      </tr>`).join("") + "</tbody></table>";
+}
+async function restaurer(id){
+  const zone = $("msgJournal");
+  zone.innerHTML = "<p class='muted'>Restauration en cours…</p>";
+  const r = await fetch("/api/journal/restaurer",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({id})});
+  const j = await r.json();
+  zone.innerHTML = j.ok
+    ? `<div class="bandeau ok">État restauré : <code>${esc(j.message)}</code>.</div>`
+    : `<div class="bandeau alerte">${esc(j.message||j.erreur)}</div>`;
+  chargerCorpus(); chargerJournal();
+}
+
+/* ---------- historique ---------- */
+async function chargerHistorique(){
+  const r = await fetch("/api/historique"); const j = await r.json();
+  if(!j.entrees.length){ $("listeHistorique").innerHTML="<p class='muted'>Aucune question posée pour l'instant.</p>"; return; }
+  $("listeHistorique").innerHTML = j.entrees.map(e=>`
+    <details class="sources"><summary>${esc(e.horodatage.replace("T"," "))} —
+      ${esc((e.question||"").slice(0,90))}${(e.question||"").length>90?"…":""}
+      ${e.bloque?' <span class="badge projet">renvoi juriste</span>':""}</summary>
+      <div class="reponse">${md(e.reponse||"")}</div>
+      ${blocAlertes(e.alertes)}
+      ${e.sources&&e.sources.length?`<p class="muted">Sources : ${e.sources.map(esc).join(" · ")}</p>`:""}
+      <p class="muted">Modèle : <code>${esc(e.modele||"—")}</code></p>
+    </details>`).join("");
+}
+
+/* ---------- réglages / banc ---------- */
+async function chargerEtat(){
+  const r = await fetch("/api/etat"); ETAT = await r.json();
+  $("pastilles").innerHTML =
+    `<span class="pastille">${ETAT.nb_documents} document(s)</span>` +
+    (ETAT.nb_projets?`<span class="pastille">${ETAT.nb_projets} au statut projet</span>`:"") +
+    (ETAT.nb_perimes?`<span class="pastille">${ETAT.nb_perimes} à re-vérifier</span>`:"") +
+    (ETAT.nb_incomplets?`<span class="pastille">${ETAT.nb_incomplets} métadonnées incomplètes</span>`:"");
+  if(!ETAT.cle_presente){
+    $("bandeauCle").classList.remove("hidden");
+    $("bandeauCle").textContent = ETAT.message_cle;
+  }
+  $("etatCle").innerHTML = ETAT.cle_presente
+    ? `<div class="bandeau ok">Clé API présente. Les questions peuvent partir.</div>`
+    : `<div class="bandeau alerte">${esc(ETAT.message_cle)}</div>`;
+  ["modQ","modA"].forEach(id=>{ const s=$(id); s.innerHTML="";
+    ETAT.modeles.forEach(m=>s.add(new Option(`${m.nom} — ${m.cout}`, m.id))); });
+  $("modQ").value = ETAT.reglages.modele_question;
+  $("modA").value = ETAT.reglages.modele_audit;
+  notesModeles();
+}
+function notesModeles(){
+  const trouve = id => (ETAT.modeles.find(m=>m.id===id)||{}).note||"";
+  $("noteQ").textContent = trouve($("modQ").value);
+  $("noteA").textContent = trouve($("modA").value);
+}
+async function majReglages(){
+  notesModeles();
+  const r = await fetch("/api/reglages",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({modele_question:$("modQ").value, modele_audit:$("modA").value})});
+  const j = await r.json();
+  $("msgReglages").innerHTML = j.ok
+    ? `<div class="bandeau avert">Modèle changé. Relancer « Vérifier l'assistant » : un modèle
+        non mesuré est un modèle dont on ignore le taux d'erreur.</div>`
+    : `<div class="bandeau alerte">Échec de l'enregistrement.</div>`;
+}
+
+async function lancerBanc(){
+  const b = $("btnBanc"); b.disabled = true;
+  $("etapesBanc").innerHTML=""; $("resumeBanc").innerHTML="";
+  $("barreBanc").classList.remove("hidden");
+  $("etatBanc").textContent = "Démarrage…";
+  await fluxSSE("/api/banc", {modele:$("modQ").value}, (nom,d)=>{
+    if(nom==="question"){
+      $("barreBanc").firstElementChild.style.width = (100*d.i/d.total)+"%";
+      $("etatBanc").textContent = `question ${d.i} sur ${d.total}`;
+      const li = document.createElement("div");
+      li.className = "etape " + (d.conforme?"ok":"ko");
+      li.textContent = (d.conforme?"✓ ":"✗ ") + "Q"+d.id+" — " + d.question.slice(0,70)
+        + (d.ecarts.length ? "  → " + d.ecarts.join(" ; ") : "");
+      $("etapesBanc").appendChild(li);
+    } else if(nom==="fin"){
+      const r = d.rapport;
+      const cls = r.echecs===0 ? (r.non_mesurees ? "avert" : "ok") : "alerte";
+      const nm = r.non_mesurees
+        ? `<br>${r.non_mesurees} question(s) <strong>non mesurée(s)</strong> :
+           le service Gemini n'a pas répondu. Relancer pour les mesurer.` : "";
+      $("resumeBanc").innerHTML = `<div class="bandeau ${cls}"><strong>${r.reussites}/${r.mesurees}
+        conforme</strong> avec <code>${esc(r.modele)}</code> — ${r.echecs} écart(s),
+        ${r.duree_s} s.${nm}<br>Détail écrit dans <code>VALIDATION.md</code>.</div>`;
+      $("etatBanc").textContent = "";
+    } else if(nom==="erreur"){
+      $("resumeBanc").innerHTML = `<div class="bandeau alerte">${esc(d.message)}</div>`;
+      $("etatBanc").textContent = "";
+    }
+  });
+  b.disabled = false;
+}
+
+/* ---------- démarrage ---------- */
+$("q").addEventListener("keydown", e=>{
+  if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); poser("question"); }
+});
+$("qa").addEventListener("keydown", e=>{
+  if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); poser("audit"); }
+});
+chargerEtat();
+onglet((location.hash||"#question").slice(1) || "question");
+$("q").focus();
+</script>
+</body>
+</html>

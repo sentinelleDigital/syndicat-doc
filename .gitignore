@@ -11,3 +11,9 @@ _sources/*.html
 # Python
 __pycache__/
 *.pyc
+
+# Historique des questions posées — local, peut contenir des cas concrets
+_historique/
+
+# Réglages locaux (choix du modèle)
+reglages.json

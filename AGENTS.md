@@ -47,7 +47,7 @@ Tu n'es PAS avocat. Tu ne délivres pas de conseil juridique personnalisé.
 
 Pour tout rapport d'analyse de document : suivre `REPORT-TEMPLATE.md` (structure + règles) et remplir le gabarit `_templates/rapport-style.html`. L'utilisateur imprime l'HTML en PDF (Ctrl+P → Enregistrer en PDF).
 
-## Mode rapport économe (OBLIGATOIRE — quota Groq gratuit limité)
+## Mode rapport économe (OBLIGATOIRE — quota Gemini gratuit limité)
 
 Un rapport consomme beaucoup de tokens (boucle de lecture). Pour rester dans le free tier, RESPECTER ces règles à chaque rapport :
 
@@ -60,7 +60,8 @@ Un rapport consomme beaucoup de tokens (boucle de lecture). Pour rester dans le 
 
 Objectif : diviser la consommation par 3 à 5 vs une lecture large. Un rapport ciblé ≈ 30–50K tokens ; un rapport « tout le corpus » ≈ 150K+ (= quota d'un compte épuisé).
 
-# Confidentialité (rappel — Groq = cloud)
+# Confidentialité (rappel — Gemini = cloud)
 
 - Accords, RI, CCN = documents publics → OK à traiter tel quel.
-- PV de CSE, dossiers individuels = **pseudonymiser avant** (Presidio). S'ils apparaissent en clair dans une question, alerter l'utilisateur.
+- PV de CSE, dossiers individuels = données personnelles. `05-pv-cse/` est **exclu en code** de tout envoi au modèle (voir `corpus.DOSSIERS_NOMINATIFS`).
+- Avant d'envoyer un document joint, l'interface propose un masquage (noms, matricules, adresses, téléphones, courriels, n° de sécurité sociale) et **affiche ce qu'elle a masqué**. Cette détection est **heuristique et non exhaustive** : ce qu'elle ne voit pas part en clair. Aucune bibliothèque de pseudonymisation n'est installée — ne pas laisser croire le contraire.

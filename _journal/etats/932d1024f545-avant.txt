@@ -7,7 +7,13 @@
 > Sortie calculée à partir des métadonnées des documents. Toute correction se fait dans le document, pas ici.
 > Entreprise : SAS FRERES — Branche : vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France (IDCC 493 / brochure 3029).
 
-**15 document(s) actif(s)**, 0 archivé(s). 0 au statut projet, 0 à re-vérifier (plus de 6 mois).
+**16 document(s) actif(s)**, 1 archivé(s). 1 au statut projet, 0 à re-vérifier (plus de 6 mois).
+
+## 01-accords
+
+| Fichier | Titre | Statut | Effet | Vérifié le | Alerte |
+|---|---|---|---|---|---|
+| `accord-teletravail.md` | Projet d'accord d'entreprise — télétravail | projet | 2026-10-01 | 2026-09-04 | projet — pas du droit applicable |
 
 ## 03-convention-collective
 
@@ -39,9 +45,11 @@
 |---|---|---|---|---|---|
 | `cet .md` | Accord d'entreprise — Compte épargne-temps (CET), SAS FRERES | en vigueur | 2026-09-01 | 2026-09-04 | métadonnées incomplètes : date_signature |
 
-## 01-accords
+## _ABROGES — NE JAMAIS CITER
 
-_Vide._
+| Fichier | Titre | Statut | Effet | Vérifié le | Alerte |
+|---|---|---|---|---|---|
+| `_REMPLACE-PAR-SANS-REMPLACANT__accord-teletravail.md` | Projet d'accord d'entreprise — télétravail | abrogé | 2026-10-01 | 2026-09-04 | — |
 
 ## 02-reglement-interieur
 
