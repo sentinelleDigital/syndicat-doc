@@ -166,23 +166,68 @@ def resume_texte(rapport):
     return "\n".join(lignes)
 
 
+def recommandation(rapports):
+    """
+    Recommandation déduite des mesures, jamais d'une intuition. À score égal,
+    on garde le modèle au quota le plus large : rien ne justifie de payer, ni de
+    risquer un quota épuisé en pleine réunion, pour un résultat identique.
+    """
+    complets = [r for r in rapports
+                if r.get("non_mesurees", 0) == 0 and r.get("mesurees")]
+    if not complets:
+        return ["", "## Recommandation", "",
+                "Aucune mesure complète disponible : aucun modèle ne peut être "
+                "recommandé sur preuve. Relancer `python3 valider.py`."]
+    ordre = {m["id"]: i for i, m in enumerate(D.MODELES)}
+    meilleur_taux = max(r["reussites"] / r["mesurees"] for r in complets)
+    a_egalite = [r for r in complets
+                 if r["reussites"] / r["mesurees"] == meilleur_taux]
+    choisi = min(a_egalite, key=lambda r: ordre.get(r["modele"], 99))
+    fiche = next((m for m in D.MODELES if m["id"] == choisi["modele"]), {})
+    out = ["", "## Recommandation", "",
+           f"**Modèle recommandé : `{choisi['modele']}`** — "
+           f"{choisi['reussites']}/{choisi['mesurees']} sur le banc "
+           f"({fiche.get('cout', 'coût non documenté')})."]
+    if len(a_egalite) > 1:
+        autres = ", ".join(f"`{r['modele']}`" for r in a_egalite
+                           if r["modele"] != choisi["modele"])
+        out.append(f"À égalité de score avec {autres} : on garde celui dont le "
+                   f"quota gratuit est le plus large, puisque la mesure ne montre "
+                   f"aucune différence de justesse sur ce banc.")
+    out += ["",
+            f"Portée de cette preuve : {choisi['mesurees']} questions. Un score "
+            f"parfait ici ne veut pas dire que le modèle ne se trompe jamais — "
+            f"il veut dire qu'il ne se trompe pas sur les pièges déjà identifiés. "
+            f"Chaque erreur rencontrée en usage réel devrait devenir une question "
+            f"de plus dans `tests/banc.json`."]
+    return out
+
+
 def ecrire_validation_md(rapports):
     """VALIDATION.md : ce qui a été mesuré, sur quels modèles, avec les écarts."""
     lignes = ["# Validation de l'assistant", "",
-              "Sortie de `python3 valider.py` — banc de "
+              "**Fichier généré par `python3 valider.py`.** Banc de "
               f"{rapports[0]['total']} questions (`tests/banc.json`).",
+              "Une ligne dont la colonne « Banc » diffère a été mesurée sur une "
+              "version antérieure du banc : elle n'est pas comparable aux autres.",
               "Évaluation mécanique : expressions régulières sur la réponse + "
               "vérification des articles cités. Aucun modèle ne juge un autre "
               "modèle.", "",
               "## Résultats par modèle", "",
-              "| Modèle | Conforme | Écarts | Non mesurées | Durée | Mesuré le |",
-              "|---|---|---|---|---|---|"]
+              "| Modèle | Conforme | Écarts | Non mesurées | Banc | Durée | Mesuré le |",
+              "|---|---|---|---|---|---|---|"]
     for r in sorted(rapports, key=lambda x: -x["reussites"]):
         lignes.append(f"| `{r['modele']}` | "
                       f"{r['reussites']}/{r.get('mesurees', r['total'])} | "
                       f"{r['echecs']} | {r.get('non_mesurees', 0)} | "
+                      f"{r.get('version_banc', '?')} | "
                       f"{r['duree_s']} s | {r['horodatage']} |")
-    lignes += ["", "## Détail des écarts", ""]
+    lignes += ["",
+               "Un modèle absent de ce tableau n'a pas été mesuré. Sur le palier "
+               "gratuit, le quota journalier d'un modèle peut s'épuiser au milieu "
+               "d'un banc : les questions concernées sont comptées « non mesurées », "
+               "jamais « conformes ».", "",
+               "## Détail des écarts", ""]
     for r in sorted(rapports, key=lambda x: -x["reussites"]):
         lignes.append(f"### `{r['modele']}` — {r['reussites']}/"
                       f"{r.get('mesurees', r['total'])}")
@@ -202,7 +247,8 @@ def ecrire_validation_md(rapports):
             if extrait:
                 lignes.append(f"- Réponse obtenue : « {extrait}… »")
             lignes.append("")
-    lignes += ["## Comment rejouer", "",
+    lignes += recommandation(rapports)
+    lignes += ["", "## Comment rejouer", "",
                "```bash",
                "python3 valider.py                       # modèle courant",
                "python3 valider.py --modele gemini-flash-latest",
@@ -226,7 +272,20 @@ def main():
                     help="secondes entre deux appels (quota gratuit)")
     ap.add_argument("--sans-validation-md", action="store_true",
                     help="ne pas réécrire VALIDATION.md")
+    ap.add_argument("--regenerer", action="store_true",
+                    help="réécrire VALIDATION.md depuis les mesures déjà faites, "
+                         "sans rappeler le modèle (aucun quota consommé)")
     args = ap.parse_args()
+
+    if args.regenerer:
+        anciens = _rapports_existants()
+        if not anciens:
+            sys.exit("Aucune mesure enregistrée dans tests/ — lancer d'abord "
+                     "python3 valider.py")
+        print("VALIDATION.md régénéré depuis "
+              + ", ".join(sorted(r["modele"] for r in anciens)))
+        ecrire_validation_md(anciens)
+        return
 
     modeles = args.compare or [args.modele or D.lire_reglages()["modele_question"]]
     rapports = []

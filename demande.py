@@ -62,10 +62,10 @@ MODELES = [
      "cout": "gratuit — quota plus serré",
      "note": "Nettement plus fiable sur la lecture de tableaux (barème) et sur "
              "le refus de répondre hors corpus. À préférer si le quota tient."},
-    {"id": "gemini-3.5-flash", "nom": "Flash 3.5",
-     "cout": "gratuit — quota serré",
-     "note": "Génération plus récente. À mesurer avec « Vérifier l'assistant » "
-             "avant de l'adopter."},
+    {"id": "gemini-3.5-flash-lite", "nom": "Flash-Lite 3.5",
+     "cout": "gratuit — quota distinct des autres Flash",
+     "note": "Génération plus récente, quota séparé : utile quand le quota du "
+             "modèle courant est épuisé. Mesuré sur le banc — voir VALIDATION.md."},
     {"id": "gemini-pro-latest", "nom": "Pro",
      "cout": "payant (facturé à l'usage)",
      "note": "Le plus fiable en raisonnement juridique. Nécessite un compte "

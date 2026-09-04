@@ -1,13 +1,13 @@
 {
   "modele": "gemini-3.5-flash-lite",
-  "horodatage": "2026-09-04T13:09:35",
+  "horodatage": "2026-09-04T13:24:29",
   "version_banc": "2026-09-04b",
   "total": 20,
-  "reussites": 19,
-  "echecs": 1,
+  "reussites": 20,
+  "echecs": 0,
   "non_mesurees": 0,
   "mesurees": 20,
-  "duree_s": 379.4,
+  "duree_s": 431.0,
   "resultats": [
     {
       "id": 1,
@@ -17,7 +17,7 @@
       "piege": "identification du corpus",
       "conforme": true,
       "ecarts": [],
-      "reponse": "La convention collective applicable est la convention collective nationale des vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France, identifiée sous l'IDCC 493 et la brochure 3029.\n\n**Justification :**\n- IDCC et intitulé : [CCN 3029, art. 2.1.1]\n- Numéro de brochure : Index du corpus (SAS FRERES — Branche : vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France (IDCC 493 / brochure 3029)).\n\n*Pour toute situation individuelle ou question spécifique, veuillez vous adresser à un juriste de la fédération.*",
+      "reponse": "La convention collective applicable est la Convention collective nationale des **vins, cidres, jus de fruits, sirops, spiritueux et liqueurs de France**, identifiée par l'**IDCC 493** (brochure **3029**).\n\n**Justification :**\n- Le champ d'application professionnel de la convention mentionne explicitement l'IDCC 0493 pour ces entreprises [CCN 3029, art. 2.1.1].\n\n*Pour toute situation individuelle ou contentieuse, veuillez consulter un juriste de la fédération.*",
       "bloque": false,
       "articles_cites": [],
       "alertes": [
@@ -44,7 +44,7 @@
       "piege": "recherche dans un fichier de 2,3 Mo + citation de l'article exact",
       "conforme": true,
       "ecarts": [],
-      "reponse": "La durée de la période d'essai initiale d'un ouvrier ou d'un employé est fixée à **2 mois**, et elle peut éventuellement être renouvelée une fois pour une durée de **1 mois**, après confirmation écrite avant la fin de la première période [CCN 3029, art. III.1.1].\n\nPour les salariés commerciaux opérationnels (dits de « terrain »), la période d'essai initiale est de **2 mois**, éventuellement renouvelable une fois pour la même durée (**2 mois**), après confirmation écrite avant la fin de la première période [CCN 3029, art. III.1.1].\n\nSource : [CCN 3029, art. III.1.1].",
+      "reponse": "La durée de la période d'essai initiale est fixée à **2 mois**, renouvelable une fois pour une durée de **1 mois** (après confirmation écrite avant la fin de la première période).\n\nPour les salariés commerciaux opérationnels (dits « de terrain »), la période d'essai initiale est de **2 mois**, éventuellement renouvelable une fois pour la même durée (**2 mois**), après confirmation écrite avant la fin de la première période.\n\n**Justification :**\n- Le renouvellement et la durée initiale ne se présument pas et doivent figurer expressément dans la lettre d'engagement ou le contrat de travail.\n- Il ne peut être dérogé à ces règles que dans un sens plus favorable au salarié.\n\n**Source :** [CCN 3029, art. III.1.1]",
       "bloque": false,
       "articles_cites": [],
       "alertes": [],
@@ -65,7 +65,7 @@
       "piege": "hiérarchie post-2017, pas de « plus favorable » automatique",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Non, un accord d'entreprise ne peut pas fixer de salaires minima inférieurs à ceux de la convention de branche. \n\nLes salaires minima hiérarchiques font partie du « Bloc 1 » (matières où la branche prime toujours, sauf garanties d'entreprise au moins équivalentes appréciées par ensemble de garanties se rapportant à la même matière). En outre, la convention collective de branche rappelle explicitement que les négociations menées au niveau des entreprises peuvent aboutir à des grilles de salaires propres, sous réserve de respecter les minima conventionnels de branche.\n\n**Sources :**\n- [C. trav., L.2253-1]\n- [CCN 3029, art. 1er (Salaires minima conventionnels)]\n\n*Note : Pour toute analyse de situation individuelle ou contentieux, veuillez consulter un juriste de la fédération.*",
+      "reponse": "Un accord d'entreprise ne peut pas fixer des salaires minima inférieurs à ceux prévus par la convention de branche [C. trav., L.2253-1 ; CCN 3029, art. 1er]. \n\nEn effet, les salaires minima hiérarchiques font partie des matières relevant du bloc 1 où la convention de branche prime, sauf si l'accord d'entreprise assure des garanties au moins équivalentes [C. trav., L.2253-1]. Par ailleurs, les négociations menées au niveau de l'entreprise ne peuvent en aucun cas aboutir à des salaires inférieurs aux minima conventionnels [CCN 3029, art. 1er].\n\nPour toute analyse de situation individuelle, veuillez contacter un juriste de la fédération.\n\nSources :\n- [C. trav., L.2253-1]\n- [CCN 3029, art. 1er]",
       "bloque": false,
       "articles_cites": [
         "L2253-1"
@@ -88,7 +88,7 @@
       "piege": "citation de l'article exact",
       "conforme": true,
       "ecarts": [],
-      "reponse": "La durée légale du travail effectif des salariés à temps complet est fixée à **35 heures par semaine** [C. trav., L.3121-27].\n\n**Justification :**\n- Article législatif du Code du travail fixant la durée légale à temps complet.\n- La Convention collective nationale (IDCC 493) rappelle également que la durée du travail est fixée conformément aux lois et règlements en vigueur [CCN 3029, art. 34 / art. IV.8].\n\n**Source :** [C. trav., L.3121-27] ; [CCN 3029, art. 34 et IV.8].",
+      "reponse": "La durée légale de travail effectif des salariés à temps complet est fixée à trente-cinq heures par semaine [C. trav., L.3121-27].",
       "bloque": false,
       "articles_cites": [
         "L3121-27"
@@ -111,7 +111,7 @@
       "piege": "—",
       "conforme": true,
       "ecarts": [],
-      "reponse": "La durée quotidienne maximale de travail effectif est fixée à **10 heures** [C. trav., L.3121-18].\n\n### Justification et exceptions\n\n* **Principe général :** La durée quotidienne de travail effectif par salarié ne peut excéder dix heures [C. trav., L.3121-18].\n* **Exceptions légales :** Il peut y être dérogé en cas d'urgence, par dérogation de l'inspecteur du travail, ou dans les cas prévus à l'article L. 3121-19 [C. trav., L.3121-18].\n* **Cas particulier du travail de nuit (CCN 3029) :** \n  * Pour un travailleur de nuit, la durée quotidienne ne peut excéder **8 heures** [CCN 3029, art. 5].\n  * Toutefois, cette durée peut être dépassée sans pouvoir excéder **10 heures par jour** pour certaines activités spécifiques (éloignement, garde et surveillance, transport, ou nécessité d'assurer la continuité du service ou de la production), ainsi que dans les autres conditions prévues par les dispositions législatives et réglementaires [CCN 3029, art. 5].\n  * En cas de surcroît temporaire d'activité, la CCN prévoit également des adaptations sur la base des dispositions réglementaires [CCN 3029, art. IV.9].\n\n*Note : Pour toute situation individuelle spécifique ou contentieuse, veuillez vous rapprocher d'un juriste de la fédération.*\n\n### Sources\n* [C. trav., L.3121-18]\n* [CCN 3029, art. 5]\n* [CCN 3029, art. IV.9]",
+      "reponse": "La durée quotidienne maximale de travail effectif est fixée à **10 heures** [C. trav., L.3121-18].\n\n### Justification et exceptions\n\n* **Principe général :** La durée quotidienne de travail effectif par salarié ne peut excéder 10 heures, sauf cas de dérogation (inspecteur du travail, urgence ou dispositions prévues à l'article L. 3121-19) [C. trav., L.3121-18].\n* **Cas particulier du travail de nuit :** Pour un travailleur de nuit, la durée quotidienne est en principe limitée à 8 heures, mais elle peut être portée jusqu'à 10 heures par jour pour certaines activités spécifiques (éloignement, garde/surveillance, manutention/transport ou nécessité d'assurer la continuité de la production/service) [CCN 3029, art. 5].\n* **Surcroît temporaire d'activité :** En cas de surcroît temporaire d'activité et après information préalable de l'inspecteur du travail et consultation des représentants du personnel (lorsqu'ils existent), la durée quotidienne maximale de 10 heures peut être dépassée sans toutefois pouvoir excéder 12 heures de travail effectif par jour [CCN 3029, art. IV.9].",
       "bloque": false,
       "articles_cites": [
         "L3121-18",
@@ -135,7 +135,7 @@
       "piege": "—",
       "conforme": true,
       "ecarts": [],
-      "reponse": "La durée minimale du repos quotidien entre deux journées de travail est fixée à **onze heures consécutives**.\n\n**Justification :**\n* Le Code du travail prévoit un repos quotidien d'une durée minimale de onze heures consécutives [C. trav., L.3131-1].\n* La convention collective rappelle également que chaque salarié bénéficie d'un repos d'une durée minimale de 11 heures consécutives entre deux périodes journalières de travail [CCN 3029, art. IV.9 § 5]. *(Une dérogation est toutefois possible dans certaines conditions spécifiques, le repos ne pouvant alors être inférieur à 9 heures [CCN 3029, art. IV.9 § 5]).*\n\n**Sources :** \n* [C. trav., L.3131-1]\n* [CCN 3029, art. IV.9 § 5]",
+      "reponse": "La durée minimale du repos quotidien entre deux journées de travail est de **11 heures consécutives**.\n\n**Justification :**\n* Code du travail : [C. trav., L.3131-1]\n* Convention collective (IDCC 493) : [CCN 3029, art. IV.9] / [CCN 3029, art. 5]\n\n*(Pour toute situation individuelle ou cas particulier d'aménagement, veuillez contacter un juriste de la fédération.)*",
       "bloque": false,
       "articles_cites": [
         "L3131-1"
@@ -158,7 +158,7 @@
       "piege": "lire une valeur dans une liste numérotée, et ne pas confondre le plafond légal avec celui de la branche",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Le Code du travail fixe la limite maximale du forfait en jours à **218 jours par an**.\n\n**Justification :**\nL'article L. 3121-64 du Code du travail prévoit que l'accord collectif autorisant la conclusion de conventions individuelles de forfait en jours détermine « le nombre d'heures ou de jours compris dans le forfait, dans la limite de **deux cent dix-huit jours** s'agissant du forfait en jours ».\n\n**Sources :**\n- [C. trav., L.3121-64]",
+      "reponse": "Le Code du travail fixe la limite maximale du forfait en jours à **218 jours par an**.\n\n**Justification :**\nL'article L. 3121-64 du Code du travail prévoit que l'accord collectif autorisant la conclusion de conventions individuelles de forfait en jours détermine le nombre d'heures ou de jours compris dans le forfait, *« dans la limite de deux cent dix-huit jours s'agissant du forfait en jours »*.\n\n**Source :**\n[C. trav., L.3121-64]",
       "bloque": false,
       "articles_cites": [
         "L3121-64"
@@ -180,7 +180,7 @@
       "piege": "—",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Le salarié acquiert 2,5 jours ouvrables de congés payés par mois de travail effectif.\n\n**Justification :**\n- Selon la loi, le salarié a droit à un congé de deux jours et demi ouvrables par mois de travail effectif chez le même employeur [C. trav., L.3141-3].\n- Cette règle est confirmée par la convention collective, qui prévoit également l'acquisition de 2,5 jours ouvrables par mois de travail effectif dans l'entreprise [CCN 3029, art. III.11.1 ; CCN 3029, art. 40].",
+      "reponse": "Le salarié acquiert deux jours et demi ouvrables de congés payés par mois de travail effectif.\n\n[C. trav., L.3141-3] ; [CCN 3029, art. III.11.1] ; [CCN 3029, art. 40]",
       "bloque": false,
       "articles_cites": [
         "L3141-3"
@@ -205,10 +205,11 @@
       "piege": "—",
       "conforme": true,
       "ecarts": [],
-      "reponse": "La périodicité de la négociation obligatoire en entreprise est fixée à **au moins une fois tous les quatre ans** [C. trav., L.2242-1]. \n\n*Justification :* \nL'employeur dans les entreprises où sont constituées une ou plusieurs sections syndicales d'organisations représentatives doit engager cette périodicité sur la rémunération (salaires effectifs, temps de travail, partage de la valeur ajoutée) ainsi que sur l'égalité professionnelle entre les femmes et les hommes et la qualité de vie au travail [C. trav., L.2242-1]. Un accord peut toutefois modifier cette périodicité dans les limites légales [C. trav., L.2242-1].\n\nSources :\n- [C. trav., L.2242-1]",
+      "reponse": "**Réponse :**\n\nDans les entreprises où sont constituées une ou plusieurs sections syndicales d'organisations représentatives, l'employeur engage au moins une fois tous les **quatre ans** une négociation obligatoire sur :\n1. La rémunération (notamment les salaires effectifs, le temps de travail et le partage de la valeur ajoutée) ;\n2. L'égalité professionnelle entre les femmes et les hommes (mesures visant à supprimer les écarts de rémunération) ainsi que la qualité de vie et des conditions de travail [C. trav., L.2242-1].\n\n**Justification :**\nCette périodicité légale par défaut est fixée à quatre ans par le Code du travail. Toutefois, un accord collectif peut adapter cette périodicité dans les limites prévues par la loi (article L.2242-11 du Code du travail, non reproduit dans le corpus).\n\n**Source :**\n[C. trav., L.2242-1]",
       "bloque": false,
       "articles_cites": [
-        "L2242-1"
+        "L2242-1",
+        "L2242-11"
       ],
       "alertes": [],
       "sources": [
@@ -229,7 +230,7 @@
       "piege": "—",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Un syndicat est représentatif dans l'entreprise s'il recueille au moins **10 %** des suffrages exprimés au premier tour des dernières élections des titulaires au comité social et économique (CSE), quel que soit le nombre de votants.\n\n**Justification :**\nPour être reconnu représentatif dans l'entreprise, le syndicat doit satisfaire aux critères légaux de représentativité et avoir obtenu ce seuil d'audience électorale.\n- Source légale : [C. trav., L.2122-1]\n- Source conventionnelle (CCN 3029) : [CCN 3029, art. II.5.7]",
+      "reponse": "Le seuil d'audience électorale requis pour qu'un syndicat soit représentatif dans l'entreprise est d'au moins **10 % des suffrages exprimés** au premier tour des dernières élections des titulaires au comité social et économique (CSE), quel que soit le nombre de votants.\n\n**Justification juridique :**\n* [C. trav., L.2122-1]\n* [CCN 3029, art. II.5.7]",
       "bloque": false,
       "articles_cites": [
         "L2122-1"
@@ -253,7 +254,7 @@
       "piege": "lecture de la ligne exacte du tableau",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Pour un salarié ayant 6 ans d'ancienneté complète dans une entreprise d'au moins 11 salariés, l'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre :\n- Un minimum de **3 mois** de salaire brut ;\n- Un maximum de **7 mois** de salaire brut.\n\nJustification :\nLe barème général applicable prévoit pour une ancienneté de 6 ans une indemnité minimale de 3 mois et une indemnité maximale de 7 mois de salaire brut.\n\nSource : [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]",
+      "reponse": "L'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre **3 mois et 7 mois de salaire brut** pour un salarié ayant 6 ans d'ancienneté dans une entreprise d'au moins 11 salariés.\n\n**Justification :**\nPour un salarié justifiant de 6 années d'ancienneté (années complètes) dans une entreprise n'entrant pas dans le cadre de la dérogation pour les moins de 11 salariés, le barème général fixe l'indemnité minimale à 3 mois et l'indemnité maximale à 7 mois de salaire brut.\n\n**Source :** [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]",
       "bloque": false,
       "articles_cites": [
         "L1235-3"
@@ -278,7 +279,7 @@
       "piege": "ligne où le plafond stagne : extrapoler donnerait 8,5",
       "conforme": true,
       "ecarts": [],
-      "reponse": "L'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre **3 mois et 8 mois** de salaire brut pour un salarié ayant 8 ans d'ancienneté dans une entreprise d'au moins 11 salariés.\n\n**Justification :**\nLe barème général applicable (hors entreprises de moins de 11 salariés) fixe pour une ancienneté de 8 années complètes une indemnité minimale de 3 mois et une indemnité maximale de 8 mois.\n\n**Source :**\n[C. trav., L.1235-3]",
+      "reponse": "Pour un salarié ayant 8 ans d'ancienneté complète dans une entreprise d'au moins 11 salariés, l'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre :\n- Un **minimum de 3 mois** de salaire brut\n- Un **maximum de 8 mois** de salaire brut\n\n**Justification :**\nLe barème général applicable (hors entreprises de moins de 11 salariés) fixe pour une ancienneté de 8 ans une indemnité minimale de 3 mois et une indemnité maximale de 8 mois.\n\n**Source :** [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]",
       "bloque": false,
       "articles_cites": [
         "L1235-3"
@@ -303,7 +304,7 @@
       "piege": "ne pas extrapoler au-delà du tableau",
       "conforme": true,
       "ecarts": [],
-      "reponse": "L'indemnité pour licenciement sans cause réelle et sérieuse (« barème Macron ») pour un salarié ayant 40 ans d'ancienneté dans une entreprise d'au moins 11 salariés est comprise entre **3 mois** (minimum) et **20 mois** de salaire brut (maximum).\n\nPour les salariés ayant une ancienneté de 30 ans et au-delà, le barème général fixe le plancher à 3 mois et le plafond à 20 mois de salaire brut.\n\n*Justification :*\nLe barème applicable prévoit une indemnité minimale de 3 mois et une indemnité maximale de 20 mois pour toute ancienneté de 30 ans et au-delà. \n\n*Sources :*\n- [C. trav., L.1235-3]",
+      "reponse": "Pour un salarié ayant 40 ans d'ancienneté dans une entreprise d'au moins 11 salariés, l'indemnité pour licenciement sans cause réelle et sérieuse est comprise entre un minimum de **3 mois** et un maximum de **20 mois** de salaire brut.\n\nJustification :\nLe barème applicable (dit « barème Macron ») prévoit pour une ancienneté de 30 ans et au-delà une indemnité minimale de 3 mois et maximale de 20 mois de salaire brut. \n\nSource : [04-legal/L1232_licenciement-personnel.md, art. L.1235-3]\n\n*Note : Pour toute analyse de situation individuelle ou calcul précis, veuillez vous rapprocher d'un juriste de la fédération.*",
       "bloque": false,
       "articles_cites": [
         "L1235-3"
@@ -326,11 +327,9 @@
       "categorie": "barème",
       "attendu": "Non : en cas de nullité le plafond est écarté, l'indemnité ne peut être inférieure à 6 mois de salaire et n'est pas plafonnée (L.1235-3-1)",
       "piege": "distinguer licenciement sans cause réelle et sérieuse / licenciement nul",
-      "conforme": false,
-      "ecarts": [
-        "attendu, absent de la réponse : \\bnon\\b / ne s applique pas / ecarte / pas applicable / sans plafond"
-      ],
-      "reponse": "Le barème de l'article L.1235-3 ne s'applique pas aux licenciements nuls [C. trav., L.1235-3].\n\n**Justification :**\nEn cas de nullité du licenciement (notamment pour discrimination, harcèlement, violation d'une liberté fondamentale ou s'agissant d'un salarié protégé), un régime distinct s'applique : l'indemnité octroyée ne respecte pas le plafond du barème et ne peut être inférieure à six mois de salaire [C. trav., L.1235-3].\n\n**Source :**\n[C. trav., L.1235-3]",
+      "conforme": true,
+      "ecarts": [],
+      "reponse": "Non, le barème de l'article L.1235-3 (dit « barème Macron ») ne s'applique pas aux licenciements nuls [04-legal/L1232_licenciement-personnel.md].\n\nEn cas de licenciement nul (notamment pour discrimination, harcèlement, violation d'une liberté fondamentale ou en raison du statut de salarié protégé), c'est un régime distinct qui s'applique : l'indemnité octroyée ne peut être inférieure à 6 mois de salaire, et elle n'est soumise à aucun plafond [04-legal/L1232_licenciement-personnel.md].\n\n*Note : Pour toute situation individuelle ou examen de dossier personnel, il convient de se rapprocher d'un juriste de la fédération.*\n\n**Sources :**\n- [04-legal/L1232_licenciement-personnel.md]",
       "bloque": false,
       "articles_cites": [
         "L1235-3"
@@ -395,7 +394,7 @@
       "piege": "fabriquer un article qui n'existe pas",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance. Le texte de l'accord d'entreprise sur le CET (`cet .md`) ne comporte pas de numérotation d'articles dans le corpus fourni. \n\nPour toute question relative à l'application de votre accord d'entreprise ou pour l'analyse d'une situation individuelle, veuillez contacter un juriste de la fédération.",
+      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance. \n\nLe corpus contient plusieurs articles portant le numéro 15 (notamment dans la convention collective CCN 3029, pour le comité d'entreprise ou les statuts de l'OCAPIAT), mais aucun texte ne correspond à un « article 15 de l'accord d'entreprise » de la SAS FRERES (le fichier `cet .md` ne détaille pas le contenu des articles de l'accord d'entreprise sur le CET). \n\nPour toute question relative à l'application ou à l'interprétation d'un accord d'entreprise au cas par cas, nous vous invitons à vous rapprocher d'un juriste de la fédération.",
       "bloque": false,
       "articles_cites": [],
       "alertes": [],
@@ -427,7 +426,7 @@
       "piege": "citer de mémoire une valeur qui change chaque année",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance ou auprès des sources officielles (le montant exact du SMIC varie dans le temps et ne figure pas dans les données disponibles).",
+      "reponse": "Non couvert par le corpus, à vérifier sur Légifrance ou auprès des sources officielles (le montant exact du SMIC varie dans le temps et ne figure pas dans les données disponibles). \n\nLa convention collective indique toutefois que le salaire minimum du niveau 1A de la grille est maintenu au niveau du SMIC sur une base mensuelle de 151,67 heures [CCN 3029, art. 2].\n\nPour toute question chiffrée individuelle ou actualisée, veuillez vous référer à la source officielle ou contacter un juriste de la fédération.",
       "bloque": false,
       "articles_cites": [],
       "alertes": [],
@@ -469,7 +468,7 @@
       "piege": "distinguer le plafond de branche (214) du plafond légal (218) : répondre 218 ici est une erreur qui coûte cher en négociation",
       "conforme": true,
       "ecarts": [],
-      "reponse": "Le nombre maximal de jours travaillés par an prévu par la convention collective de branche pour un forfait annuel en jours est fixé à **214 jours par an**.\n\n**Justification :**\n* Le contrat de travail fixe le nombre de jours effectivement travaillés qui ne peut excéder 214 jours par an [CCN 3029, art. IV.12 / Article 4].\n* La convention précise également des forfaits établis sur la base de 214 jours par an (portés à 215 jours avec la journée de solidarité) pour les cadres concernés des niveaux VIII, IX et X [CCN 3029, art. IV.12].\n\n**Source :** [CCN 3029, art. IV.12]",
+      "reponse": "Le nombre maximal de jours travaillés par an prévu par la convention collective pour un forfait annuel en jours est de **214 jours** [CCN 3029, art. IV.12 § 2.1 ; CCN 3029, art. 4]. Ce plafond peut toutefois être porté à **215 jours** en incluant la journée de solidarité [CCN 3029, art. IV.12 § 2.1].\n\n**Justification :**\n* Le contrat de travail fixe le nombre de jours effectivement travaillés qui ne peut excéder 214 jours par an [CCN 3029, art. 4].\n* La convention prévoit également, pour les cadres concernés (niveaux VIII, IX, X), un plafond de 214 jours par an, ou 215 jours en tenant compte de la journée de solidarité [CCN 3029, art. IV.12 § 2.1].\n* Ces plafonds sont susceptibles d'être réduits par un accord d'entreprise ou par un accord individuel [CCN 3029, art. IV.12 § 2.1].\n\n**Sources :** \n- [CCN 3029, art. IV.12]\n- [CCN 3029, art. 4]",
       "bloque": false,
       "articles_cites": [],
       "alertes": [],
