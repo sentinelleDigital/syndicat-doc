@@ -15,23 +15,50 @@ seuls les passages retenus et la question sont envoyés au modèle.
 
 ## Installation
 
-Rien à compiler, aucune dépendance : **python3** et une **clé Gemini gratuite**.
+Rien à compiler, aucune dépendance Python : **python3** et une **clé Gemini
+gratuite**. La clé se pose depuis l'interface — plus besoin d'éditer un fichier.
 
-1. Clé API Gemini (gratuit, sans carte) : https://aistudio.google.com/apikey
-2. La déposer dans `.env` :
-   ```bash
-   cp .env.example .env
-   # éditer .env :  GEMINI_API_KEY=ta_cle
-   ```
+### Windows
 
-`.env` n'est jamais versionné. Sans clé, l'interface démarre quand même et affiche
-la marche à suivre — elle ne plante pas.
+1. Double-clic sur **`Creer-le-raccourci-Bureau.bat`** — une seule fois. Une
+   icône « Assistant Syndical » apparaît sur le Bureau.
+2. Double-clic sur l'icône. Si Python manque, la fenêtre explique quoi faire
+   (penser à cocher **« Add python.exe to PATH »** dans l'installateur).
+3. Dans l'assistant : **Réglages → Clés d'accès**, coller la clé Gemini
+   (https://aistudio.google.com/apikey), puis **Tester**.
+
+`LISEZ-MOI.txt` reprend ces étapes pour quelqu'un qui découvre l'outil.
+
+Deux limites sous Windows :
+
+- **PDF** — l'outil de lecture fiable (`pdftotext`) n'y est pas fourni. Les PDF
+  sont refusés à l'ingestion plutôt que d'entrer corrompus dans le corpus.
+  Déposer les documents en `.docx` ou `.txt` : la lecture y est exacte. Pour
+  activer les PDF : [poppler-windows](https://github.com/oschwartz10612/poppler-windows/releases),
+  décompresser, ajouter `Library\bin` au PATH.
+- **`.env`** — les permissions 0600 n'existent pas sous Windows. Le fichier est
+  protégé par les droits du dossier utilisateur, pas par son mode : un
+  administrateur de la machine peut le lire. L'interface le dit à
+  l'enregistrement.
+
+### Linux / macOS
+
+```bash
+./installer-linux.sh     # icône dans le menu et sur le bureau, une seule fois
+```
+
+Puis double-clic sur l'icône, ou `./lancer.sh`. La clé se pose dans
+**Réglages → Clés d'accès**.
+
+Pour l'ingestion des PDF : `sudo apt install poppler-utils` (ou `brew install
+poppler`).
 
 ## Lancement
 
-**Double-clic sur l'icône « Assistant Syndical »** (ou `./lancer.sh`). Le navigateur
-s'ouvre sur `http://127.0.0.1:8765` (port suivant si celui-ci est occupé). Tout reste
-local : rien n'est exposé sur le réseau. Fermer la fenêtre du terminal arrête l'outil.
+Le navigateur s'ouvre sur `http://127.0.0.1:8765` (port suivant si celui-ci est
+occupé). Tout reste local : rien n'est exposé sur le réseau, et les requêtes
+venant d'une autre origine sont refusées. Fermer la fenêtre du terminal arrête
+l'outil.
 
 L'interface a cinq pages :
 

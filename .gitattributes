@@ -1,0 +1,12 @@
+# Les fichiers .bat doivent garder des fins de ligne Windows (CRLF).
+# Avec des fins de ligne Unix, les blocs `if (...)` et les `goto` de cmd.exe
+# se comportent de façon imprévisible.
+*.bat text eol=crlf
+*.txt text eol=crlf
+
+# Tout le reste en fins de ligne Unix, y compris après un clone sous Windows.
+*.py   text eol=lf
+*.sh   text eol=lf
+*.md   text eol=lf
+*.html text eol=lf
+*.json text eol=lf

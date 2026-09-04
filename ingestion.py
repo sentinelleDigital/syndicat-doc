@@ -28,6 +28,7 @@ import difflib
 import io
 import os
 import re
+import platform
 import shutil
 import subprocess
 import tempfile
@@ -177,6 +178,20 @@ def _pages_pdf(octets):
 
 
 # --- Contrôles de fidélité ---------------------------------------------------
+
+def _installer_poppler():
+    """Comment obtenir pdftotext, selon le système. Dit à l'utilisateur final."""
+    systeme = platform.system()
+    if systeme == "Windows":
+        return ("Sous Windows : télécharger « Release-xx.xx.x-0.zip » sur "
+                "https://github.com/oschwartz10612/poppler-windows/releases, "
+                "décompresser, et ajouter le dossier « Library\\bin » au PATH. "
+                "Sans cet outil, les PDF ne peuvent pas être ingérés de façon "
+                "fiable : déposer plutôt le document en .docx ou en .txt.")
+    if systeme == "Darwin":
+        return "Sous macOS : brew install poppler"
+    return "Sous Linux : sudo apt install poppler-utils"
+
 
 RE_LIGATURE = re.compile("[ﬀ-ﬆ]")
 RE_CESURE = re.compile(r"[a-zàâçéèêëîïôûùüÿœ]-\n[a-zàâçéèêëîïôûùüÿœ]")
@@ -370,10 +385,9 @@ def _extraire_pdf(octets):
     if mise_en_page is None or brut is None:
         maison = corpus.pdf_vers_texte(octets)
         return (maison, "extracteur interne — fidélité NON VÉRIFIÉE", 0.0, 0.0,
-                ["pdftotext (paquet poppler-utils) est absent : une seule "
-                 "extraction, aucune confrontation possible, et l'extracteur "
-                 "interne échoue sur les PDF à polices sous-classées. "
-                 "Installer : sudo apt install poppler-utils"])
+                ["L'outil de lecture des PDF est absent : une seule extraction, "
+                 "aucune confrontation possible, et l'extracteur interne échoue "
+                 "sur les PDF à polices sous-classées. " + _installer_poppler()])
 
     return (mise_en_page, "pdftotext -layout, confronté à pdftotext -raw",
             couverture(mise_en_page, brut), ordre(mise_en_page, brut), [])

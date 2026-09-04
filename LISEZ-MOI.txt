@@ -1,0 +1,76 @@
+ASSISTANT SYNDICAL — POUR COMMENCER
+===================================
+
+Cet outil repond aux questions sur la convention collective et le Code du
+travail, et produit des rapports d'audit. Tout tourne sur cet ordinateur :
+aucun document n'est envoye ailleurs.
+
+
+PREMIERE UTILISATION
+--------------------
+
+1. Double-cliquer sur   Creer-le-raccourci-Bureau.bat
+   Une icone "Assistant Syndical" apparait sur le Bureau.
+   A faire une seule fois.
+
+2. Double-cliquer sur l'icone du Bureau.
+   Une fenetre noire s'ouvre : c'est normal, il ne faut pas la fermer.
+   Le navigateur s'ouvre tout seul sur l'assistant.
+
+3. Si Python n'est pas installe, la fenetre noire l'explique et donne
+   la marche a suivre. Trois minutes, gratuit.
+
+
+LA CLE D'ACCES
+--------------
+
+L'assistant a besoin d'une cle Google Gemini pour fonctionner. Elle est
+gratuite et ne demande pas de carte bancaire.
+
+   1. Aller sur   https://aistudio.google.com/apikey
+   2. Se connecter avec un compte Google, cliquer "Create API key".
+   3. Copier la cle.
+   4. Dans l'assistant : onglet Reglages > Cles d'acces > coller > Enregistrer.
+   5. Cliquer "Tester" : le message doit dire que la cle est acceptee.
+
+Sans cle, l'assistant demarre quand meme et affiche la marche a suivre.
+Il ne plante pas.
+
+
+USAGE COURANT
+-------------
+
+   Question   une question, une reponse sourcee, avec les articles cites
+   Audit      analyse d'un accord ou d'un document, rapport imprimable
+   Corpus     les documents de reference, et comment en ajouter
+   Historique les questions deja posees
+   Reglages   les cles d'acces, le modele utilise, la verification
+
+
+POUR ARRETER
+------------
+
+Fermer la fenetre noire. C'est tout.
+
+
+CE QU'IL FAUT SAVOIR
+--------------------
+
+- L'assistant ne donne JAMAIS d'avis sur une situation individuelle. Une
+  question posee a la premiere personne est renvoyee vers un juriste de la
+  federation. C'est voulu.
+
+- Chaque reponse affiche ses sources et ses controles automatiques. Une
+  reference signalee comme non verifiee doit etre controlee sur Legifrance
+  avant tout usage en reunion ou devant un juge.
+
+- Les documents PDF ne peuvent pas etre lus de facon fiable sous Windows
+  sans un outil supplementaire. Deposer plutot les documents en .docx ou
+  en .txt : la lecture y est exacte.
+
+
+EN CAS DE PROBLEME
+------------------
+
+La fenetre noire affiche le detail de toute erreur. Faire une capture
+d'ecran de cette fenetre : elle contient ce qu'il faut pour comprendre.

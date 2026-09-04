@@ -22,6 +22,7 @@ stdlib uniquement.
 
 import json
 import os
+import platform
 import re
 import stat
 import tempfile
@@ -164,15 +165,41 @@ def _verifier_forme(emplacement, valeur):
                          f"guillemets ni préfixe.")
 
 
+SOUS_WINDOWS = platform.system() == "Windows"
+
+
+def _restreindre(chemin):
+    """
+    Réserve le fichier à son propriétaire.
+
+    Sous Linux et macOS : mode 0600, la protection est réelle.
+    Sous Windows : os.chmod ne pilote que l'attribut « lecture seule », il ne
+    restreint personne. La protection y vient des droits du dossier de
+    l'utilisateur, pas du mode du fichier. On n'applique donc rien plutôt que
+    de rendre .env non modifiable et de faire croire à une protection.
+    """
+    if SOUS_WINDOWS:
+        return
+    os.chmod(chemin, stat.S_IRUSR | stat.S_IWUSR)
+
+
+def protection_fichier():
+    """Ce qu'on peut honnêtement dire à l'utilisateur sur la protection de .env."""
+    if SOUS_WINDOWS:
+        return ("dans votre dossier personnel Windows — accessible aux "
+                "administrateurs de la machine")
+    return "permissions 0600, lisible par vous seul"
+
+
 def _ecrire_fichier(lignes):
     """
-    Remplacement atomique, permissions 0600. Le fichier temporaire est créé
-    dans le même dossier pour que os.replace reste atomique.
+    Remplacement atomique. Le fichier temporaire est créé dans le même dossier
+    pour que os.replace reste atomique.
     """
     contenu = "\n".join(lignes).rstrip("\n") + "\n"
     fd, temporaire = tempfile.mkstemp(dir=BASE, prefix=".env.", suffix=".tmp")
     try:
-        os.chmod(temporaire, stat.S_IRUSR | stat.S_IWUSR)     # 0600
+        _restreindre(temporaire)
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             f.write(contenu)
         os.replace(temporaire, FICHIER_ENV)
@@ -182,7 +209,7 @@ def _ecrire_fichier(lignes):
         except OSError:
             pass
         raise
-    os.chmod(FICHIER_ENV, stat.S_IRUSR | stat.S_IWUSR)
+    _restreindre(FICHIER_ENV)
 
 
 def _poser(variable, valeur):
@@ -217,7 +244,7 @@ def enregistrer(id_emplacement, valeur):
     _verifier_forme(e, valeur)
     _poser(e["variable"], valeur)
     os.environ[e["variable"]] = valeur        # effet immédiat, sans redémarrage
-    return f"{e['nom']} : clé enregistrée dans .env (permissions 0600)."
+    return f"{e['nom']} : clé enregistrée dans .env ({protection_fichier()})."
 
 
 def supprimer(id_emplacement):
